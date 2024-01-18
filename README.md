@@ -1,1 +1,2 @@
-# advanced-interaction-design
+# Advanced Interaction Design 336B
+## Chelsea Yuan
