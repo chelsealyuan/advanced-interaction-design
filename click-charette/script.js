@@ -21,7 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let isDoubleHeight = false;
 
   //Div 8
-  let hasNoise = false;
+  let hasNoise = true;
+
+  //Div 12
+  let isShrunken = false;
 
   function onClick(value) {
     console.log(`Clicked on Div ${value}`);
@@ -51,7 +54,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Div 3
     if (value === 3) {
-      moveCircle("div-3", "div-7");
+      const circleClone = document.getElementById("circle").cloneNode(true);
+      document.getElementById("div-3").appendChild(circleClone);
+      document.getElementById("circle").remove();
     }
 
     //Div 4
@@ -90,7 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Div 7
     if (value === 7) {
-      moveCircle("div-7", "div-3");
+      animUp();
+      animDown();
     }
 
     //Div 8
@@ -103,46 +109,98 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       hasNoise = !hasNoise;
     }
+
+    //Div 9
+    if (value === 9) {
+      const div9 = document.getElementById("div-9");
+    }
+
+    //Div 10
+    if (value === 10) {
+      const element = document.getElementById("div-11");
+      element.classList.remove("spin-animation");
+
+      // Trigger a reflow before adding the class again
+      void element.offsetWidth;
+
+      element.classList.add("spin-animation");
+    }
+
+    //Div 11
+    if (value === 11) {
+      document.getElementById("div-10").style.backgroundColor =
+        getRandomColor();
+    }
+
+    //Div 12
+    if (value === 12) {
+      const div12 = document.getElementById("div-12");
+      isShrunken = !isShrunken; // Toggle the state on each click
+
+      if (isShrunken) {
+        div12.classList.add("shrunken");
+      } else {
+        div12.classList.remove("shrunken");
+      }
+    }
+
+    //Div 13
+    if (value === 13) {
+      movePet("up");
+    }
+
+    //Div 14
+
+    //Div 15
+
+    //Div 16
+    if (value === 16) {
+      movePet("left");
+    }
+
+    //Div 17
+    if (value === 17) {
+      switchPet();
+    }
+
+    //Div 18
+    if (value === 18) {
+      movePet("right");
+    }
+
+    //Div 19
+    if (value === 19) {
+      const div19 = document.getElementById("div-19");
+      div19.classList.add("shake");
+
+      // Remove the 'shake' class after the animation ends
+      setTimeout(() => {
+        div19.classList.remove("shake");
+      }, 500);
+    }
+
+    //Div 20
+    if (value === 20) {
+      const div20 = document.getElementById("div-20");
+      div20.classList.toggle("paused");
+    }
+
+    //Div 21
+    if (value === 21) {
+      movePet("down");
+    }
   }
 });
-
-//moveCircle("div-3", "div-3")
-
-function moveCircle(sourceDivId, targetDivId) {
-  const sourceDiv = document.getElementById(sourceDivId);
-  const circleSVG = sourceDiv.querySelector(".circle-svg");
-  const targetDiv = document.getElementById(targetDivId);
-
-  if (circleSVG && targetDiv) {
-    // Clone the circle SVG
-    const clonedCircle = circleSVG.cloneNode(true);
-
-    // Remove the original circle from the sourceDiv
-    circleSVG.remove();
-
-    // Append the cloned circle to the targetDiv
-    targetDiv.appendChild(clonedCircle);
-
-    // Calculate the position difference between source and target
-    const sourceRect = sourceDiv.getBoundingClientRect();
-    const targetRect = targetDiv.getBoundingClientRect();
-
-    // Calculate deltaY to position the circle at the bottom of the targetDiv
-    const deltaY = targetRect.top - (3 / 2) * clonedCircle.clientHeight;
-    // - sourceRect.bottom - (3/2 * clonedCircle.clientHeight);
-
-    // Apply transform to move the circle
-    clonedCircle.style.transform = `translate(0, ${deltaY}px)`;
-  }
-}
 
 function fillWithRandomCircle(container) {
   const circle = document.createElement("div");
   circle.classList.add("circle");
 
-  // Set random position within the container
-  circle.style.left = Math.random() * container.offsetWidth + "px";
-  circle.style.top = Math.random() * container.offsetHeight + "px";
+  // Set position based on mouse coordinates
+  circle.style.left =
+    event.clientX - container.getBoundingClientRect().left + "px";
+  circle.style.top =
+    event.clientY - container.getBoundingClientRect().top + "px";
 
   // Set random background color
   const randomColor = getRandomColor();
@@ -164,4 +222,121 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+function animUp() {
+  $("#ball").animate({ top: "1px" }, "slow", "swing");
+}
+function animDown() {
+  var $el = $("#div-7");
+  var bottom = $el.offset().top;
+  $("#ball").animate({ top: bottom }, "slow", "swing");
+}
+
+function movePet(direction) {
+  const petImg = document.getElementById("pet");
+  const div17 = document.getElementById("div-17");
+  const step = 20; // Adjust the step size as needed
+
+  let newLeft = parseInt(
+    window.getComputedStyle(petImg).getPropertyValue("left")
+  );
+  let newTop = parseInt(
+    window.getComputedStyle(petImg).getPropertyValue("top")
+  );
+
+  switch (direction) {
+    case "left":
+      newLeft = Math.max(0, newLeft - step); // Ensure it doesn't go beyond the left edge
+      break;
+    case "up":
+      newTop = Math.max(0, newTop - step); // Ensure it doesn't go beyond the top edge
+      break;
+    case "right":
+      newLeft = Math.min(div17.offsetWidth - petImg.width, newLeft + step); // Ensure it doesn't go beyond the right edge
+      break;
+    case "down":
+      newTop = Math.min(div17.offsetHeight - petImg.height, newTop + step); // Ensure it doesn't go beyond the bottom edge
+      break;
+  }
+
+  petImg.style.left = `${newLeft}px`;
+  petImg.style.top = `${newTop}px`;
+}
+
+function switchPet() {
+  const petImg = document.getElementById("pet");
+
+  // Check the current src attribute
+  const currentSrc = petImg.src;
+
+  // Switch the image source based on the current source
+  if (currentSrc.includes("pet.png")) {
+    // Replace 'pet.png' with the new image source
+    petImg.src = "assets/pet2.png";
+  } else {
+    // If it's already switched, switch it back to 'pet.png'
+    petImg.src = "assets/pet.png";
+  }
+}
+
+//Div 14
+const div14 = document.getElementById("div-14");
+div14.addEventListener("mousemove", followSquare);
+
+function followSquare(event) {
+  const avoidSquare = document.getElementById("follow-square");
+  const div14 = document.getElementById("div-14");
+
+  // Get the position of the mouse relative to the div-14
+  const mouseX = event.clientX - div14.getBoundingClientRect().left;
+  const mouseY = event.clientY - div14.getBoundingClientRect().top;
+
+  // Calculate the position of the square to avoid the mouse
+  const newLeft = Math.min(
+    Math.max(mouseX - avoidSquare.offsetWidth / 2, 0),
+    div14.offsetWidth - avoidSquare.offsetWidth
+  );
+  const newTop = Math.min(
+    Math.max(mouseY - avoidSquare.offsetHeight / 2, 0),
+    div14.offsetHeight - avoidSquare.offsetHeight
+  );
+
+  avoidSquare.style.left = `${newLeft}px`;
+  avoidSquare.style.top = `${newTop}px`;
+}
+
+//Div 15
+const div15 = document.getElementById("div-15");
+const avoidSquare = document.getElementById("avoid-square");
+
+div15.addEventListener("mousemove", detectAndMove);
+
+function detectAndMove(event) {
+  const mouseX = event.clientX - div15.getBoundingClientRect().left;
+  const mouseY = event.clientY - div15.getBoundingClientRect().top;
+
+  const centerX = avoidSquare.offsetLeft + avoidSquare.offsetWidth / 2;
+  const centerY = avoidSquare.offsetTop + avoidSquare.offsetHeight / 2;
+
+  const distance = Math.sqrt(
+    Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2)
+  );
+
+  if (distance < 50) {
+    // Calculate the direction vector
+    const deltaX = mouseX - centerX;
+    const deltaY = mouseY - centerY;
+
+    // Calculate the new position
+    const newLeft = avoidSquare.offsetLeft - deltaX;
+    const newTop = avoidSquare.offsetTop - deltaY;
+
+    // Restrict movement within the boundaries
+    const maxX = div15.offsetWidth - avoidSquare.offsetWidth;
+    const maxY = div15.offsetHeight - avoidSquare.offsetHeight;
+
+    avoidSquare.style.left = `${Math.max(0, Math.min(newLeft, maxX))}px`;
+    avoidSquare.style.top = `${Math.max(0, Math.min(newTop, maxY))}px`;
+  }
 }

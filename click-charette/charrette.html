@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Click Charrette</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -27,26 +28,26 @@
             <span class="content">2. Flip the card</span>
         </div>
         <div id="div-3" class="grid-item">
-            <span class="content">Drop the Ball</span>
-            <svg class="circle-svg" viewBox="0 0 100 100" width="50" height="50">
-                <circle cx="50" cy="50" r="40" />
-            </svg>
+            <span class="content">3. Drop the Ball</span>
+            <div class="circle" id="circle"></div>
         </div>
         <div id="div-4" class="grid-item">
-            <span class="content">3. Balls</span>
+            <span class="content">4. Spawn Balls</span>
         </div>
         <div id="div-5" class="grid-item">
-            <span class="content">4. Round</span>
+            <span class="content">5. Round</span>
         </div>
         <div id="div-6" class="grid-item">
-            <span class="content">5. Grow</span>
+            <span class="content">6. Grow</span>
         </div>
         <div id="div-7" class="grid-item">
-            <span class="content">6. Throw the Ball</span>
+            <span class="content">7. Throw the Ball</span>
+            <div id="ball">
+            </div>
         </div>
         <div id="div-8" class="grid-item">
             <!-- Grainy method referenced here: https://css-tricks.com/grainy-gradients/-->
-            <svg viewBox="0 0 100 100" xmlns='http://www.w3.org/2000/svg'>
+            <svg viewBox="0 0 100 100" xmlns='http://www.w3.org/2000/svg' style="display: none">
                 <filter id='noiseFilter'>
                     <feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch' />
                 </filter>
@@ -55,43 +56,79 @@
             <span class="content">8. Noise</span>
         </div>
         <div id="div-9" class="grid-item">
-            <span class="content">9. Dissolve</span>
+            <span class="content">9. Fade Out</span>
         </div>
         <div id="div-10" class="grid-item">
-            <span class="content">10. Spin 11</span>
+            <span class="content">10. Spin #11</span>
         </div>
         <div id="div-11" class="grid-item">
-            <span class="content">11. Give 10 a random color</span>
+            <span class="content">11. Give #10 a random color</span>
         </div>
         <div id="div-12" class="grid-item">
             <span class="content">12. Shrink</span>
         </div>
         <div id="div-13" class="grid-item">
-            <span class="content">13. Move Up</span>
+            <span class="content">13. W</span>
         </div>
         <div id="div-14" class="grid-item">
-            <span class="content">14. Fourteen</span>
+            <span class="content">14. Follow</span>
+            <div id="follow-square"></div>
         </div>
         <div id="div-15" class="grid-item">
-            <span class="content">15. </span>
+            <span class="content">15. Avoid</span>
+            <div id="avoid-square"></div>
         </div>
         <div id="div-16" class="grid-item">
-            <span class="content">16. Move Left</span>
+            <span class="content">16. A</span>
         </div>
         <div id="div-17" class="grid-item">
-            <span class="content">17. Summon Your Pet Triangle</span>
+            <span class="content">17. Switch Pet</span>
+            <img id="pet" src="assets/pet.png">
         </div>
         <div id="div-18" class="grid-item">
-            <span class="content">18. Move Right</span>
+            <span class="content">18. D</span>
         </div>
         <div id="div-19" class="grid-item">
-            <span class="content">19. Div 19</span>
+            <span class="content">19. Shake</span>
         </div>
         <div id="div-20" class="grid-item">
-            <span class="content">20. Div 20</span>
+            <span class="content">20. Play/Pause </span>
+            <p class="marquee marquee1">
+                <span>According to all known laws of aviation, there is no way a bee should be able to fly. Its wings
+                    are too small to get its fat little body off the ground. The bee, of course, flies anyway because
+                    bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.
+                    Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Ooming!
+                    Hang on a second. Hello? - Barry? - Adam? - Oan you believe this is happening? - I can't. I'll pick
+                    you up. Looking sharp. Use the stairs. Your father paid good money for those. Sorry. I'm excited.
+                    Here's the graduate. We're very proud of you, son. A perfect report card, all B's. Very proud. Ma! I
+                    got a thing going here. - You got lint on your fuzz. - Ow! That's me! - Wave to us! We'll be in row
+                    118,000. - Bye! Barry, I told you, stop flying in the house! - Hey, Adam. - Hey, Barry. - Is that
+                    fuzz gel? - A little. Special day, graduation. Never thought I'd make it. Three days grade school,
+                    three days high school. Those were awkward. Three days college. I'm glad I took a day and hitchhiked
+                    around the hive. You did come back different. - Hi, Barry. - Artie, growing a mustache? Looks good.
+                    - Hear about Frankie? - Yeah. - You going to the funeral? - No, I'm not going. Everybody knows,
+                    sting someone, you die. Don't waste it on a squirrel. &nbsp;
+                </span>
+            </p>
+            <p class="marquee marquee2">
+                <span>According to all known laws of aviation, there is no way a bee should be able to fly. Its wings
+                    are too small to get its fat little body off the ground. The bee, of course, flies anyway because
+                    bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.
+                    Yellow, black. Ooh, black and yellow! Let's shake it up a little. Barry! Breakfast is ready! Ooming!
+                    Hang on a second. Hello? - Barry? - Adam? - Oan you believe this is happening? - I can't. I'll pick
+                    you up. Looking sharp. Use the stairs. Your father paid good money for those. Sorry. I'm excited.
+                    Here's the graduate. We're very proud of you, son. A perfect report card, all B's. Very proud. Ma! I
+                    got a thing going here. - You got lint on your fuzz. - Ow! That's me! - Wave to us! We'll be in row
+                    118,000. - Bye! Barry, I told you, stop flying in the house! - Hey, Adam. - Hey, Barry. - Is that
+                    fuzz gel? - A little. Special day, graduation. Never thought I'd make it. Three days grade school,
+                    three days high school. Those were awkward. Three days college. I'm glad I took a day and hitchhiked
+                    around the hive. You did come back different. - Hi, Barry. - Artie, growing a mustache? Looks good.
+                    - Hear about Frankie? - Yeah. - You going to the funeral? - No, I'm not going. Everybody knows,
+                    sting someone, you die. Don't waste it on a squirrel. &nbsp; </span>
+            </p>
         </div>
         <div id="div-21" class="grid-item">
-            <span class="content">21. Move Down</span>
+            <span class="content">21. S</span>
         </div>
         <div id="div-22" class="grid-item">
             <span class="content">22. Div 22</span>
