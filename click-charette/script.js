@@ -26,18 +26,24 @@ document.addEventListener("DOMContentLoaded", function () {
   //Div 12
   let isShrunken = false;
 
+  let isExtended = false;
+
   function onClick(value) {
-    console.log(`Clicked on Div ${value}`);
+    //console.log(`Clicked on Div ${value}`);
 
     //Div 0
     if (value === 0) {
       const div0 = document.querySelector("#div-0");
+      const gridContainer = document.querySelector(".grid-container");
       if (toggle0) {
         div0.style.backgroundColor = "#000000";
+        gridContainer.style.backgroundColor = "#ffffff";
+
         div0.children[1].classList.add("hidden");
         div0.children[0].classList.remove("hidden");
       } else {
         div0.style.backgroundColor = "#ffffff";
+        gridContainer.style.backgroundColor = "#000000";
         div0.children[0].classList.add("hidden");
         div0.children[1].classList.remove("hidden");
       }
@@ -61,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Div 4
     if (value === 4) {
-      fillWithRandomCircle(document.querySelector("#div-4"));
+      fillWithRandomCircle(document.querySelector("#div-4"), event);
     }
 
     //Div 5
@@ -189,10 +195,168 @@ document.addEventListener("DOMContentLoaded", function () {
     if (value === 21) {
       movePet("down");
     }
+
+    //Div 22
+    if (value === 22) {
+      document.body.classList.toggle("enlarge-text");
+    }
+
+    //Div 23
+    if (value === 23) {
+      const div23 = document.getElementById("div-23");
+      div23.classList.add("bounce");
+
+      // Remove the 'shake' class after the animation ends
+      setTimeout(() => {
+        div23.classList.remove("bounce");
+      }, 2000);
+    }
+
+    //Div 24
+    if (value === 24) {
+      adjustCircleSize(0);
+    }
+
+    //Div 25
+    if (value === 25) {
+      adjustCircleSize(1);
+    }
+
+    //Div 26
+    if (value === 26) {
+      adjustCircleSize(2);
+    }
+
+    //Div 27
+    if (value === 27) {
+      adjustCircleSize(3);
+    }
+
+    //Div 28
+
+    //Div 29
+    if (value === 29) {
+      toggleScreen("div-30", "slide-right");
+      toggleScreen("div-33", "slide-left");
+    }
+
+    //Div 30
+    if (value === 30) {
+      toggleScreen("div-29", "slide-up");
+      toggleScreen("div-34", "slide-down");
+    }
+
+    //Div 31
+    if (value === 31) {
+      highlightPrimes();
+    }
+
+    //Div 32
+    if (value === 32) {
+      swapDivs("div-35", "div-32");
+    }
+
+    //Div 33
+    if (value === 33) {
+      toggleScreen("div-30", "slide-right");
+      toggleScreen("div-29", "slide-up");
+      toggleScreen("div-34", "slide-down");
+    }
+
+    //Div 34
+    if (value === 34) {
+      toggleScreen("div-29", "slide-up");
+      toggleScreen("div-30", "slide-right");
+    }
+
+    //Div 35
+    if (value === 35) {
+      swapDivs("div-32", "div-35");
+    }
+
+    //Div 36
+    if (value === 36) {
+      const div36 = document.getElementById("div-36");
+    }
+
+    //Div 38
+
+    if (value === 38) {
+      document.getElementById("div-38").classList.toggle("clicked");
+    }
+
+    //Div 39
+    if (value === 39) {
+      increaseDivisions();
+    }
+
+    //Div 40
+    if (value === 40) {
+      extendDivsSequentially();
+    }
+
+    //Div 41
+    if (value === 41) {
+      if (event.target.id === "div-41") {
+        sendMessage(event);
+      }
+    }
+
+    //Div 42
+
+    //Div 43
+
+    //Div 44
+    if (value === 44) {
+      const extendDivs = document.querySelectorAll(".extend");
+
+      if (isExtended) {
+        // If currently extended, retract
+        extendDivs.forEach((extendDiv) => {
+          extendDiv.style.width = "25%";
+        });
+      } else {
+        // If currently retracted, extend
+        extendDivs.forEach((extendDiv) => {
+          extendDiv.style.width = "100%";
+        });
+      }
+
+      // Toggle the state
+      isExtended = !isExtended;
+    }
+
+    //Div 45
+    if (value === 45) {
+      const gridItems = document.querySelectorAll(".grid-item");
+
+      gridItems.forEach((item) => {
+        item.classList.toggle("sheared");
+      });
+    }
+
+    //Div 46
+
+    //Div 47
+
+    //Div 48
+    if (value === 48) {
+      retractDivsSequentially();
+    }
+
+    //Div 49
+    if (value === 49) {
+      deleteLastMessage();
+    }
+
+    //Div 50
+    if (value === 50) {
+      close();
+    }
   }
 });
 
-function fillWithRandomCircle(container) {
+function fillWithRandomCircle(container, event) {
   const circle = document.createElement("div");
   circle.classList.add("circle");
 
@@ -340,3 +504,234 @@ function detectAndMove(event) {
     avoidSquare.style.top = `${Math.max(0, Math.min(newTop, maxY))}px`;
   }
 }
+
+function adjustCircleSize(index) {
+  var circles = document.querySelectorAll(".circle-change");
+
+  circles.forEach(function (circle) {
+    var sizes = [0.25, 0.5, 0.75, 1.0];
+    circle.style.width = sizes[index] * 100 + "%";
+    circle.style.height = sizes[index] * 100 + "%";
+  });
+}
+
+$(function () {
+  $("#div-28").draggable({ revert: true });
+});
+
+function toggleScreen(divId, direction) {
+  var $div = $("#" + divId);
+  var $screen = $div.find(".screen");
+
+  // Toggle between showing and hiding the screen
+  if ($screen.hasClass(direction)) {
+    // Move the screen back
+    $screen.removeClass(direction).css("transform", "");
+  } else {
+    // Move the screen in the specified direction
+    $screen.addClass(direction);
+  }
+}
+
+function isPrime(num) {
+  if (num <= 1) return false;
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}
+
+function highlightPrimes() {
+  // Loop through all grid items
+  $(".grid-item").each(function () {
+    // Extract the number from the content of the span
+    var number = parseInt($(this).find(".content").text());
+
+    // Check if the number is prime
+    if (isPrime(number)) {
+      // Toggle the highlight class on the span
+      $(this).find(".content").toggleClass("highlight");
+    }
+  });
+}
+
+var isSwapped = false;
+
+function swapDivs(divId1, divId2) {
+  var div1 = document.getElementById(divId1);
+  var div2 = document.getElementById(divId2);
+
+  if (!isSwapped) {
+    // Get the positions of the divs
+    var rect1 = div1.getBoundingClientRect();
+    var rect2 = div2.getBoundingClientRect();
+
+    // Swap the positions by changing the transform property
+    div1.style.transform = `translate(${rect2.left - rect1.left}px, ${
+      rect2.top - rect1.top
+    }px)`;
+    div2.style.transform = `translate(${rect1.left - rect2.left}px, ${
+      rect1.top - rect2.top
+    }px)`;
+  } else {
+    // Revert to the original positions
+    div1.style.transform = "none";
+    div2.style.transform = "none";
+  }
+
+  // Toggle the state
+  isSwapped = !isSwapped;
+}
+
+function moveCircle(event) {
+  var div37 = document.querySelector("#div-37");
+
+  // Get the mouse position
+  var mouseX = event.clientX - div37.getBoundingClientRect().left;
+  var mouseY = event.clientY - div37.getBoundingClientRect().top;
+
+  // Calculate the allowed positions within the parent divs
+  var squareLeft = Math.min(Math.max(mouseX, 0), div37.clientWidth);
+  var squareTop = Math.min(Math.max(mouseY, 0), div37.clientHeight);
+
+  // Move the square in div-36 based on mouse position in div-37
+  var square = document.querySelector("#div-36 .square");
+  square.style.left = squareLeft + "px";
+  square.style.top = squareTop + "px";
+}
+
+function moveSquare(event) {
+  var div36 = document.querySelector("#div-36");
+
+  // Get the mouse position
+  var mouseX = event.clientX - div36.getBoundingClientRect().left;
+  var mouseY = event.clientY - div36.getBoundingClientRect().top;
+
+  // Calculate the allowed positions within the parent divs
+  var squareLeft = Math.min(Math.max(mouseX, 0), div36.clientWidth);
+  var squareTop = Math.min(Math.max(mouseY, 0), div36.clientHeight);
+
+  // Move the square in div-36 based on mouse position in div-37
+  var square = document.querySelector("#div-37 .circle-37");
+  square.style.left = squareLeft + "px";
+  square.style.top = squareTop + "px";
+}
+
+let divisions = 0;
+
+function increaseDivisions() {
+  if (divisions < 24) {
+    divisions += 2;
+    divideSquare("div-39", divisions);
+  } else {
+    divisions = 0;
+    divideSquare("div-39", divisions);
+  }
+}
+
+function divideSquare(divId, divisions) {
+  const container = document.getElementById(divId);
+
+  // Ensure the container is a square
+  const size = Math.min(container.clientWidth, container.clientHeight);
+  container.style.width = size + "px";
+  container.style.height = size + "px";
+
+  // Remove previous divisions
+  const wrapper = container.querySelector(".squares-wrapper");
+  if (wrapper) {
+    container.removeChild(wrapper);
+  }
+
+  // Create a wrapper for the squares
+  const newWrapper = document.createElement("div");
+  newWrapper.className = "squares-wrapper";
+  container.appendChild(newWrapper);
+
+  // Calculate the size of each division
+  const divisionSize = size / divisions;
+
+  for (let i = 0; i < divisions; i++) {
+    for (let j = 0; j < divisions; j++) {
+      const square = document.createElement("div");
+      square.className = "sub-square";
+      square.style.width = divisionSize + "px";
+      square.style.height = divisionSize + "px";
+      square.style.position = "absolute";
+      square.style.top = i * divisionSize + "px";
+      square.style.left = j * divisionSize + "px";
+      newWrapper.appendChild(square);
+
+      // Apply transition to the new sub-square
+      square.style.transition = "opacity 1s ease-out";
+      square.style.opacity = 0; // Initially set opacity to 0
+      setTimeout(() => {
+        square.style.opacity = 1; // Set opacity to 1 after a delay
+      }, 0);
+    }
+  }
+}
+
+function extendDivsSequentially() {
+  const extendDivs = document.querySelectorAll(".extend");
+
+  extendDivs.forEach((extendDiv, index) => {
+    setTimeout(() => {
+      extendDiv.style.height = "100%"; // Extend the div vertically
+    }, index * 500); // Adjust the delay between each div extension (here, 1000ms or 1 second)
+  });
+}
+
+function retractDivsSequentially() {
+  const extendDivs = document.querySelectorAll(".extend");
+
+  const totalDivs = extendDivs.length;
+
+  extendDivs.forEach((extendDiv, index) => {
+    const delay = (totalDivs - index - 1) * 500; // Reverse the order and adjust the delay
+    setTimeout(() => {
+      extendDiv.style.height = "0"; // Retract the div vertically
+    }, delay);
+  });
+}
+
+function sendMessage(event) {
+  event.preventDefault();
+
+  const messageInput = document.getElementById("message");
+  const message = messageInput.value;
+
+  const messages = document.getElementById("messages");
+  const messageElement = document.createElement("div");
+  messageElement.textContent = message;
+  messages.appendChild(messageElement);
+
+  messageInput.value = "";
+}
+
+function deleteLastMessage() {
+  const messagesDiv = document.getElementById("messages");
+  const lastMessage = messagesDiv.lastElementChild;
+
+  if (lastMessage) {
+    messagesDiv.removeChild(lastMessage);
+  }
+}
+
+var div = document.getElementById("div-38");
+var circle = document.querySelector("#div-38 circle");
+
+div.addEventListener("mousedown", startDash);
+window.addEventListener("mouseup", stopDashOutsideDiv);
+div.addEventListener("mouseleave", stopDashOutsideDiv);
+
+function startDash() {
+  div.classList.add("clicked");
+}
+
+function stopDash() {
+  div.classList.remove("clicked");
+  circle.style.animation = "dash-reverse 2s linear forwards";
+}
+
+var div42 = document.querySelector("#div-42");

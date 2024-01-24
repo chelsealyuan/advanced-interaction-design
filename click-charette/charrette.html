@@ -7,9 +7,12 @@
     <link rel="stylesheet" href="styles.css">
     <title>Click Charrette</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+        integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <div class="cursor"></div>
     <div class="grid-container" id="gridContainer">
         <div id="div-0" class="grid-item">
             <span class="content dark">0. Dark Mode</span>
@@ -130,62 +133,110 @@
         <div id="div-21" class="grid-item">
             <span class="content">21. S</span>
         </div>
-        <div id="div-22" class="grid-item">
-            <span class="content">22. Div 22</span>
+        <div id="div-22" class="grid-item pushable">
+            <span class="content">22. Increase Font Size</span>
         </div>
         <div id="div-23" class="grid-item">
-            <span class="content">23. Div 23</span>
+            <span class="content">23. Bounce</span>
         </div>
         <div id="div-24" class="grid-item">
-            <span class="content">24. Div 24</span>
+            <span class="content">24. Sync 25%</span>
+            <div class="circle-change"></div>
         </div>
         <div id="div-25" class="grid-item">
-            <span class="content">25. Div 25</span>
+            <span class="content">25. Sync 50%</span>
+            <div class="circle-change"></div>
         </div>
         <div id="div-26" class="grid-item">
-            <span class="content">Div 26</span>
+            <span class="content">26. Sync 75%</span>
+            <div class="circle-change"></div>
         </div>
         <div id="div-27" class="grid-item">
-            <span class="content">Div 27</span>
+            <span class="content">27. Sync 100%</span>
+            <div class="circle-change"></div>
         </div>
         <div id="div-28" class="grid-item">
-            <span class="content">Div 28</span>
+            <span class="content">28. Drag Me</span>
         </div>
         <div id="div-29" class="grid-item">
-            <span class="content">Div 29</span>
+            <span class="content">29. Reveal</span>
+            <div class="screen"></div>
         </div>
         <div id="div-30" class="grid-item">
-            <span class="content">Div 30</span>
+            <span class="content">30. Reveal</span>
+            <div class="screen"></div>
         </div>
         <div id="div-31" class="grid-item">
-            <span class="content">Div 31</span>
+            <span class="content">31. highlight primes </span>
         </div>
         <div id="div-32" class="grid-item">
-            <span class="content">Div 32</span>
+            <span class="content">32. Swap With #35</span>
         </div>
         <div id="div-33" class="grid-item">
-            <span class="content">Div 33</span>
+            <span class="content">33. Reveal</span>
+            <div class="screen"></div>
         </div>
         <div id="div-34" class="grid-item">
-            <span class="content"></span>
+            <span class="content">34. Reveal</span>
+            <div class="screen"></div>
         </div>
         <div id="div-35" class="grid-item">
-            <span class="content"></span>
+            <span class="content">35. Swap With #32</span>
         </div>
-        <div id="div-36" class="grid-item">
-            <span class="content"></span>
+        <div id="div-36" class="grid-item" onmousemove="moveSquare(event)">
+            <span class="content">36. Move the Circle</span>
+            <div class="square"></div>
         </div>
-        <div id="div-37" class="grid-item">
-            <span class="content"></span>
+        <div id="div-37" class="grid-item" onmousemove="moveCircle(event)">
+            <span class="content">37. Move the Square</span>
+            <div class="circle-37"></div>
         </div>
         <div id="div-38" class="grid-item">
-            <span class="content"></span>
+            <span class="content">38. Clockwise</span>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 0 100 100">
+                <circle cx="50" cy="50" r="20" pathLength="1" />
+            </svg>
         </div>
         <div id="div-39" class="grid-item">
-            <span class="content"></span>
+            <span class="content">39. Square<sup>2</sup></span>
         </div>
         <div id="div-40" class="grid-item">
-            <span class="content"></span>
+            <span class="content">40. Extend </span>
+            <div class="extend extend-1"></div>
+        </div>
+        <div id="div-41" class="grid-item">
+            <span class="content">41. Send message</span>
+            <input type="text" id="message" name="message">
+        </div>
+        <div id="div-42" class="grid-item" >
+            <span class="content">42. Remove Gap </span>
+        </div>
+        <div id="div-43" class="grid-item">
+            <span class="content">43. Hold to infinity</span>
+        </div>
+        <div id="div-44" class="grid-item">
+            <span class="content">44. Change width</span>
+            <div class="extend extend-2"></div>
+        </div>
+        <div id="div-45" class="grid-item">
+            <span class="content">45. Shear</span>
+        </div>
+        <div id="div-46" class="grid-item">
+            <span class="content">46. Div 46</span>
+        </div>
+        <div id="div-47" class="grid-item">
+            <span class="content">47. Div 47</span>
+        </div>
+        <div id="div-48" class="grid-item">
+            <span class="content">48. Retract</span>
+            <div class="extend extend-3"></div>
+        </div>
+        <div id="div-49" class="grid-item">
+            <span class="content">49. Delete Message</span>
+            <div id="messages"></div>
+        </div>
+        <div id="div-50" class="grid-item">
+            <span class="content">50. Put me out of my misery</span>
         </div>
     </div>
 

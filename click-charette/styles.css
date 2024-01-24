@@ -37,12 +37,13 @@ body {
 
 /* Unique styles for each div */
 .grid-item {
-  background-color: #7d7d7d;
+  background-color: #595959;
   /* border: solid 1px darkgray; */
   color: #fff;
   position: relative;
   aspect-ratio: 1;
   cursor: pointer;
+  overflow: hidden;
   /* z-index: -10; */
 }
 
@@ -54,7 +55,7 @@ body {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 12px;
-  z-index: 10;
+  z-index: 5;
 }
 
 #div-0 {
@@ -68,9 +69,9 @@ body {
   color: #000000; /* Black color for the second child span */
 }
 
-#div-1 {
+/* #div-1 {
   background-color: #dcdcdc;
-}
+} */
 
 /*Credit to this W3Schools Tutorial: https://www.w3schools.com/howto/howto_css_flip_card.asp*/
 #div-2 {
@@ -150,12 +151,6 @@ body {
   background-color: rgb(0, 132, 255);
 }
 
-.circle-svg {
-  fill: #dcdcdc;
-  cursor: pointer;
-  transition: transform 2s ease-in-out;
-}
-
 .hidden {
   display: none;
 }
@@ -173,12 +168,15 @@ body {
   height: 50px;
   background-color: rgb(177, 177, 177);
   border-radius: 50%;
-  animation: fall 1s ease-in-out forwards;
+  animation: bounce-fall 0.6s ease-in forwards;
   z-index: 1;
 }
 
-@keyframes fall {
-  to {
+@keyframes bounce-fall {
+  0% {
+    top: 0%;
+  }
+  100% {
     top: 100%;
   }
 }
@@ -283,6 +281,10 @@ body {
 }
 
 /*Credits for continuous scroll: https://stackoverflow.com/questions/45847392/pure-css-continuous-horizontal-text-scroll-without-break*/
+#div-20 {
+  overflow: hidden;
+}
+
 .marquee {
   margin: 0 auto;
   white-space: nowrap;
@@ -335,3 +337,271 @@ body {
     transform: translateX(10px);
   }
 }
+
+body.enlarge-text span.content {
+  font-size: 16px; /* Adjust the desired font size */
+  transition: font-size 0.5s ease; /* Add a smooth transition effect */
+}
+
+/* Bounce animation: https://css-tricks.com/making-css-animations-feel-natural/ */
+#div-23 {
+  background-color: rgb(202, 50, 50);
+  animation-duration: 2s;
+  margin: 0 auto 0 auto;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-timing-function: ease;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(0.9, 1.1) translateY(-100px);
+  }
+  50% {
+    transform: scale(1, 1) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(-7px);
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+
+#div-24 {
+  background-color: rgb(202, 50, 50);
+}
+#div-25 {
+  background-color: rgb(202, 50, 70);
+}
+#div-26 {
+  background-color: rgb(202, 50, 113);
+}
+
+#div-27 {
+  background-color: rgb(202, 50, 129);
+}
+
+.circle-change {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25%;
+  height: 25%;
+  background-color: rgb(236, 231, 224);
+  border-radius: 50%;
+  z-index: 1;
+  transition: width 1s ease, height 1s ease;
+}
+
+#div-28 {
+  color: #000000;
+  background-color: #b3b3b3;
+}
+
+#div-31 {
+  background-color: rgb(0, 132, 255);
+}
+
+#div-29 span,
+#div-30 span,
+#div-33 span,
+#div-34 span {
+  z-index: 100;
+}
+
+#div-29 {
+  background-color: white;
+  background-image: url(assets/image_part_001.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+}
+#div-30 {
+  background-color: white;
+  background-image: url(assets/image_part_002.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+}
+#div-33 {
+  background-color: white;
+  background-image: url(assets/image_part_003.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+#div-34 {
+  background-color: white;
+  background-image: url(assets/image_part_004.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  transition: transform 0.5s ease;
+  z-index: 0;
+}
+
+.slide-left {
+  transform: translateX(-100%);
+}
+
+.slide-right {
+  transform: translateX(100%);
+}
+
+.slide-up {
+  transform: translateY(-100%);
+}
+
+.slide-down {
+  transform: translateY(100%);
+}
+
+.highlight {
+  background-color: rgba(208, 255, 0, 0.716);
+  color: black;
+}
+
+#div-32 {
+  background-color: rgb(0, 160, 185);
+  transition: transform 0.5s ease;
+}
+
+#div-35 {
+  background-color: rgb(234, 187, 34);
+  transition: transform 0.5s ease;
+}
+
+.square {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(0, 132, 255);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.circle-37 {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(0, 160, 185);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+#div-38 circle {
+  fill: none;
+  stroke: #ded3c4;
+  stroke-width: 3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: none; /* Initially, no animation */
+}
+
+#div-38.clicked circle {
+  animation: dash 2s linear forwards; /* Animate to fully dashed when clicked */
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dash-reverse {
+  to {
+    stroke-dashoffset: 1;
+  }
+}
+
+#div-39 {
+  background-color: whitesmoke;
+}
+#div-39 .content {
+  color: #000;
+  z-index: 10;
+}
+
+.sub-square {
+  z-index: 0;
+  border: 1px solid #000;
+  opacity: 1;
+}
+
+#div-40,
+#div-44,
+#div-48 {
+  display: flex;
+  justify-content: center;
+  background-color: #ded3c4;
+  color: #000;
+}
+
+.extend {
+  width: 25%;
+  background-color: #3498db;
+  height: 0;
+  transition: height 0.5s ease-out, width 0.5s ease-out;
+}
+
+.extend-1 {
+  background-color: #3498db;
+}
+.extend-2 {
+  background-color: #2ecc71;
+}
+.extend-3 {
+  background-color: #e74c3c;
+}
+
+#messages,
+#div-49,
+#div-41 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(202, 50, 113);
+  flex-direction: column;
+}
+
+#message {
+  padding: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  width: 75%;
+  height: 24px;
+  box-sizing: border-box;
+}
+
+.sheared {
+  transition: transform 0.5s ease-in-out;
+  transform: skewX(-20deg); /* Adjust the skew angle as needed */
+}
+
+
