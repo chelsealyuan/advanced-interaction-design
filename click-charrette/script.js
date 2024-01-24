@@ -339,15 +339,22 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    var div47 = document.getElementById("div-47");
-    if (div47) {
-      div47.classList.add("fade-out");
-      setTimeout(function () {
-        div47.remove();
-      }, 2000); // Wait for the transition to complete before removing the element
+    if (value === 46) {
+      var div47 = document.getElementById("div-47");
+      if (div47) {
+        div47.classList.add("fade-out");
+        setTimeout(function () {
+          div47.remove();
+        }, 2000); // Wait for the transition to complete before removing the element
+      }
     }
 
     //Div 47
+
+    if (value === 47) {
+      const divElement = document.getElementById("div-47");
+      divElement.classList.toggle("clicked");
+    }
 
     //Div 48
     if (value === 48) {
