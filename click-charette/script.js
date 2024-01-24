@@ -303,6 +303,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Div 42
+    if (value === 42) {
+      var container = document.querySelector(".grid-container");
+      container.classList.toggle("no-gap");
+    }
 
     //Div 43
 
@@ -335,7 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    //Div 46
+    var div47 = document.getElementById("div-47");
+    if (div47) {
+      div47.classList.add("fade-out");
+      setTimeout(function () {
+        div47.remove();
+      }, 2000); // Wait for the transition to complete before removing the element
+    }
 
     //Div 47
 
@@ -710,6 +720,7 @@ function sendMessage(event) {
 }
 
 function deleteLastMessage() {
+  console.log("hi");
   const messagesDiv = document.getElementById("messages");
   const lastMessage = messagesDiv.lastElementChild;
 
@@ -722,8 +733,6 @@ var div = document.getElementById("div-38");
 var circle = document.querySelector("#div-38 circle");
 
 div.addEventListener("mousedown", startDash);
-window.addEventListener("mouseup", stopDashOutsideDiv);
-div.addEventListener("mouseleave", stopDashOutsideDiv);
 
 function startDash() {
   div.classList.add("clicked");
@@ -734,4 +743,50 @@ function stopDash() {
   circle.style.animation = "dash-reverse 2s linear forwards";
 }
 
-var div42 = document.querySelector("#div-42");
+var incrementInterval;
+var counterValue = 0;
+
+var div43 = document.getElementById("div-43");
+
+div43.addEventListener("mousedown", startIncrement);
+div43.addEventListener("mouseup", stopIncrement);
+div43.addEventListener("click", resetCounter);
+
+function startIncrement() {
+  // Start incrementing when mouse is held down
+  incrementInterval = setInterval(increment, 100); // Adjust the interval as needed
+}
+
+function stopIncrement() {
+  // Stop incrementing when mouse is released
+  clearInterval(incrementInterval);
+}
+
+function resetCounter() {
+  if (counterValue === 255) {
+    counterValue = 0;
+    div43.style.backgroundColor = "rgb(0, 255, 0)";
+    div43.style.color = "black";
+    document.getElementById("counter").innerText = counterValue;
+  }
+}
+
+function increment() {
+  // Increment the counter value
+  counterValue = Math.min(counterValue + 1, 255);
+
+  // Change the background color and text color based on the counter value
+  var red = counterValue;
+  var green = counterValue;
+  var blue = counterValue;
+
+  div43.style.backgroundColor = "rgb(" + red + "," + green + "," + blue + ")";
+
+  // Change text color to black when halfway
+  if (counterValue >= 128) {
+    div43.style.color = "black";
+  }
+
+  // Update the counter value display
+  document.getElementById("counter").innerText = counterValue;
+}

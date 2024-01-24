@@ -604,4 +604,51 @@ body.enlarge-text span.content {
   transform: skewX(-20deg); /* Adjust the skew angle as needed */
 }
 
+.no-gap {
+  /* Set gap to zero when this class is applied */
+  gap: 0;
+}
 
+#div-42 {
+  background-color: rgb(0, 160, 185);
+}
+
+#div-43 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0, 0, 0);
+}
+
+#counter {
+  font-size: 4em;
+}
+
+#div-45 {
+  background-color: rgb(0, 132, 255);
+}
+
+#div-46,
+#div-47 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(202, 50, 50);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    height: 100%;
+    width: 100%;
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    width: 100%;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 2s ease-in-out;
+}
