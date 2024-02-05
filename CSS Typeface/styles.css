@@ -1,0 +1,61 @@
+body {
+  display: grid;
+  gap: 2em;
+  grid-template-columns: auto auto auto auto auto auto;
+
+  justify-content: center;
+  align-items: center;
+  max-height: 100vh;
+  margin: 0;
+  background-color: #242c87;
+}
+
+.letter {
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: black;
+  transition: transform 0.3s ease-in-out;
+}
+
+.letter:hover {
+  transform: scale(2); /* Adjust the scaling factor as needed */
+}
+
+.circle {
+  border-radius: 50%;
+  position: absolute;
+  transition: transform 1s ease-in-out;
+}
+
+.small {
+  width: 36px;
+  height: 36px;
+}
+
+.medium {
+  width: 72px;
+  height: 72px;
+}
+
+.letter,
+.large {
+  width: 104px;
+  height: 104px;
+}
+
+.black {
+  background-color: black;
+}
+
+.blue {
+  background-color: #00b3ff;
+}
+
+.blend-mode {
+  background-color: #00b3ff;
+  mix-blend-mode: hard-light;
+}
+
+.letter {
+  position: relative;
+}
