@@ -14,17 +14,18 @@ body {
   overflow: hidden;
   border-radius: 50%;
   background-color: black;
-  transition: transform 0.3s ease-in-out;
+  transition: width 0.1s ease-in, height 0.1s ease-in;
 }
 
-.letter:hover {
-  transform: scale(2); /* Adjust the scaling factor as needed */
-}
+ .letter:hover {
+  width: 208px;
+  height: 208px;
+} 
 
 .circle {
   border-radius: 50%;
   position: absolute;
-  transition: transform 1s ease-in-out;
+  transition: transform 0.5s linear;
 }
 
 .small {
