@@ -14,16 +14,15 @@ body {
   overflow: hidden;
   border-radius: 50%;
   background-color: black;
+  clip-path: circle(52px at 52px 52px);
   /* transition: width 0.3s ease-in, height 0.3s ease-in; */
-  
 }
 
 
  .letter:hover {
-  /* width: 208px;
-  height: 208px; */
   transition: all 0.2s ease-in;
-  /* transition-delay: 0.5s;  */
+  clip-path: none;
+  /* transform: scale(2); */
 }
 
 .letter:not(:hover) {
@@ -36,6 +35,19 @@ body {
   position: absolute;
   transition: transform 1s ease;
 }
+
+.scale-down {
+  transform: scale(0.5); /* Scale the circles down */
+}
+
+.scale-up {
+  transform: scale(1.5);
+}
+
+.return{
+  transform: translate(0, 0);
+}
+
 
 .small {
   width: 36px;
@@ -69,3 +81,5 @@ body {
 .letter {
   position: relative;
 }
+
+
