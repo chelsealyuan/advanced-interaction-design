@@ -21,6 +21,15 @@ body {
   margin: 2em;
 }
 
+.title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1em;
+
+}
+
 .letter {
   position: relative;
   border-radius: 50%;

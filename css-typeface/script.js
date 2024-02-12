@@ -26,7 +26,9 @@ letters.forEach((letter) => {
   const circles = letter.querySelectorAll(".circle");
 
   letter.addEventListener("mouseenter", () => {
-    letter.classList.remove("clipped");
+    setTimeout(() => {
+      letter.classList.remove("clipped");
+    });
 
     circleMovementInterval = setInterval(() => {
       moveCircles(letter);
@@ -80,5 +82,3 @@ function moveCircles(letter) {
     circle.dataset.lastY = y;
   });
 }
-
-
