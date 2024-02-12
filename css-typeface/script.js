@@ -7,110 +7,78 @@
 //circles return to original location
 //Outer div shrinks
 
-//Bug 1: overflow hidden activating/deactivating not on correct trigger
-// transform: translate z-axis
-// CSS clip-path with overflow hidden
-// border radius clipping bug
-
-//Bug 2: continual movement of circles after mouseleave (inconsistent mouseleave trigger?)
-// circle move out of its based on a class
-// use mouse movement to add classes
-
 //Bug 3: circles can leave the viewport
-//Bug 4: Div expansion moves other obj in the DOM
+
+//Circle loses blend mode once exiting
+window.onload = function () {
+  const letters = document.querySelectorAll(".letter");
+  letters.forEach((letter) => {
+    letter.classList.add("clipped");
+  });
+};
 
 const letters = document.querySelectorAll(".letter");
 
 letters.forEach((letter) => {
+  console.log(window.innerWidth + ", " + window.innerHeight);
+
   let circleMovementInterval;
   const circles = letter.querySelectorAll(".circle");
 
   letter.addEventListener("mouseenter", () => {
-    letter.style.overflow = "visible";
+    letter.classList.remove("clipped");
 
-    letter.classList.add("scale-up");
-
-    // circles.forEach((circle) => {
-    //   circle.style.transform = `translate(0px, 0px) scale(0.5)`;
-    // });
-
-    setInterval(() => {
+    circleMovementInterval = setInterval(() => {
       moveCircles(letter);
-    }, 50);
+    }, 100);
 
-    // setTimeout(function () {
-    //   clearInterval(circleMovementInterval);
-
-    //   moveCircles(letter);
-
-    //   circleMovementInterval = setInterval(() => {
-    //     moveCircles(letter);
-    //   }, 300);
-    // }, 100);
+    event.stopPropagation();
   });
 
   letter.addEventListener("mouseleave", () => {
     clearInterval(circleMovementInterval);
 
-    letter.classList.remove("scale-up");
-    letter.style.overflow = "hidden";
-
     circles.forEach((circle) => {
       circle.style.transform = "translate(0, 0)";
     });
+
+    setTimeout(() => {
+      letter.classList.add("clipped");
+    }, 500);
+
+    event.stopPropagation();
   });
 });
 
-// function moveCircles(letter) {
-//   const circles = letter.querySelectorAll(".circle");
-
-//   circles.forEach((circle) => {
-//     const circleRect = circle.getBoundingClientRect();
-//     const circleWidth = circleRect.width;
-//     const circleHeight = circleRect.height;
-
-//     const maxX = window.innerWidth - circleWidth;
-//     const maxY = window.innerHeight - circleHeight;
-
-//     const randomX = Math.max(
-//       0,
-//       Math.min(maxX, (Math.random() - 0.5) * 2 * (2 * maxX) - maxX)
-//     );
-//     const randomY = Math.max(
-//       0,
-//       Math.min(maxY, (Math.random() - 0.5) * 2 * (2 * maxY) - maxY)
-//     );
-
-//     circle.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.5)`;
-//   });
-// }
-
 function moveCircles(letter) {
-  const movementContainer = document.querySelector("body");
   const circles = letter.querySelectorAll(".circle");
-  // Get viewport dimensions
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
 
   circles.forEach((circle) => {
-    // Random horizontal and vertical speed
-    let xSpeed = Math.random() * 2 - 1; // Range from -1 to 1
-    let ySpeed = Math.random() * 2 - 1; // Range from -1 to 1
-
-    // Update circle position
     let rect = circle.getBoundingClientRect();
-    let x = rect.left + xSpeed;
-    let y = rect.top + ySpeed;
+    let originalX = rect.left;
+    let originalY = rect.top;
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
 
-    // Apply horizontal randomness
-    x += Math.random() * 2 - 1; // Range from -1 to 1
+    // Store the previous position of the circle
+    let lastX = parseFloat(circle.dataset.lastX || 0);
+    let lastY = parseFloat(circle.dataset.lastY || 0);
 
-    // Ensure circles stay within viewport bounds
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
-    if (x + rect.width > viewportWidth) x = viewportWidth - rect.width;
-    if (y + rect.height > viewportHeight) y = viewportHeight - rect.height;
+    // Calculate the minimum and maximum values for x and y
+    let minX = Math.max(lastX - 50, -originalX);
+    let maxX = Math.min(lastX + 50, viewportWidth - originalX - rect.width);
+    let minY = Math.max(lastY - 50, -originalY);
+    let maxY = Math.min(lastY + 50, viewportHeight - originalY - rect.height);
 
-    circle.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
+    // Calculate random x and y within the restricted bounds
+    let x = Math.random() * (maxX - minX) + minX;
+    let y = Math.random() * (maxY - minY) + minY;
+
+    // Update circle position and store the last position
+    circle.style.transform = `translate(${x}px, ${y}px)`;
+    circle.dataset.lastX = x;
+    circle.dataset.lastY = y;
   });
 }
+
+

@@ -1,0 +1,77 @@
+body {
+    display: grid;
+    gap: 4em;
+    grid-template-columns: auto auto auto auto auto auto;
+  
+    justify-content: center;
+    align-items: center;
+    max-height: 100vh;
+    margin: 0;
+    background-color: #242c87;
+  }
+  
+  .letter {
+    position: relative;
+    border-radius: 50%;
+    background-color: black;
+  
+    transition: scale .5s ease-in-out 0.5s;
+  }
+  
+  .letter:hover {
+    clip-path: none;
+    scale: 1.5;
+    transition: scale .25s ease-in-out 0s;
+  }
+  
+  
+  .clipped {
+    clip-path: circle(52px at 52px 52px);
+  }
+  
+  
+  .scale-up{
+    scale: 1.5;
+  }
+  
+  .scale-down{
+    scale: 1;
+  }
+  
+  .circle {
+    border-radius: 50%;
+    position: absolute;
+    transition: transform 0.5s ease-in;
+    
+    z-index: 100;
+  }
+  
+  .small {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .medium {
+    width: 72px;
+    height: 72px;
+  }
+  
+  .letter,
+  .large {
+    width: 104px;
+    height: 104px;
+  }
+  
+  .black {
+    background-color: black;
+  }
+  
+  .blue {
+    background-color: #00b3ff;
+  }
+  
+  .blend-mode {
+    background-color: #00b3ff;
+    mix-blend-mode: hard-light;
+  }
+  

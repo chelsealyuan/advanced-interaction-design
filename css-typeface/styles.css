@@ -1,53 +1,61 @@
 body {
+  max-height: 100vh;
+  margin: auto;
+  background-color: #242c87;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
   display: grid;
-  gap: 2em;
+  gap: 3em;
   grid-template-columns: auto auto auto auto auto auto;
 
   justify-content: center;
   align-items: center;
-  max-height: 100vh;
-  margin: 0;
-  background-color: #242c87;
+
+  margin: 2em;
 }
 
 .letter {
-  overflow: hidden;
+  position: relative;
   border-radius: 50%;
   background-color: black;
-  clip-path: circle(52px at 52px 52px);
-  /* transition: width 0.3s ease-in, height 0.3s ease-in; */
+
+  transition: scale 0.5s ease-in-out 0.5s;
+
+  z-index: 0;
 }
 
-
- .letter:hover {
-  transition: all 0.2s ease-in;
+.letter:hover {
   clip-path: none;
-  /* transform: scale(2); */
+  scale: 1.5;
+  transition: scale 0.25s ease-in-out 0s;
 }
 
-.letter:not(:hover) {
-  transition: all 0.5s ease-in;
+.clipped {
+  clip-path: circle(52px at 52px 52px);
 }
 
+.scale-up {
+  scale: 1.5;
+}
+
+.scale-down {
+  scale: 1;
+}
 
 .circle {
   border-radius: 50%;
   position: absolute;
   transition: transform 1s ease;
-}
 
-.scale-down {
-  transform: scale(0.5); /* Scale the circles down */
+  z-index: 999;
 }
-
-.scale-up {
-  transform: scale(1.5);
-}
-
-.return{
-  transform: translate(0, 0);
-}
-
 
 .small {
   width: 36px;
@@ -78,8 +86,37 @@ body {
   mix-blend-mode: hard-light;
 }
 
-.letter {
-  position: relative;
+.title {
+  display: flex;
+  flex-direction: row;
 }
 
+button {
+  background-color: transparent;
+  color: white;
+  border: solid 2px white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+button:hover {
+  border: none;
+  color: #242c87;
+  background-color: #ffffff;
+  border: solid 2px #ffffff;
+}
+
+#specimen {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+#display {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
