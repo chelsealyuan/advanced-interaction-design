@@ -12,7 +12,7 @@ body {
 
 .container {
   display: grid;
-  gap: 3em;
+  gap: 4em;
   grid-template-columns: auto auto auto auto auto auto;
 
   justify-content: center;
@@ -21,13 +21,24 @@ body {
   margin: 2em;
 }
 
-.title{
+.title {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
-  gap: 1em;
+  height: 100vh;
+  width: 100vw;
 
+  gap: 6em;
+}
+
+.title .letter{
+  scale: 1.5;
+}
+
+.title .letter:hover{
+  scale: 2;
 }
 
 .letter {
@@ -95,10 +106,7 @@ body {
   mix-blend-mode: hard-light;
 }
 
-.title {
-  display: flex;
-  flex-direction: row;
-}
+
 
 button {
   background-color: transparent;
