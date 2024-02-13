@@ -10,46 +10,48 @@
 //Bug 3: circles can leave the viewport
 
 //Circle loses blend mode once exiting
-window.onload = function () {
-  const letters = document.querySelectorAll(".letter");
-  letters.forEach((letter) => {
-    letter.classList.add("clipped");
-  });
-};
+
+// window.onload = function () {
+//   const letters = document.querySelectorAll(".letter");
+//   letters.forEach((letter) => {
+//     letter.classList.add("clipped");
+//   });
+// };
 
 const letters = document.querySelectorAll(".letter");
 
 letters.forEach((letter) => {
-  console.log(window.innerWidth + ", " + window.innerHeight);
-
   let circleMovementInterval;
   const circles = letter.querySelectorAll(".circle");
 
-  letter.addEventListener("mouseenter", () => {
-    setTimeout(() => {
-      letter.classList.remove("clipped");
-    });
+  letter.addEventListener(
+    "mouseenter",
+    (event) => {
+      setTimeout(() => {
+        letter.classList.remove("clipped");
+      });
 
-    circleMovementInterval = setInterval(() => {
-      moveCircles(letter);
-    }, 100);
+      circleMovementInterval = setInterval(() => {
+        moveCircles(letter);
+      }, 100);
+      event.stopPropagation();
+    },
+    false
+  );
 
-    event.stopPropagation();
-  });
+  letter.addEventListener(
+    "mouseleave",
+    (event) => {
+      clearInterval(circleMovementInterval);
 
-  letter.addEventListener("mouseleave", () => {
-    clearInterval(circleMovementInterval);
-
-    circles.forEach((circle) => {
-      circle.style.transform = "translate(0, 0)";
-    });
-
-    setTimeout(() => {
-      letter.classList.add("clipped");
-    }, 500);
-
-    event.stopPropagation();
-  });
+      circles.forEach((circle) => {
+        circle.style.transform = "translate(0, 0)";
+      });
+      
+      event.stopPropagation();
+    },
+    false
+  );
 });
 
 function moveCircles(letter) {
