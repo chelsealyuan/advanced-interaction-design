@@ -33,17 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
    * GSAP Plugin Documentation: (https://gsap.com/docs/v3/Plugins/ScrollTrigger/#advanced-example)
    *
    */
-  var timeline_options = {
-    scrollTrigger: {
-      trigger: ".container",
-      // pin: true, // uncomment this value to pin the "container" in the same spot while animating
-      start: "top top", // this controls starting the animation when the top of container is at the top of the screen
-      end: "bottom bottom", // this controls ending the animation when the bottom of container is at the bottom of the screen
-      scrub: 0, // this controls animation timing relative to scroll
-      // scrub: 1 // uncomment this value to delay animations
-    },
-  };
-  var timeline = gsap.timeline(timeline_options);
+
+  // var timeline_options = {
+  //   scrollTrigger: {
+  //     trigger: ".container",
+  //     // pin: true, // uncomment this value to pin the "container" in the same spot while animating
+  //     start: "top top", // this controls starting the animation when the top of container is at the top of the screen
+  //     end: "bottom bottom", // this controls ending the animation when the bottom of container is at the bottom of the screen
+  //     scrub: 0, // this controls animation timing relative to scroll
+  //     // scrub: 1 // uncomment this value to delay animations
+  //   },
+  // };
+  // var timeline = gsap.timeline(timeline_options);
 
   /**
    * Now we have a timeline that controls animations. The timeline duration is equal to the height
@@ -66,8 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
    *  Here is some docuentation for how duration works with ScrollTrigger
    * https://gsap.com/docs/v3/Plugins/ScrollTrigger/#how-does-duration-work-with-scrub-true
    */
-
-  gsap.registerPlugin(ScrollTrigger);
 
   var currentUrl = window.location.href;
 
@@ -173,36 +172,170 @@ document.addEventListener("DOMContentLoaded", () => {
         end: "bottom top",
         scrub: true,
         markers: true,
-        pin: ".spinner"
+        pin: ".spinner",
       },
       rotationY: 360, // Rotate 360 degrees on the Y-axis
       ease: "none",
     });
   }
 
+  //https://www.youtube.com/watch?v=QEn6t1Dln_M
   if (currentUrl.includes("page6.html")) {
-    gsap.to(".parallax-bg", {
-      scrollTrigger: {
-        scrub: true,
-      },
-      y: (i, target) => -ScrollTrigger.maxScroll(window) * target.dataset.speed,
-      ease: "none",
+    gsap.utils.toArray("span").forEach((span, i) => {
+      ScrollTrigger.create({
+        trigger: span,
+        start: () => {
+          return i == 0 ? "top 10%" : "top 40%";
+        },
+        toggleClass: "active",
+      });
     });
   }
 
   if (currentUrl.includes("page7.html")) {
-    
+    var timeline_options = {
+      scrollTrigger: {
+        trigger: ".container7",
+        pin: true, // uncomment this value to pin the "container" in the same spot while animating
+        start: "top top", // this controls starting the animation when the top of container is at the top of the screen
+        end: "bottom bottom", // this controls ending the animation when the bottom of container is at the bottom of the screen
+        scrub: 1, // this controls animation timing relative to scroll
+        ease: "power1.inOut",
+      },
+    };
+
+    var timeline = gsap.timeline(timeline_options);
+
+    timeline.to(".section1", {
+      left: "-50%",
+    });
+
+    timeline.to(
+      ".section2",
+      {
+        left: "50%",
+      },
+      0
+    );
+
+    timeline.to(
+      ".section1",
+      {
+        left: "-100%",
+      },
+      1
+    );
+
+    timeline.to(
+      ".section2",
+      {
+        left: "100%",
+      },
+      1
+    );
   }
 
   if (currentUrl.includes("page8.html")) {
-    
+    gsap.registerPlugin(ScrollToPlugin);
+
+    let navs = gsap.utils.toArray(".container8 nav a");
+
+    gsap.utils.toArray(".panel").forEach((panel, i) => {
+      let trigger = ScrollTrigger.create({
+        trigger: panel,
+        start: "top top",
+        pin: true,
+        pinSpacing: false,
+      });
+
+      let nav = navs[i];
+
+      nav.addEventListener("click", function (e) {
+        e.preventDefault();
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: trigger.start,
+        });
+      });
+    });
   }
 
   if (currentUrl.includes("page9.html")) {
-    
+    gsap.from(".block", {
+      rotate: 360,
+      duration: 2,
+      repeat: -1,
+      scrollTrigger: {
+        trigger: ".block",
+        toggleActions: "play pause reverse pause",
+        markers: true,
+        start: "top center",
+        end: "bottom 60%",
+        trigger: ".block",
+        // Repeat forever
+      },
+    });
   }
 
   if (currentUrl.includes("page10.html")) {
+    let sections = document.querySelectorAll(".section");
+    let scrollContainer = document.querySelector(".scrollContainer");
+    let clamp, dragRatio;
+
+    let scrollTween = gsap.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: "none",
+    });
+
+    let horizontalScroll = ScrollTrigger.create({
+      animation: scrollTween,
+      trigger: scrollContainer,
+      pin: true,
+      scrub: 1,
+      end: () => "+=" + scrollContainer.offsetWidth,
+    });
+
+    var drag = Draggable.create(".proxy", {
+      trigger: scrollContainer,
+      type: "x",
+      onPress() {
+        clamp || ScrollTrigger.refresh();
+        this.startScroll = horizontalScroll.scroll();
+      },
+      onDrag() {
+        horizontalScroll.scroll(
+          clamp(this.startScroll - (this.x - this.startX) * dragRatio)
+        );
+        // if you don't want it to lag at all while dragging (due to the 1-second scrub), uncomment the next line:
+        //horizontalScroll.getTween().progress(1);
+      },
+    })[0];
+
+    ScrollTrigger.addEventListener("refresh", () => {
+      clamp = gsap.utils.clamp(
+        horizontalScroll.start + 1,
+        horizontalScroll.end - 1
+      ); // don't let the drag-scroll hit the very start or end so that it doesn't unpin
+      // total scroll amount divided by the total distance that the sections move gives us the ratio we can apply to the pointer movement so that it fits.
+      dragRatio =
+        scrollContainer.offsetWidth /
+        (window.innerWidth * (sections.length - 1));
+    });
+  }
+
+  if (currentUrl.includes("page11.html")) {
     
+  }
+
+  if (currentUrl.includes("page12.html")) {
+  }
+
+  if (currentUrl.includes("page13.html")) {
+  }
+
+  if (currentUrl.includes("page14.html")) {
+  }
+
+  if (currentUrl.includes("page15.html")) {
   }
 });
