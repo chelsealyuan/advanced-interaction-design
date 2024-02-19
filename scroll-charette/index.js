@@ -22,8 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   gsap.registerPlugin(ScrollTrigger);
 
-
-
   /**
    *
    * Next we are going to create what GSAP calls a "timeline" to control our animations.
@@ -69,4 +67,142 @@ document.addEventListener("DOMContentLoaded", () => {
    * https://gsap.com/docs/v3/Plugins/ScrollTrigger/#how-does-duration-work-with-scrub-true
    */
 
+  gsap.registerPlugin(ScrollTrigger);
+
+  var currentUrl = window.location.href;
+
+  if (currentUrl.includes("page1.html")) {
+    gsap.utils.toArray(".block").forEach((block, index) => {
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: block,
+          start: "top 10%",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      if (index % 2 === 0) {
+        timeline.to(block, {
+          x: 500,
+          rotation: 360,
+        });
+      } else {
+        timeline.to(block, {
+          x: -500,
+          rotation: 360,
+        });
+      }
+    });
+  }
+
+  if (currentUrl.includes("page2.html")) {
+    let lightness = 50;
+
+    // Loop through each block with class "block"
+    gsap.utils.toArray(".block").forEach((block, index) => {
+      // Adjust the lightness based on the block index
+      lightness -= 5; // Adjust the decrement value as needed
+
+      // Ensure lightness remains within the valid range (0-100)
+      lightness = Math.max(0, Math.min(100, lightness));
+
+      // Construct the color with adjusted lightness
+      const color = `hsl(240, 100%, ${lightness}%)`;
+
+      // Apply the color to the block
+      block.style.backgroundColor = color;
+
+      // Create a GSAP timeline for each block
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: block,
+          start: "bottom center",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Add animations to the timeline for each block
+      timeline.to(block, {
+        width: "100%",
+      });
+    });
+  }
+
+  if (currentUrl.includes("page3.html")) {
+    // Used https://codepen.io/ryandejaegher/pen/abmqWZy to help
+
+    gsap.from(".block", {
+      scrollTrigger: {
+        trigger: ".flex",
+        pin: true,
+        markers: true,
+        scrub: 2,
+        start: "bottom center",
+        end: "+=1000 center",
+      },
+      opacity: 0,
+      y: -100,
+      ease: "back.out(4)",
+      stagger: {
+        amount: 3,
+      },
+    });
+  }
+
+  if (currentUrl.includes("page4.html")) {
+    gsap.to(".horizontal-scroll", {
+      scrollTrigger: {
+        trigger: ".container4",
+        markers: true,
+        start: "top top",
+        end: "bottom top",
+        pin: ".container4",
+        scrub: 2,
+      },
+      opacity: 1,
+      x: "100%",
+    });
+  }
+  if (currentUrl.includes("page5.html")) {
+    gsap.to(".spinner", {
+      scrollTrigger: {
+        trigger: ".container5",
+        start: "top top", // Adjust this value as needed
+        end: "bottom top",
+        scrub: true,
+        markers: true,
+        pin: ".spinner"
+      },
+      rotationY: 360, // Rotate 360 degrees on the Y-axis
+      ease: "none",
+    });
+  }
+
+  if (currentUrl.includes("page6.html")) {
+    gsap.to(".parallax-bg", {
+      scrollTrigger: {
+        scrub: true,
+      },
+      y: (i, target) => -ScrollTrigger.maxScroll(window) * target.dataset.speed,
+      ease: "none",
+    });
+  }
+
+  if (currentUrl.includes("page7.html")) {
+    
+  }
+
+  if (currentUrl.includes("page8.html")) {
+    
+  }
+
+  if (currentUrl.includes("page9.html")) {
+    
+  }
+
+  if (currentUrl.includes("page10.html")) {
+    
+  }
 });
