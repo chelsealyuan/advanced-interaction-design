@@ -9,9 +9,9 @@ html {
   font-family: "Libre Franklin", Arial, Helvetica, sans-serif;
 }
 
-body{
+body {
   color: white;
-  background-color: rgb(68, 71, 74);
+  background-color: rgb(33, 45, 58);
 
   display: flex;
   flex-direction: column;
@@ -25,7 +25,6 @@ nav {
   top: 0;
   left: 0;
 
-  background-color: #333;
   padding: 1em;
   white-space: nowrap;
 
@@ -34,10 +33,11 @@ nav {
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  background-color:  #0a0a23;
+
+  background-color: rgb(33, 45, 58);
 
   row-gap: 0.5em;
-  
+
   overflow-y: scroll;
 }
 
@@ -54,9 +54,7 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #333;
-
-
+  background-color: rgb(51, 71, 92);
 }
 
 .container {
@@ -93,8 +91,48 @@ nav a:hover {
   perspective: 10em;
 }
 
-
-.container1{
+.container1 {
   align-items: center;
   row-gap: 1em;
+}
+
+.padding-block50{
+  height: 50vh;
+  background-color: beige;
+}
+
+.padding-block {
+  height: 200vh;
+}
+
+.flex {
+  display: flex;
+  column-gap: 1em;
+}
+
+ .container4 {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(16, 117, 147);
+  color: whitesmoke;
+  font-size: 4rem;
+  overflow: hidden;
+}
+
+.horizontal-scroll{
+  position: absolute;
+  top:0;
+  left: -100%;
+
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(16, 147, 114);
+  color: whitesmoke;
+  font-size: 4rem;
 }
