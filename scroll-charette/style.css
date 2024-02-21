@@ -529,3 +529,53 @@ header nav a:hover {
     transform: scale(2);
   }
 }
+
+.container21 {
+  height: 200vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 10em;
+}
+
+.container21 .panel {
+  height: 300px;
+  transform-origin: right top;
+  transform: rotateX(-10deg);
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.container22 {
+  height: 200vh;
+}
+
+.contianer22 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.contianer22 #svg-container {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: auto;
+}
+.contianer22 svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.contianer22 .text {
+  font-size: 12px;
+  fill: black;
+  text-anchor: middle;
+  animation: spin 5s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

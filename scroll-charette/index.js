@@ -582,9 +582,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (currentUrl.includes("page21.html")) {
+    const panel = document.querySelector(".panel");
+
+    gsap.to(panel, {
+      scrollTrigger: {
+        trigger: panel,
+        start: "top center",
+        end: "center center",
+        markers: true,
+        onEnter: () => {
+          gsap.to(panel, {
+            rotationX: 10,
+            duration: 1,
+            ease: "power2.inOut",
+            repeat: 3,
+            yoyo: true,
+            onRepeat: () => {
+              gsap.set(panel, {
+                rotationX: -10,
+              });
+            },
+          });
+        },
+      },
+    });
   }
 
   if (currentUrl.includes("page22.html")) {
+    const container = document.getElementById("container");
+
+    gsap.utils.toArray(".text").forEach((text, index) => {
+      gsap.to(text, {
+        rotation: 360,
+        transformOrigin: "center center",
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+        },
+      });
+    });
   }
 
   if (currentUrl.includes("page23.html")) {
