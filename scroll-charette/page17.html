@@ -10,16 +10,20 @@
 </head>
 
 <body>
-
+    <!--https://codepen.io/GreenSock/pen/rNOBLBV-->
     <header-component></header-component>
-    <h1>17. Fill</h1>
-    <div class="container">
-
+    <h1>17. Motion Path</h1>
+    <div class="container17">
+        <svg viewBox="0 0 100 100" id="motionSVG">
+            <path id="motionPath" d="M20,10 C20,30 80,30 80,90" />
+            <circle class="ball ball01" r="5" cx="50" cy="100"></circle>
+        </svg>
     </div>
     <!-- Load GSAP (Animation Library) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <!-- Load the scroll library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
     <!-- Load my javascript -->
     <script src="index.js"></script>
 </body>

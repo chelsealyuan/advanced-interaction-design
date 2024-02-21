@@ -12,9 +12,24 @@
 <body>
 
     <header-component></header-component>
-    <h1>20. Fill</h1>
-    <div class="container">
+    <h1>20. Trigger Nav Change</h1>
+    <div class="container20">
+        <section id="one" class="panel red">
+            ONE
+        </section>
+        <section id="two" class="panel blue">
+            TWO
+        </section>
+        <section id="three" class="panel green">
+            THREE
+        </section>
+        <div class="padding-block50"></div>
 
+        <nav>
+            <div><a href="#one" class="red">Section one</a></div>
+            <div><a href="#two" class="blue">Section two</a></div>
+            <div><a href="#three" class="green">Section three</a></div>
+        </nav>
     </div>
     <!-- Load GSAP (Animation Library) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

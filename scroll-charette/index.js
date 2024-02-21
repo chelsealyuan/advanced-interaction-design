@@ -485,15 +485,100 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (currentUrl.includes("page17.html")) {
+    gsap.registerPlugin(MotionPathPlugin);
+    const main = gsap
+      .timeline({
+        defaults: { duration: 1 },
+        scrollTrigger: {
+          trigger: "#motionSVG",
+          scrub: true,
+          start: "top 1%",
+          end: "bottom center",
+        },
+      })
+      .to(".ball01", { duration: 0.01, autoAlpha: 1 })
+      .to(
+        ".ball01",
+        {
+          motionPath: {
+            path: "#motionPath",
+            align: "#motionPath",
+            alignOrigin: [0.5, 0.5],
+          },
+        },
+        0
+      );
   }
 
   if (currentUrl.includes("page18.html")) {
+    const container = document.querySelector(".container18");
+
+    gsap.to(container, {
+      backgroundColor: "rgb(0, 0, 0)",
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (self) => {
+          const red = Math.round(self.progress * 255);
+          const green = Math.round(self.progress * 255);
+          const blue = Math.round(self.progress * 255);
+          container.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        },
+      },
+    });
   }
 
   if (currentUrl.includes("page19.html")) {
+    // rotate while scroll to middle
+    gsap.to(".cube", {
+      "--rotateX": "360deg",
+      "--rotateY": "360deg",
+      scrollTrigger: {
+        trigger: ".container19",
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.2,
+      },
+    });
+
+    // Pin the .visual element
+    gsap.to(".visual", {
+      scrollTrigger: {
+        trigger: ".container19",
+        start: "top center",
+        end: "bottom top",
+        scrub: 0.2,
+        pin: true,
+        markers: true,
+      },
+    });
   }
 
   if (currentUrl.includes("page20.html")) {
+    const navDivs = document.querySelectorAll("nav div");
+
+    // Function to add highlight class to the corresponding nav div
+    function highlightNavDiv(id) {
+      navDivs.forEach((div) => {
+        div.classList.remove("highlight");
+        if (div.querySelector("a").getAttribute("href") === `#${id}`) {
+          div.classList.add("highlight");
+        }
+      });
+    }
+
+    // Listen for scroll events and highlight the corresponding nav div
+    gsap.utils.toArray(".panel").forEach((panel) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => highlightNavDiv(panel.id),
+        onEnterBack: () => highlightNavDiv(panel.id),
+      });
+    });
   }
 
   if (currentUrl.includes("page21.html")) {
