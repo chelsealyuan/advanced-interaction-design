@@ -98,18 +98,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (currentUrl.includes("page2.html")) {
     let lightness = 50;
 
-    // Loop through each block with class "block"
     gsap.utils.toArray(".block").forEach((block, index) => {
-      // Adjust the lightness based on the block index
-      lightness -= 5; // Adjust the decrement value as needed
-
-      // Ensure lightness remains within the valid range (0-100)
+      lightness -= 5;
       lightness = Math.max(0, Math.min(100, lightness));
 
-      // Construct the color with adjusted lightness
       const color = `hsl(240, 100%, ${lightness}%)`;
 
-      // Apply the color to the block
       block.style.backgroundColor = color;
 
       // Create a GSAP timeline for each block
@@ -324,18 +318,196 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (currentUrl.includes("page11.html")) {
-    
+    gsap.set(".dot", {
+      xPercent: -50,
+      yPercent: -50,
+    });
+
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".container11",
+        start: "top top",
+        end: "+=200%",
+        scrub: true,
+        pin: true,
+        markers: true,
+      },
+    });
+
+    tl.to(".dot", {
+      clipPath: "circle(100% at 50% 50%)",
+    });
   }
 
   if (currentUrl.includes("page12.html")) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ".container12",
+          pin: true,
+          start: "top top",
+          end: "+=300%",
+          scrub: 1,
+        },
+        defaults: {
+          ease: "none",
+        },
+      })
+      .to(
+        ".container12",
+        {
+          delay: 0.3,
+          backgroundColor: "rgb(16, 117, 147)",
+        },
+        "start"
+      )
+      .to(
+        ".upper-container h1",
+        {
+          scale: 8,
+          opacity: 0,
+        },
+        "start"
+      )
+      .to(
+        ".content2",
+        {
+          scale: 1,
+          opacity: 1,
+        },
+        0.05
+      );
   }
 
   if (currentUrl.includes("page13.html")) {
+    ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onLeave: (self) => {
+        self.scroll(1);
+        ScrollTrigger.update();
+      },
+      onLeaveBack: (self) => {
+        self.scroll(ScrollTrigger.maxScroll(window) - 1);
+        ScrollTrigger.update();
+      },
+    });
+
+    // Change opacity of link on scroll
+
+    select = (e) => document.querySelector(e);
+    selectAll = (e) => document.querySelectorAll(e);
+
+    const recipe = selectAll(".link");
+
+    recipe.forEach((recipe, i) => {
+      gsap.to(recipe, {
+        opacity: 1,
+        repeat: 1,
+        yoyo: true,
+        ease: "none",
+        scrollTrigger: {
+          trigger: recipe,
+          start: "center bottom",
+          end: "center top",
+          markers: true,
+          scrub: true,
+        },
+      });
+    });
   }
 
   if (currentUrl.includes("page14.html")) {
+    const path = document.getElementById("path");
+    const length = path.getTotalLength();
+
+    // Set the strokeDasharray and strokeDashoffset properties
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ".container14",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        },
+      })
+      .to("path", {
+        strokeDashoffset: 0,
+      });
+
+    let backToTop = document.querySelector(".back-to-top");
+    backToTop.addEventListener("click", function (e) {
+      e.preventDefault();
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: 0,
+      });
+    });
   }
 
   if (currentUrl.includes("page15.html")) {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: ".container15",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          duration: 3,
+        },
+      })
+      .to(".panel", {
+        rotateX: 0,
+      });
+  }
+
+  if (currentUrl.includes("page16.html")) {
+    gsap.utils.toArray(".panel").forEach((panel, index) => {
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: "top 80%", // Adjust the start position as needed
+            end: "top 50%", // Adjust the end position as needed
+            markers: true, // For debugging
+            scrub: true,
+          },
+        })
+        .to(panel, {
+          rotateX: 0, // Flip the panels to their normal state
+          duration: 0.5,
+          ease: "power1.in", // Optional easing
+        });
+    });
+  }
+
+  if (currentUrl.includes("page17.html")) {
+  }
+
+  if (currentUrl.includes("page18.html")) {
+  }
+
+  if (currentUrl.includes("page19.html")) {
+  }
+
+  if (currentUrl.includes("page20.html")) {
+  }
+
+  if (currentUrl.includes("page21.html")) {
+  }
+
+  if (currentUrl.includes("page22.html")) {
+  }
+
+  if (currentUrl.includes("page23.html")) {
+  }
+
+  if (currentUrl.includes("page24.html")) {
+  }
+
+  if (currentUrl.includes("page25.html")) {
   }
 });

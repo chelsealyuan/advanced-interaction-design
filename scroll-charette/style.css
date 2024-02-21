@@ -41,8 +41,6 @@ header nav {
 
   background-color: rgb(33, 45, 58);
 
-  row-gap: 0.5em;
-
   overflow-y: scroll;
 
   z-index: 100;
@@ -274,8 +272,127 @@ header nav a:hover {
   line-height: 90vh;
 }
 
-
 .proxy {
   position: absolute;
   visibility: hidden;
+}
+
+.container11 {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 142vmax;
+  height: 142vmax;
+  background-color: #f2473e;
+  clip-path: circle(0% at 50% 50%);
+}
+
+.text-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.text-container .text {
+  color: white;
+  font-size: 20rem;
+  font-weight: bold;
+}
+
+.container11 p {
+  font-size: 40px;
+  color: #fff;
+}
+
+.container12 {
+  height: 300vh;
+}
+
+.container12 .text {
+  font-size: 5em;
+}
+
+.content2 {
+  position: fixed;
+  top: 50vh;
+  left: 50%;
+  opacity: 0;
+  scale: 0;
+}
+
+.container13 {
+  position: absolute;
+  height: fit-content;
+  width: 100%;
+  margin: auto;
+}
+
+.container13 a {
+  min-height: 60px;
+  font-size: 60px;
+  font-family: helvetica;
+  font-weight: 300;
+  display: block;
+}
+
+.link {
+  opacity: 0;
+}
+
+.container14 {
+  height: 3000px;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  cursor: pointer;
+}
+
+.container14 svg {
+  width: 100px;
+  fill: white;
+}
+
+.container14 path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.container15 {
+  height: 100vh;
+}
+
+.panel-wrapper {
+  perspective: 10em;
+  perspective-origin: bottom;
+}
+
+.container15 .panel {
+  height: 30vh;
+  transform-origin: bottom left;
+  transform: rotateX(90deg);
+}
+
+.container16 {
+  height: 200vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container16 .panel {
+  height: 30vh;
+  transform-origin: bottom left;
+  transform: rotateX(90deg);
 }
