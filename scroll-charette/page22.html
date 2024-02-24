@@ -12,30 +12,17 @@
 <body>
 
     <header-component></header-component>
-    <h1>22. Unfinished</h1>
+    <h1>22. Spin Speed </h1>
     <div class="container22">
-        <svg id="svg" width="400" height="400">
-            <!-- Define concentric circles -->
-            <circle class="circle" id="circle1" cx="200" cy="200" r="50" fill="none" stroke="black" />
-            <circle class="circle" id="circle2" cx="200" cy="200" r="100" fill="none" stroke="black" />
-            <circle class="circle" id="circle3" cx="200" cy="200" r="150" fill="none" stroke="black" />
-
-            <!-- Define text paths along circles -->
-            <path id="path1" d="M 200,200 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" fill="none" />
-            <path id="path2" d="M 200,200 m -100,0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0" fill="none" />
-            <path id="path3" d="M 200,200 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none" />
-
-            <!-- Text elements -->
-            <text class="text" id="text1" font-size="12">
-                <textPath xlink:href="#path1">Text on circle 1</textPath>
-            </text>
-            <text class="text" id="text2" font-size="12">
-                <textPath xlink:href="#path2">Text on circle 2</textPath>
-            </text>
-            <text class="text" id="text3" font-size="12">
-                <textPath xlink:href="#path3">Text on circle 3</textPath>
-            </text>
-        </svg>
+        <div class="block block1">
+            <p>Speed 1</p>
+        </div>
+        <div class="block block2">
+            <p>Speed 2</p>
+        </div>
+        <div class="block block3">
+            <p>Speed 3</p>
+        </div>
     </div>
     <!-- Load GSAP (Animation Library) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

@@ -255,19 +255,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (currentUrl.includes("page9.html")) {
-    gsap.from(".block", {
-      rotate: 360,
-      duration: 2,
-      repeat: -1,
-      scrollTrigger: {
-        trigger: ".block",
-        toggleActions: "play pause reverse pause",
-        markers: true,
-        start: "top center",
-        end: "bottom 60%",
-        trigger: ".block",
-        // Repeat forever
-      },
+    const blocks = document.querySelectorAll(".block");
+
+    blocks.forEach((block, index) => {
+      gsap.from(block, {
+        rotation: 360,
+        duration: 2,
+        repeat: -1,
+        scrollTrigger: {
+          trigger: block,
+          toggleActions: "play pause reverse pause",
+          markers: true,
+          start: "top center",
+          end: "bottom 60%",
+        },
+      });
     });
   }
 
@@ -429,8 +431,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .timeline({
         scrollTrigger: {
           trigger: ".container14",
-          start: "top top",
-          end: "bottom bottom",
+          start: "top 60%",
+          end: "bottom 50%",
           scrub: 1,
         },
       })
@@ -609,28 +611,147 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (currentUrl.includes("page22.html")) {
-    const container = document.getElementById("container");
+    // Pin the container when it comes into view
+    ScrollTrigger.create({
+      trigger: ".container22",
+      start: "top top",
+      end: "bottom bottom",
+      pin: true,
+      pinSpacing: false,
+    });
 
-    gsap.utils.toArray(".text").forEach((text, index) => {
-      gsap.to(text, {
-        rotation: 360,
-        transformOrigin: "center center",
+    // Animation for block 1
+    gsap.to(".block1", {
+      rotation: 360,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".container22",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+
+    // Animation for block 2
+    gsap.to(".block2", {
+      rotation: 360 * 2,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".container22",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+
+    // Animation for block 3
+    gsap.to(".block3", {
+      rotation: 360 * 3,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".container22",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+  }
+
+  if (currentUrl.includes("page23.html")) {
+    const blocks = document.querySelectorAll(".block");
+
+    blocks.forEach((block, index) => {
+      gsap.to(block, {
+        rotation: 360 * (index + 1),
+        duration: 4,
+        repeat: -1,
+        ease: "none",
         scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: true,
+          trigger: block,
+          toggleActions: "play pause play pause",
+          markers: true,
+          start: "top 70%",
+          end: "bottom 40%",
         },
       });
     });
   }
 
-  if (currentUrl.includes("page23.html")) {
-  }
-
   if (currentUrl.includes("page24.html")) {
+    const container = document.querySelector(".container24");
+
+    let prevScrollPosition = 0;
+
+    function createCircle() {
+      const circle = document.createElement("div");
+      circle.classList.add("circle");
+      container.appendChild(circle);
+      return circle;
+    }
+
+    gsap.to(container, {
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        markers: true,
+        onUpdate: (self) => {
+          const scrollPosition = window.scrollY;
+          const scrollDifference = scrollPosition - prevScrollPosition;
+          if (scrollDifference >= 100) {
+            createCircle();
+            prevScrollPosition = scrollPosition;
+          }
+        },
+      },
+    });
   }
 
   if (currentUrl.includes("page25.html")) {
+    function createBall() {
+      const ball = document.createElement("div");
+      ball.classList.add("ball");
+      document.body.appendChild(ball);
+      console.log("creating ball");
+      return ball;
+    }
+
+    // Function to animate a ball falling
+    // Function to animate a ball falling
+    function animateBall(ball) {
+      const startX = Math.random() * (window.innerWidth - 30); // Random horizontal position
+      const startY = -30; // Initial position above the viewport
+      const endY = window.scrollY + window.innerHeight + 100; // Final position below the viewport with buffer
+
+      gsap.set(ball, { x: startX, y: startY }); // Set initial position
+
+      gsap.to(ball, {
+        duration: 1.5 + Math.random(), // Random duration for variation
+        y: endY, // End position below the viewport with buffer
+        ease: "power1.inOut", // Easing function
+        onComplete: () => {
+          // Callback function when animation completes
+          ball.remove(); // Remove the ball element from the DOM
+        },
+      });
+    }
+
+    let prevScrollPosition = 0;
+
+    gsap.to(".container25", {
+      scrollTrigger: {
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const scrollPosition = window.scrollY;
+          const scrollDifference = scrollPosition - prevScrollPosition;
+          if (scrollDifference >= 0) {
+            // Trigger animation every 50 pixels of scroll
+            const ball = createBall();
+            animateBall(ball);
+          }
+        },
+      },
+    });
   }
 });

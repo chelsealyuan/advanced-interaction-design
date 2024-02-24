@@ -547,35 +547,44 @@ header nav a:hover {
   text-align: center;
 }
 
+.container24,
+.container23,
 .container22 {
   height: 200vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1em;
 }
 
-.contianer22 {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
+.container23 {
+  row-gap: 10em;
+  padding-top: 50vh;
 }
 
-.contianer22 #svg-container {
+.container24 {
+  height: 2000px; /* Ensure enough scrolling height */
   position: relative;
-  width: 400px;
-  height: 400px;
-  margin: auto;
+  justify-content: start;
 }
-.contianer22 svg {
+
+.circle {
+  margin-top: 100px;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(16, 117, 147);
+  border-radius: 50%;
+}
+
+.container25 {
+  height: 500vh;
+}
+
+.ball {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(215, 48, 48);
+  border-radius: 50%;
   position: absolute;
-  width: 100%;
-  height: 100%;
-}
-.contianer22 .text {
-  font-size: 12px;
-  fill: black;
-  text-anchor: middle;
-  animation: spin 5s linear infinite;
-}
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  top: -30px; /* Initial position above the viewport */
 }
