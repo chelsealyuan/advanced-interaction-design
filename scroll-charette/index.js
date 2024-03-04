@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
       x: "100%",
     });
   }
+  
   if (currentUrl.includes("page5.html")) {
     gsap.to(".spinner", {
       scrollTrigger: {

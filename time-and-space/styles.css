@@ -1,52 +1,100 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+html {
+  font-family: "Manrope", sans-serif;
+}
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+section {
+  height: 300vh; /* Each section takes up the full viewport height */
+  box-sizing: border-box;
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+
+.scroll-container {
+  position: relative;
+  height: 50000px; /* Total height of the scroll container */
+  overflow-y: scroll;
 }
+
+.number-container {
+  position: fixed;
+  display: flex;
+  justify-content: flex-end; /* Align the number to the right */
+  align-items: center;
+  bottom: 2em;
+  left: 2em;
+}
+
+#number {
+  font-size: 1rem; /* Initial font size */
+  opacity: 50%;
+  text-align: right;
+}
+
+#formation {
+  background-color: #1f1f1f; /* Start with black */
+}
+
+.circle {
+  fill: #1972cb;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+#single-cell {
+  background-color: #2d2d2d;
+}
+
+#single-cell path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+#photosynthesis {
+  background-color: #707070;
+}
+#eukaryotes {
+  background-color: #808080;
+}
+#multi-cell {
+  background-color: #909090;
+}
+#fungi {
+  background-color: #a0a0a0;
+}
+#plant {
+  background-color: #b0b0b0;
+}
+#reptiles {
+  background-color: #c0c0c0;
+}
+#mammals {
+  background-color: #d0d0d0;
+}
+#humans {
+  background-color: #e0e0e0;
+}
+#conclusion {
+  background-color: #f0f0f0; /* End with white */
+}
+
+/******* CSS RESET *********/
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
 body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  margin: 0;
 }
 
-.container{
-    height: 50000px;
+section {
+  margin: 0;
 }
