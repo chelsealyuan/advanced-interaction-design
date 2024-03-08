@@ -3,14 +3,12 @@ html {
 }
 
 section {
-  height: 300vh; /* Each section takes up the full viewport height */
+  /* height: 300vh; */
   box-sizing: border-box;
 }
 
 .scroll-container {
   position: relative;
-  height: 50000px; /* Total height of the scroll container */
-  overflow-y: scroll;
 }
 
 .number-container {
@@ -30,16 +28,22 @@ section {
 
 #formation {
   background-color: #1f1f1f; /* Start with black */
+  height: 6400px;
 }
 
-.circle {
-  fill: #1972cb;
-  stroke: #ffffff;
-  stroke-width: 2;
+#formation-container {
+  width: 100%;
+}
+
+circle {
+  fill: #669cd2;
+  /* stroke: #ffffff;
+  stroke-width: 2; */
 }
 
 #single-cell {
   background-color: #2d2d2d;
+  height: 6400px;
 }
 
 #single-cell path {
@@ -50,6 +54,7 @@ section {
 
 #photosynthesis {
   background-color: #707070;
+  height: 8000px;
 }
 #eukaryotes {
   background-color: #808080;
@@ -60,9 +65,15 @@ section {
 #fungi {
   background-color: #a0a0a0;
 }
+
 #plant {
   background-color: #b0b0b0;
 }
+
+#plant path {
+  fill: none;
+}
+
 #reptiles {
   background-color: #c0c0c0;
 }
@@ -73,7 +84,8 @@ section {
   background-color: #e0e0e0;
 }
 #conclusion {
-  background-color: #f0f0f0; /* End with white */
+  height: 200vh;
+  background-color: #ff7373;
 }
 
 /******* CSS RESET *********/
