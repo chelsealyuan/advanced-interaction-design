@@ -13,12 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: ".container",
       start: "top top",
       end: "bottom bottom",
-      scrub: 1, // Adjust the scrub value for smoother animation
-      //markers: true,
+      scrub: 1,
       onUpdate: (self) => {
         const newValue = initialValue - self.progress * initialValue;
         document.getElementById("number").textContent = Math.round(newValue);
-        //console.log(self.progress);
       },
     },
   });
@@ -37,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /****************************************************
    * Section 1: Primordial soup
-   * Randomly moving circles
+   * Randomly moving atoms
    ***************************************************/
 
   // Function to create a random number within the range of the screen
@@ -49,12 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
 
-  // Number of circles to create
-  const numCircles = 30;
+  // Number of atoms to create
+  const numAtoms = 30;
 
-  // Create circles dynamically and animate them
-  for (let i = 0; i < numCircles; i++) {
-    const circle = document.createElementNS(
+  // Create atoms dynamically and animate them
+  for (let i = 0; i < numAtoms; i++) {
+    const atom = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "circle"
     );
@@ -62,52 +60,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const initialX = randomInRange(0, screenWidth);
     const initialY = randomInRange(0, screenHeight);
 
-    circle.setAttribute("cx", initialX);
-    circle.setAttribute("cy", initialY);
-    circle.setAttribute("r", 5); // Radius of the circle
-    document.getElementById("formation-container").appendChild(circle);
-
-    // Animate the SVG element using GSAP
-    // gsap.to(circle, {
-    //   duration: randomInRange(0.1, 1),
-    //   x: () => randomInRange(-screenWidth * 0.5, screenWidth * 0.5),
-    //   y: () => randomInRange(-screenHeight * 0.5, screenHeight * 0.5),
-    //   ease: "power1.inOut",
-    //   yoyo: true,
-    //   repeat: -1,
-    // });
-
-    // Create a timeline for the circle animation
+    atom.setAttribute("cx", initialX);
+    atom.setAttribute("cy", initialY);
+    atom.setAttribute("r", 5); // Radius of the circle
+    document.getElementById("formation-container").appendChild(atom);
   }
 
-  const circles = gsap.utils.toArray("circle");
+  const atoms = gsap.utils.toArray("circle");
 
-  const circleTimeline = gsap.timeline({
+  gsap.timeline({
     scrollTrigger: {
       trigger: "#formation",
       start: "top 10", // Adjust start position as needed
       end: "bottom bottom", // Adjust end position as needed
-      markers: true,
       scrub: true,
 
       onEnter: (self) => {
-        animateCircles(self);
+        animateAtoms(self);
       },
 
       onUpdate: (self) => {
-        animateCircles(self);
+        animateAtoms(self);
       },
     },
   });
 
-  function animateCircles(self) {
+  function animateAtoms(self) {
     const progress = self.progress;
 
     const centerX = screenWidth / 2;
     const centerY = screenHeight / 2;
 
-    circles.forEach((circle) => {
-      gsap.to(circle, {
+    atoms.forEach((atom) => {
+      gsap.to(atom, {
         duration: randomInRange(0.1, 0.5),
         cx: randomInRange(
           centerX - (1 - progress) * 0.5 * screenWidth,
@@ -124,46 +109,87 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //animateCircles();
-
   /****************************************************
    * Section 2: Formation of Single-Cellular Organisms
-   * Randomly moving circles
+   * Circle - Square
    ***************************************************/
 
-  const path = document.getElementById("path");
-  const length = path.getTotalLength();
+  const cellTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#single-cell",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+    },
+  });
 
-  // Set the strokeDasharray and strokeDashoffset properties
-  path.style.strokeDasharray = length;
-  path.style.strokeDashoffset = length;
+  const cells = document.querySelectorAll(".cell");
 
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: "#single-cell",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-      },
-    })
-    .to("path", {
-      strokeDashoffset: 0,
+  cells.forEach((cell, index) => {
+    gsap.to(cell, {
+      duration: randomInRange(0.5, 1),
+      borderRadius: 20,
+      rotation: randomInRange(-180, 180), // Rotate by 360 degrees
+      ease: "power1.inOut", // Use ease for smooth rotation
+      scale: 0.8,
+      yoyo: true,
+      repeat: -1,
     });
+
+
+    const numPoints = Math.floor(Math.random() * 5) + 2; // At least 2 points for a path
+
+    // Generate random points within the screen boundaries
+    const path = [];
+    for (let i = 0; i < numPoints; i++) {
+      const randomX = randomInRange(-screenWidth/2, screenWidth/2);
+      const randomY = randomInRange(-screenHeight/2, screenHeight/2);
+      path.push({ x: randomX, y: randomY });
+    }
+
+    cellTl.to(cell, {
+      motionPath: {
+        path: path,
+        align: "center",
+        autoRotate: true,
+      },
+      ease: "power1.inOut",
+    }, 0);
+  });
+
+  // const path = document.getElementById("path");
+  // const length = path.getTotalLength();
+
+  // // Set the strokeDasharray and strokeDashoffset properties
+  // path.style.strokeDasharray = length;
+  // path.style.strokeDashoffset = length;
+
+  // gsap
+  //   .timeline({
+  //     scrollTrigger: {
+  //       trigger: "#single-cell",
+  //       start: "top top",
+  //       end: "bottom bottom",
+  //       scrub: 1,
+  //     },
+  //   })
+  //   .to("path", {
+  //     strokeDashoffset: 0,
+  //   });
 
   /****************************************************
    * Section ?: Formation of Multi-Cellular Organisms
-   * Multiplication of circles
+   * Multiplication of atoms
    ***************************************************/
-  // Calculate the number of circles needed to fill the screen
-  const circleRadius = 3; // Adjust the radius of circles as needed
-  const horizontalCircles = Math.ceil(screenWidth / (2 * circleRadius));
-  const verticalCircles = Math.ceil(screenHeight / (2 * circleRadius));
+  // Calculate the number of atoms needed to fill the screen
+  const circleRadius = 3; // Adjust the radius of atoms as needed
+  const horizontalAtoms = Math.ceil(screenWidth / (2 * circleRadius));
+  const verticalAtoms = Math.ceil(screenHeight / (2 * circleRadius));
 
-  // Create circles dynamically and position them to form a grid
+  // Create atoms dynamically and position them to form a grid
   const svgContainer = document.getElementById("multicell-container");
-  for (let i = 0; i < horizontalCircles; i++) {
-    for (let j = 0; j < verticalCircles; j++) {
+  for (let i = 0; i < horizontalAtoms; i++) {
+    for (let j = 0; j < verticalAtoms; j++) {
       const circle = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "circle"

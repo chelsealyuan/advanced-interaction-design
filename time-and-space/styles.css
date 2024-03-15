@@ -26,6 +26,7 @@ section {
   text-align: right;
 }
 
+/************** Formation *************/
 #formation {
   background-color: #1f1f1f; /* Start with black */
   height: 6400px;
@@ -35,15 +36,18 @@ section {
   width: 100%;
 }
 
-circle {
-  fill: #669cd2;
+#formation circle {
+  fill: #eaeaea;
   /* stroke: #ffffff;
   stroke-width: 2; */
 }
 
+
+/************** Single-Cell *************/
 #single-cell {
   background-color: #2d2d2d;
   height: 6400px;
+  position: relative;
 }
 
 #single-cell path {
@@ -52,10 +56,26 @@ circle {
   stroke-width: 3;
 }
 
+#single-cell .cell {
+  width: 50px;
+  height: 50px;
+  background-color: #3377DB;
+  border-radius: 50%;
+
+  position: absolute;
+  left: 50%;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+}
+
+/************** Photosynthesis *************/
+
 #photosynthesis {
   background-color: #707070;
   height: 8000px;
 }
+
+
 #eukaryotes {
   background-color: #808080;
 }
