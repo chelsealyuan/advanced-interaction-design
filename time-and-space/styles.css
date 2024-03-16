@@ -29,7 +29,7 @@ section {
 /************** Formation *************/
 #formation {
   background-color: #1f1f1f; /* Start with black */
-  height: 6400px;
+
 }
 
 #formation-container {
@@ -42,11 +42,14 @@ section {
   stroke-width: 2; */
 }
 
-
 /************** Single-Cell *************/
+.circle {
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #single-cell {
   background-color: #2d2d2d;
-  height: 6400px;
   position: relative;
 }
 
@@ -59,50 +62,36 @@ section {
 #single-cell .cell {
   width: 50px;
   height: 50px;
-  background-color: #3377DB;
-  border-radius: 50%;
+  opacity: 0.5;
 
   position: absolute;
   left: 50%;
   top: 50vh;
-  transform: translate(-50%, -50%);
+}
+
+.sun {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: rgb(255, 179, 87);
+  position: absolute;
+  left: 50%;
 }
 
 /************** Photosynthesis *************/
 
-#photosynthesis {
-  background-color: #707070;
-  height: 8000px;
+.proterozoic {
+  background-color: #708d7f;
 }
 
-
-#eukaryotes {
-  background-color: #808080;
-}
-#multi-cell {
-  background-color: #909090;
-}
-#fungi {
-  background-color: #a0a0a0;
-}
-
-#plant {
-  background-color: #b0b0b0;
-}
 
 #plant path {
   fill: none;
 }
 
-#reptiles {
-  background-color: #c0c0c0;
+.phanerozoic {
+  background-color: #91b2c8;
 }
-#mammals {
-  background-color: #d0d0d0;
-}
-#humans {
-  background-color: #e0e0e0;
-}
+
 #conclusion {
   height: 200vh;
   background-color: #ff7373;

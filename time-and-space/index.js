@@ -5,32 +5,54 @@ document.addEventListener("DOMContentLoaded", () => {
    * Control the time counter in reference to the scroll
    ***************************************************/
   const initialValue = 4.5e9; // 4.5 billion
-  const totalHeight = 50000;
+  const totalHeight = 75000;
   document.querySelector(".container").style.height = totalHeight + "px";
+
+  const heights = { hadean: 11, archean: 33, proterozoic: 44, phanerozoic: 12 };
+
+  document.querySelector(".hadean").style.height =
+    (heights.hadean / 100) * totalHeight + "px";
+  document.querySelector(".archean").style.height =
+    (heights.archean / 100) * totalHeight + "px";
+  document.querySelector(".proterozoic").style.height =
+    (heights.proterozoic / 100) * totalHeight + "px";
+  document.querySelector(".phanerozoic").style.height =
+    (heights.phanerozoic / 100) * totalHeight + "px";
+
+  //Set all intial sections to 0
+  gsap.set("section:not(#formation)", { autoAlpha: 0 });
 
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: ".container",
       start: "top top",
       end: "bottom bottom",
-      scrub: 1,
+      pin: true,
+      pinSpacing: false,
       onUpdate: (self) => {
-        const newValue = initialValue - self.progress * initialValue;
+        const roundedProgress = self.progress.toFixed(6);
+        const newValue = initialValue - roundedProgress * initialValue;
         document.getElementById("number").textContent = Math.round(newValue);
       },
     },
   });
 
-  document.querySelectorAll("section").forEach((section) => {
-    gsap.to(section, {
-      scrollTrigger: {
-        trigger: section,
-        start: "top top", // Start pinning when top of section hits top of viewport
-        end: "bottom bottom", // Stop pinning when bottom of section hits bottom of viewport
-        pin: true, // Pin the section
-        pinSpacing: false, // Do not reserve the pinned space
-      },
-    });
+  //Set ScrollTrigger between sections: https://gsap.com/community/forums/topic/30744-how-use-scrolltrigger-to-move-between-sections/
+  document.querySelectorAll("section").forEach((section, index, sections) => {
+    if (index > 0) {
+      gsap.to(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+          markers: true,
+        },
+        autoAlpha: 1,
+        duration: 0.5,
+      });
+    }
   });
 
   /****************************************************
@@ -73,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: "#formation",
       start: "top 10", // Adjust start position as needed
       end: "bottom bottom", // Adjust end position as needed
-      scrub: true,
+      //scrub: true,
 
       onEnter: (self) => {
         animateAtoms(self);
@@ -116,89 +138,175 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cellTl = gsap.timeline({
     scrollTrigger: {
-      trigger: "#single-cell",
+      trigger: ".archean",
       start: "top top",
-      end: "bottom bottom",
+      end: "bottom top",
       scrub: true,
     },
   });
 
+  const colors = ["#9FBDBF", "#B1C0A3", "#466B73"];
+
   const cells = document.querySelectorAll(".cell");
 
   cells.forEach((cell, index) => {
+    const colorIndex = Math.floor(Math.random() * colors.length);
+    const color = colors[colorIndex];
+
+    // Apply the random color to the cell
+    cell.style.backgroundColor = color;
+
     gsap.to(cell, {
-      duration: randomInRange(0.5, 1),
-      borderRadius: 20,
-      rotation: randomInRange(-180, 180), // Rotate by 360 degrees
+      delay: randomInRange(0, 1),
+      duration: randomInRange(1, 2),
+      borderRadius: "45%",
+      rotation: randomInRange(-45, 45), // Rotate by 360 degrees
       ease: "power1.inOut", // Use ease for smooth rotation
-      scale: 0.8,
+      scaleY: 1.5,
       yoyo: true,
       repeat: -1,
     });
-
 
     const numPoints = Math.floor(Math.random() * 5) + 2; // At least 2 points for a path
 
     // Generate random points within the screen boundaries
     const path = [];
-    for (let i = 0; i < numPoints; i++) {
-      const randomX = randomInRange(-screenWidth/2, screenWidth/2);
-      const randomY = randomInRange(-screenHeight/2, screenHeight/2);
+    for (let i = 0; i < numPoints - 1; i++) {
+      const randomX = randomInRange(-screenWidth / 2, screenWidth / 2);
+      const randomY = randomInRange(-screenHeight / 2, screenHeight / 2);
       path.push({ x: randomX, y: randomY });
     }
 
-    cellTl.to(cell, {
-      motionPath: {
-        path: path,
-        align: "center",
-        autoRotate: true,
+    // Generate the last point with Y coordinate in the bottom half of the screen
+    const randomXLast = randomInRange(-screenWidth / 2, screenWidth / 2);
+    const randomYLast = randomInRange(0, screenHeight / 2);
+    path.push({ x: randomXLast, y: randomYLast });
+
+    cellTl.to(
+      cell,
+      {
+        motionPath: {
+          path: path,
+          align: "center",
+          autoRotate: true,
+        },
+        ease: "power1.inOut",
+        duration: 6,
       },
-      ease: "power1.inOut",
-    }, 0);
+      0
+    );
   });
 
-  // const path = document.getElementById("path");
-  // const length = path.getTotalLength();
+  /****************************************************
+   * Section 3: Photosynthesis
+   * Prokaryotes grow in opacity as sun rotates
+   ***************************************************/
+  const sun = document.querySelector("#sun");
 
-  // // Set the strokeDasharray and strokeDashoffset properties
-  // path.style.strokeDasharray = length;
-  // path.style.strokeDashoffset = length;
+  // Define the initial position of the sun above the screen
+  gsap.set(sun, { y: -sun.offsetHeight, opacity: 0 });
 
-  // gsap
-  //   .timeline({
-  //     scrollTrigger: {
-  //       trigger: "#single-cell",
-  //       start: "top top",
-  //       end: "bottom bottom",
-  //       scrub: 1,
-  //     },
-  //   })
-  //   .to("path", {
-  //     strokeDashoffset: 0,
-  //   });
+  gsap.to(sun, {
+    scale: 1.02,
+    ease: "power2.out",
+    yoyo: true,
+    repeat: -1,
+    duration: 1,
+  });
+
+  // Add movement animation for the sun into the cellTl timeline
+  cellTl
+    .to(sun, { opacity: 1 })
+    .to(sun, {
+      duration: 2,
+      y: -(sun.offsetHeight / 4), // Move to the top of the screen
+      ease: "power2.out", // Adjust the ease as needed
+    })
+    .to(cells, {
+      opacity: 1,
+      duration: 1,
+    });
+
+  const circles = document.querySelectorAll(".cell");
+
+  circles.forEach((circle, index) => {
+    circle.addEventListener("click", () => {
+      if (index % 2 === 0) {
+        // Explode only if index is even
+        gsap.to(circle, {
+          duration: 1,
+          scale: 0.1,
+          opacity: 0,
+          onComplete: () => {
+            explodeCircle(circle);
+          },
+        });
+      }
+    });
+  });
+
+  function explodeCircle(circle) {
+    const numParticles = 10;
+    for (let i = 0; i < numParticles; i++) {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+      document.body.appendChild(particle);
+
+      gsap.to(particle, {
+        duration: 1,
+        x: Math.random() * window.innerWidth - window.innerWidth / 2,
+        y: Math.random() * window.innerHeight - window.innerHeight / 2,
+        scale: 0.1,
+        opacity: 0,
+        onComplete: () => {
+          particle.remove();
+        },
+      });
+    }
+  }
 
   /****************************************************
    * Section ?: Formation of Multi-Cellular Organisms
    * Multiplication of atoms
    ***************************************************/
   // Calculate the number of atoms needed to fill the screen
-  const circleRadius = 3; // Adjust the radius of atoms as needed
-  const horizontalAtoms = Math.ceil(screenWidth / (2 * circleRadius));
-  const verticalAtoms = Math.ceil(screenHeight / (2 * circleRadius));
+  // const circleRadius = 3; // Adjust the radius of atoms as needed
+  // const horizontalAtoms = Math.ceil(screenWidth / (2 * circleRadius));
+  // const verticalAtoms = Math.ceil(screenHeight / (2 * circleRadius));
 
-  // Create atoms dynamically and position them to form a grid
-  const svgContainer = document.getElementById("multicell-container");
-  for (let i = 0; i < horizontalAtoms; i++) {
-    for (let j = 0; j < verticalAtoms; j++) {
-      const circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle"
-      );
-      circle.setAttribute("cx", i * 2 * circleRadius + circleRadius);
-      circle.setAttribute("cy", j * 2 * circleRadius + circleRadius);
-      circle.setAttribute("r", circleRadius);
-      circle.setAttribute("fill", "blue"); // Adjust the color as needed
-      svgContainer.appendChild(circle);
-    }
-  }
+  // // Create atoms dynamically and position them to form a grid
+  // const svgContainer = document.getElementById("multicell-container");
+  // for (let i = 0; i < horizontalAtoms; i++) {
+  //   for (let j = 0; j < verticalAtoms; j++) {
+  //     const circle = document.createElementNS(
+  //       "http://www.w3.org/2000/svg",
+  //       "circle"
+  //     );
+  //     circle.setAttribute("cx", i * 2 * circleRadius + circleRadius);
+  //     circle.setAttribute("cy", j * 2 * circleRadius + circleRadius);
+  //     circle.setAttribute("r", circleRadius);
+  //     circle.setAttribute("fill", "blue"); // Adjust the color as needed
+  //     svgContainer.appendChild(circle);
+  //   }
+  // }
 });
+
+// const path = document.getElementById("path");
+// const length = path.getTotalLength();
+
+// // Set the strokeDasharray and strokeDashoffset properties
+// path.style.strokeDasharray = length;
+// path.style.strokeDashoffset = length;
+
+// gsap
+//   .timeline({
+//     scrollTrigger: {
+//       trigger: "#single-cell",
+//       start: "top top",
+//       end: "bottom bottom",
+//       scrub: 1,
+//     },
+//   })
+//   .to("path", {
+//     strokeDashoffset: 0,
+//   });
