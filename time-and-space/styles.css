@@ -1,5 +1,6 @@
 html {
   font-family: "Manrope", sans-serif;
+  background-color: #1f1f1f;
 }
 
 section {
@@ -18,18 +19,20 @@ section {
   align-items: center;
   bottom: 2em;
   left: 2em;
+  width: 6em;
 }
 
 #number {
+  color: white;
   font-size: 1rem; /* Initial font size */
-  opacity: 50%;
+  opacity: 70%;
   text-align: right;
+
 }
 
 /************** Formation *************/
 #formation {
   background-color: #1f1f1f; /* Start with black */
-
 }
 
 #formation-container {
@@ -51,6 +54,7 @@ section {
 #single-cell {
   background-color: #2d2d2d;
   position: relative;
+  height: 100%;
 }
 
 #single-cell path {
@@ -60,8 +64,8 @@ section {
 }
 
 #single-cell .cell {
-  width: 50px;
-  height: 50px;
+  width: 3%;
+  aspect-ratio: 1;
   opacity: 0.5;
 
   position: absolute;
@@ -79,17 +83,26 @@ section {
 
 /************** Photosynthesis *************/
 
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+}
+
+/********** Oxygenation *****************/
+
 .proterozoic {
   background-color: #708d7f;
 }
-
 
 #plant path {
   fill: none;
 }
 
 .phanerozoic {
-  background-color: #91b2c8;
+  background-color: #94b8cf;
 }
 
 #conclusion {

@@ -1,8 +1,0 @@
-March 15
-- Scroll bar moves back to halfway point after overall container hits end (bottom, bottom), does not show any additional HTML content
-    - suspect the issue is with pinning
-- On refresh, if scroll was not at the starting point, the content that should be on the page at that point in the scroll, is not on the page
-    - might also be related to pinning, but could be a timeline issue or a dynamic generation of JS content issue
-
-- Question: reversing animations, overriding animations in the timeline
-- allow single, repeating animations to run while applying timeline animations
