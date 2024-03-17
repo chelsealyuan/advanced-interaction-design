@@ -27,7 +27,6 @@ section {
   font-size: 1rem; /* Initial font size */
   opacity: 70%;
   text-align: right;
-
 }
 
 /************** Formation *************/
@@ -41,8 +40,6 @@ section {
 
 #formation circle {
   fill: #eaeaea;
-  /* stroke: #ffffff;
-  stroke-width: 2; */
 }
 
 /************** Single-Cell *************/
@@ -64,7 +61,7 @@ section {
 }
 
 #single-cell .cell {
-  width: 3%;
+  width: 30px;
   aspect-ratio: 1;
   opacity: 0.5;
 
@@ -73,17 +70,16 @@ section {
   top: 50vh;
 }
 
+/************** Photosynthesis *************/
 .sun {
-  width: 100%;
+  width: 90%;
   aspect-ratio: 1/1;
   background-color: rgb(255, 179, 87);
   position: absolute;
   left: 50%;
 }
 
-/************** Photosynthesis *************/
-
-
+/********** Oxygenation *****************/
 .particle {
   position: absolute;
   width: 10px;
@@ -91,18 +87,52 @@ section {
   background-color: white;
 }
 
-/********** Oxygenation *****************/
+/********** Eukaryotes *****************/
+#eukaryote {
+  background-color: #6e6e6e;
+}
 
-.proterozoic {
-  background-color: #708d7f;
+#eukaryote svg {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  top: 50vh;
+}
+
+.eukaryote {
+  background-color: rgb(50, 107, 114);
+  left: 20%;
+}
+
+#chloroplast {
+  left: 20%;
+
+  stroke:white;
+  stroke-width: 5px;
+
+  fill: rgb(118, 195, 118);
+}
+
+#mitochondria {
+  left: 30%;
+
+  stroke: white;
+  stroke-width: 5px;
+
+  fill: rgb(205, 169, 83);
+}
+
+#multi-cell {
+  background-color: #94b8cf;
+}
+
+/********** Modern *****************/
+.phanerozoic {
+  background-color: #cae2c6;
 }
 
 #plant path {
   fill: none;
-}
-
-.phanerozoic {
-  background-color: #94b8cf;
 }
 
 #conclusion {

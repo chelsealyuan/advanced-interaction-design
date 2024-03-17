@@ -8,14 +8,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalHeight = 75000;
   document.querySelector(".container").style.height = totalHeight + "px";
 
-  const heights = { hadean: 11, archean: 33, proterozoic: 44, phanerozoic: 12 };
+  const heights = {
+    hadean: 11,
+    archean: 37,
+    eukaryote: 18,
+    multicell: 22,
+    phanerozoic: 12,
+  };
 
   document.querySelector(".hadean").style.height =
     (heights.hadean / 100) * totalHeight + "px";
+
   document.querySelector(".archean").style.height =
     (heights.archean / 100) * totalHeight + "px";
-  document.querySelector(".proterozoic").style.height =
-    (heights.proterozoic / 100) * totalHeight + "px";
+
+  document.querySelector("#eukaryote").style.height =
+    (heights.eukaryote / 100) * totalHeight + "px";
+
+  document.querySelector("#multi-cell").style.height =
+    (heights.multicell / 100) * totalHeight + "px";
+
   document.querySelector(".phanerozoic").style.height =
     (heights.phanerozoic / 100) * totalHeight + "px";
 
@@ -25,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setNumberColor(container) {
     var element = document.getElementById("number");
     var backgroundColor = window.getComputedStyle(container).backgroundColor;
-    console.log(backgroundColor);
+
     var rgb = backgroundColor.match(/\d+/g);
     if (rgb) {
       var brightness =
@@ -68,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           onEnterBack: () => {
             setNumberColor(section);
-          }
+          },
         },
         duration: 0.001,
         autoAlpha: 1,
@@ -109,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("formation-container").appendChild(atom);
   }
 
-  const atoms = gsap.utils.toArray("circle");
+  const atoms = gsap.utils.toArray("#formation-container circle");
 
   gsap.timeline({
     scrollTrigger: {
@@ -203,13 +215,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Generate random points within the screen boundaries
     const path = [];
     for (let i = 0; i < numPoints - 1; i++) {
-      const randomX = randomInRange(-screenWidth / 2, screenWidth / 2);
+      const randomX = randomInRange(
+        -screenWidth / 2 + screenWidth * 0.1,
+        screenWidth / 2 - screenWidth * 0.1
+      );
       const randomY = randomInRange(-screenHeight / 2, screenHeight / 2);
       path.push({ x: randomX, y: randomY });
     }
 
     // Generate the last point with Y coordinate in the bottom half of the screen
-    const randomXLast = randomInRange(-screenWidth / 2, screenWidth / 2);
+    const randomXLast = randomInRange(
+      -screenWidth / 2 + screenWidth * 0.1,
+      screenWidth / 2 - screenWidth * 0.1
+    );
     const randomYLast = randomInRange(0, screenHeight / 2);
     path.push({ x: randomXLast, y: randomYLast });
 
@@ -265,21 +283,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Iterate over each cell and add animations
   cells.forEach((cell, index) => {
     // Animation for moving the cell up
-    cellTl.to(cell, {
-      duration: 0.2,
-      y: -(cell.offsetHeight / 2), // Adjust the distance as needed
-      ease: "power2.out", // Adjust the ease as needed
-      onComplete: () => {
-        if (cell.classList.contains("explode")) {
-          explodeCircle(cell);
-          cell.style.opacity = 0;
-        }
+    cellTl.to(
+      cell,
+      {
+        duration: 0.2,
+        y: -(cell.offsetHeight / 2), // Adjust the distance as needed
+        ease: "power2.out", // Adjust the ease as needed
+        onComplete: () => {
+          if (cell.classList.contains("explode")) {
+            explodeCircle(cell);
+            cell.style.opacity = 0;
+          }
+        },
       },
-    });
+      "-=0.1"
+    );
   });
 
   function explodeCircle(cell) {
-    const numParticles = 10;
+    const numParticles = 15;
 
     for (let i = 0; i < numParticles; i++) {
       const particle = document.createElement("div");
@@ -291,18 +313,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const cellTop = cellRect.top;
       const cellLeft = cellRect.left;
 
-      console.log(cellTop + ", " + cellLeft);
-
       // Set particle position relative to the viewport
       particle.style.position = "absolute";
       particle.style.top = cellTop + "px";
       particle.style.left = cellLeft + "px";
       document.getElementById("single-cell").appendChild(particle);
 
+      // Calculate the coordinates ensuring they are outside the viewport
+      const buffer = 100;
+      const x = randomInRange(-screenWidth - buffer, 2 * screenWidth + buffer);
+      const y = randomInRange(
+        -screenHeight - buffer,
+        2 * screenHeight + buffer
+      );
+
+      // Then, animate the elements to these coordinates using GSAP
       gsap.to(particle, {
-        duration: 1,
-        x: Math.random() * window.innerWidth - window.innerWidth / 2,
-        y: Math.random() * window.innerHeight - window.innerHeight / 2,
+        x: x,
+        y: y,
         onComplete: () => {
           particle.remove();
         },
@@ -314,12 +342,50 @@ document.addEventListener("DOMContentLoaded", () => {
    * Section 4: Eukaryotes
    * Multiplication of atoms
    ***************************************************/
+  const path = document.getElementById("chloroplast");
+  const length = path.getTotalLength();
+
+  // Set the strokeDasharray and strokeDashoffset properties
+  path.style.strokeDasharray = length;
+  path.style.strokeDashoffset = length;
 
   const eukaryote = gsap.timeline({
     scrollTrigger: {
-      trigger: ".proterozoic",
+      trigger: "#eukaryote",
       start: "top top",
-      end: "bottom bottom",
+      end: "bottom top",
+      scrub: true,
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+    },
+  });
+
+  eukaryote.to(path, {
+    strokeDashoffset: 0,
+  });
+
+  // // First, find the center coordinates of the screen
+  // const centerX = window.innerWidth / 2;
+  // const centerY = window.innerHeight / 2;
+
+  // // Then, use GSAP to animate the elements to the center
+  // eukaryote.to(".eukaryote", {
+  //   x: centerX,
+  //   y: centerY,
+  //   duration: 1, // Adjust the duration as needed
+  // });
+
+  /****************************************************
+   * Section 5: Multi-Cellular Life
+   * Expansion of cell into fungi
+   ***************************************************/
+
+  const multiCell = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#multi-cell",
+      start: "top top",
+      end: "bottom top",
       //scrub: true,
       pin: true,
       pinSpacing: false,
@@ -328,50 +394,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /****************************************************
-   * Section ?: Formation of Multi-Cellular Organisms
+   * Section 6: Plants
    * Multiplication of atoms
    ***************************************************/
 
-  const phanerozoic = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".phanerozoic",
-      start: "top top",
-      end: "bottom bottom",
-      //scrub: true,
-      pin: true,
-      pinSpacing: false,
-      markers: true,
-    },
-  });
-
-  // Calculate the number of atoms needed to fill the screen
-  // const circleRadius = 3; // Adjust the radius of atoms as needed
-  // const horizontalAtoms = Math.ceil(screenWidth / (2 * circleRadius));
-  // const verticalAtoms = Math.ceil(screenHeight / (2 * circleRadius));
-
-  // // Create atoms dynamically and position them to form a grid
-  // const svgContainer = document.getElementById("multicell-container");
-  // for (let i = 0; i < horizontalAtoms; i++) {
-  //   for (let j = 0; j < verticalAtoms; j++) {
-  //     const circle = document.createElementNS(
-  //       "http://www.w3.org/2000/svg",
-  //       "circle"
-  //     );
-  //     circle.setAttribute("cx", i * 2 * circleRadius + circleRadius);
-  //     circle.setAttribute("cy", j * 2 * circleRadius + circleRadius);
-  //     circle.setAttribute("r", circleRadius);
-  //     circle.setAttribute("fill", "blue"); // Adjust the color as needed
-  //     svgContainer.appendChild(circle);
-  //   }
-  // }
+  /****************************************************
+   * Section 7: Cambrian Explosion
+   * Multiplication of atoms
+   ***************************************************/
 });
-
-// const path = document.getElementById("path");
-// const length = path.getTotalLength();
-
-// // Set the strokeDasharray and strokeDashoffset properties
-// path.style.strokeDasharray = length;
-// path.style.strokeDashoffset = length;
 
 // gsap
 //   .timeline({
