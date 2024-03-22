@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /****************************************************
+   * Global
+   ***************************************************/
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger, ScrollToPlugin);
+
+  const colors = ["#9FBDBF", "#B1C0A3", "#466B73"];
+
+  // Get the viewport dimensions
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+
+  const margin = screenWidth * 0.2;
+
+  const leftXMargin = margin;
+
+  const rightXMargin = screenWidth - margin;
 
   /****************************************************
    * Proportion height of sections
@@ -54,7 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollTrigger: {
       trigger: ".container",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
+
       onUpdate: (self) => {
         const roundedProgress = self.progress.toFixed(6);
         const newValue = initialValue - roundedProgress * initialValue;
@@ -75,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
           start: "top top",
           end: "bottom top",
           toggleActions: "play play play reverse",
+          markers: true,
           onEnter: () => {
             setNumberColor(section);
           },
@@ -97,10 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function randomInRange(min, max) {
     return Math.random() * (max - min) + min;
   }
-
-  // Get the viewport dimensions
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
 
   // Number of atoms to create
   const numAtoms = 30;
@@ -169,13 +182,17 @@ document.addEventListener("DOMContentLoaded", () => {
    * Section 2: Formation of Single-Cellular Organisms
    * Circle - Square
    ***************************************************/
-
-  // ScrollTrigger.create({
-  //   trigger: ".archean",
-  //   start: "top top",
-  //   end: "bottom bottom",
-  //   markers: true,
-  // });
+  const cells = document.querySelectorAll(".archean .cell");
+  cells.forEach((cell, index) => {
+    gsap.set(
+      cell,
+      {
+        x: screenWidth / 2,
+        y: screenHeight / 2,
+      },
+      0
+    );
+  });
 
   const cellTl = gsap.timeline({
     scrollTrigger: {
@@ -185,57 +202,43 @@ document.addEventListener("DOMContentLoaded", () => {
       scrub: true,
       pin: true,
       pinSpacing: false,
+      overwrite: "auto",
     },
   });
 
-  const colors = ["#9FBDBF", "#B1C0A3", "#466B73"];
-
-  const cells = document.querySelectorAll(".cell");
-
   cells.forEach((cell, index) => {
-    const colorIndex = Math.floor(Math.random() * colors.length);
-    const color = colors[colorIndex];
-
-    // Apply the random color to the cell
-    cell.style.backgroundColor = color;
-
-    gsap.to(cell, {
-      delay: randomInRange(0, 1),
-      duration: randomInRange(1, 2),
-      borderRadius: "45%",
-      rotation: randomInRange(-45, 45), // Rotate by 360 degrees
-      ease: "power1.inOut", // Use ease for smooth rotation
-      scaleY: 1.5,
-      yoyo: true,
-      repeat: -1,
-    });
-
-    const numPoints = Math.floor(Math.random() * 5) + 2; // At least 2 points for a path
-
-    // Generate random points within the screen boundaries
-    const path = [];
-    for (let i = 0; i < numPoints - 1; i++) {
-      const randomX = randomInRange(
-        -screenWidth / 2 + screenWidth * 0.1,
-        screenWidth / 2 - screenWidth * 0.1
-      );
-      const randomY = randomInRange(-screenHeight / 2, screenHeight / 2);
-      path.push({ x: randomX, y: randomY });
-    }
-
-    // Generate the last point with Y coordinate in the bottom half of the screen
-    const randomXLast = randomInRange(
-      -screenWidth / 2 + screenWidth * 0.1,
-      screenWidth / 2 - screenWidth * 0.1
+    cellTl.to(
+      cell,
+      {
+        duration: 1,
+        width: "2em",
+        aspectRatio: "1/1",
+        //backgroundColor: color,
+        onComplete: () => {
+          gsap.to(
+            cell,
+            {
+              delay: randomInRange(0, 1),
+              duration: randomInRange(1, 2),
+              rotation: randomInRange(-45, 45),
+              borderRadius: "45%",
+              ease: "power1.inOut",
+              scaleY: 2,
+              yoyo: true,
+              repeat: -1,
+            },
+            0
+          );
+        },
+      },
+      0
     );
-    const randomYLast = randomInRange(0, screenHeight / 2);
-    path.push({ x: randomXLast, y: randomYLast });
 
     cellTl.to(
       cell,
       {
         motionPath: {
-          path: path,
+          path: generatePath(cell.classList),
           align: "center",
           autoRotate: true,
         },
@@ -245,6 +248,39 @@ document.addEventListener("DOMContentLoaded", () => {
       0
     );
   });
+
+  function generatePath(cellClass) {
+    const numPoints = Math.floor(Math.random() * 5) + 2; // At least 2 points for a path
+
+    // Generate random points within the screen boundaries
+    const path = [];
+    for (let i = 0; i < numPoints - 1; i++) {
+      const randomX = randomInRange(leftXMargin, rightXMargin);
+      const randomY = randomInRange(0, screenHeight);
+      path.push({ x: randomX, y: randomY });
+    }
+
+    // Set the last X coordinate based on the presence of specific classes
+    let randomXLast;
+    if (cellClass.contains("eukaryote")) {
+      randomXLast = leftXMargin;
+    } else if (cellClass.contains("cell1")) {
+      randomXLast = screenWidth / 2;
+    } else if (cellClass.contains("cell2")) {
+      randomXLast = rightXMargin;
+    } else {
+      randomXLast = randomInRange(
+        0 + screenWidth * 0.1,
+        screenWidth - screenWidth * 0.1
+      );
+    }
+
+    // Generate the last point with Y coordinate in the bottom half of the screen
+    const randomYLast = randomInRange(screenHeight / 2, screenHeight);
+    path.push({ x: randomXLast, y: randomYLast });
+
+    return path;
+  }
 
   /****************************************************
    * Section 3: Photosynthesis
@@ -256,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gsap.set(sun, { y: -sun.offsetHeight / 2, opacity: 0 });
 
   gsap.to(sun, {
-    scale: 1.05,
+    scale: 0.9,
     yoyo: true,
     repeat: -1,
     duration: 1,
@@ -270,9 +306,8 @@ document.addEventListener("DOMContentLoaded", () => {
       y: -(sun.offsetHeight / 4),
     })
     .to(cells, {
-      opacity: 1,
+      opacity: 0.9,
       duration: 1,
-      scale: 2,
     })
     .to(sun, {
       duration: 0.5,
@@ -287,12 +322,25 @@ document.addEventListener("DOMContentLoaded", () => {
       cell,
       {
         duration: 0.2,
-        y: -(cell.offsetHeight / 2), // Adjust the distance as needed
-        ease: "power2.out", // Adjust the ease as needed
+        y: screenHeight / 2,
+        scaleY: 1,
+        ease: "power2.out",
         onComplete: () => {
           if (cell.classList.contains("explode")) {
             explodeCircle(cell);
             cell.style.opacity = 0;
+          } else {
+            gsap.to(
+              cell,
+              {
+                borderRadius: "50%",
+                ease: "power1.inOut",
+                scaleY: 1,
+                yoyo: true,
+                repeat: -1,
+              },
+              0
+            );
           }
         },
       },
@@ -342,14 +390,8 @@ document.addEventListener("DOMContentLoaded", () => {
    * Section 4: Eukaryotes
    * Multiplication of atoms
    ***************************************************/
-  const path = document.getElementById("chloroplast");
-  const length = path.getTotalLength();
 
-  // Set the strokeDasharray and strokeDashoffset properties
-  path.style.strokeDasharray = length;
-  path.style.strokeDashoffset = length;
-
-  const eukaryote = gsap.timeline({
+  const eukaryoteTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#eukaryote",
       start: "top top",
@@ -357,24 +399,98 @@ document.addEventListener("DOMContentLoaded", () => {
       scrub: true,
       pin: true,
       pinSpacing: false,
-      markers: true,
+      anticipatePin: false,
+      //markers: true,
     },
   });
 
-  eukaryote.to(path, {
-    strokeDashoffset: 0,
+  const cell1Path = document.querySelector("#cell1");
+  const cell2Path = document.querySelector("#cell2");
+
+  const cell1Length = cell1Path.getTotalLength();
+  const cell2Length = cell2Path.getTotalLength();
+
+  gsap.set("#mainCell", {
+    cx: leftXMargin,
+    cy: screenHeight / 2,
   });
 
-  // // First, find the center coordinates of the screen
-  // const centerX = window.innerWidth / 2;
-  // const centerY = window.innerHeight / 2;
+  gsap.set("#cell1", { cx: screenWidth / 2, cy: screenHeight / 2 });
 
-  // // Then, use GSAP to animate the elements to the center
-  // eukaryote.to(".eukaryote", {
-  //   x: centerX,
-  //   y: centerY,
-  //   duration: 1, // Adjust the duration as needed
-  // });
+  gsap.set("#cell2", {
+    cx: rightXMargin,
+    cy: screenHeight / 2,
+  });
+
+  //Animate stroke for chloroplast and
+  // Set the strokeDasharray and strokeDashoffset properties
+  cell1Path.style.strokeDasharray = cell1Length;
+  cell1Path.style.strokeDashoffset = cell1Length;
+
+  cell2Path.style.strokeDasharray = cell2Length;
+  cell2Path.style.strokeDashoffset = cell2Length;
+
+  eukaryoteTl
+    .to("#cell1", {
+      duration: 1,
+      fill: "#466B73",
+      scaleY: 1.5,
+      strokeDashoffset: 0,
+    })
+    .to("#cell2", {
+      duration: 1,
+      fill: "#466B73",
+      scaleX: 1.5,
+      strokeDashoffset: 0,
+    });
+
+  eukaryoteTl.to("#mainCell", {
+    duration: 3,
+    cx: rightXMargin,
+  });
+
+  eukaryoteTl
+    .to(
+      "#cell1",
+      {
+        duration: 0.1,
+        opacity: 0,
+      },
+      "-=2.3"
+    )
+    .to(
+      "#mainCell",
+      {
+        duration: 0.1,
+        r: "2em",
+      },
+      "-=2.3"
+    );
+
+  eukaryoteTl
+    .to(
+      "#cell2",
+      {
+        duration: 0.1,
+        opacity: 0,
+      },
+      "-=1.3"
+    )
+    .to(
+      "#mainCell",
+      {
+        duration: "4em",
+        r: 2,
+      },
+      "-=1.3"
+    );
+
+  eukaryoteTl.to("#mainCell", {
+    duration: 2,
+    cx: screenWidth / 2,
+    r: "0.2em",
+    fill: "#9fbdbf",
+  });
 
   /****************************************************
    * Section 5: Multi-Cellular Life
@@ -387,10 +503,35 @@ document.addEventListener("DOMContentLoaded", () => {
       start: "top top",
       end: "bottom top",
       //scrub: true,
-      pin: true,
-      pinSpacing: false,
-      markers: true,
+      //pin: true,
+      //markers: true,
+      //anticipatePin: false
     },
+  });
+  
+  const fungiSvg = document.querySelector("#fungi");
+  const translationY = screenHeight / 2;
+  fungiSvg.style.transform =
+    "translateY("  + translationY + "px)";
+
+  const masks = document.querySelectorAll("mask");
+
+  masks.forEach((mask) => {
+    const maskLine = mask.querySelector("line");
+    let maskLineLength = maskLine.getTotalLength();
+    maskLine.style.strokeDasharray = maskLineLength;
+    maskLine.style.strokeDashoffset = maskLineLength;
+
+    gsap.to(maskLine, {
+      scrollTrigger: {
+        trigger: maskLine,
+        start: "top 50%",
+        toggleActions: "play none none reverse",
+        ease: "power1.out",
+      },
+      strokeDashoffset: 0, // Animate stroke-dashoffset to 0, revealing the entire line
+      duration: 0.5, // Duration of the animation
+    });
   });
 
   /****************************************************

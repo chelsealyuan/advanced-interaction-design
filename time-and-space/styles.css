@@ -4,12 +4,13 @@ html {
 }
 
 section {
-  /* height: 300vh; */
   box-sizing: border-box;
+  position: relative;
+  width: 100%;
 }
 
 .scroll-container {
-  position: relative;
+  /* position: relative; */
 }
 
 .number-container {
@@ -43,15 +44,13 @@ section {
 }
 
 /************** Single-Cell *************/
-.circle {
+#single-cell .circle {
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
 
 #single-cell {
-  background-color: #2d2d2d;
-  position: relative;
-  height: 100%;
+  background-color: #1f1f1f;
 }
 
 #single-cell path {
@@ -61,18 +60,20 @@ section {
 }
 
 #single-cell .cell {
-  width: 30px;
+  width: 10px;
   aspect-ratio: 1;
   opacity: 0.5;
 
+  background-color: white;
+
   position: absolute;
-  left: 50%;
-  top: 50vh;
+
+  transform-origin: center;
 }
 
 /************** Photosynthesis *************/
 .sun {
-  width: 90%;
+  width: 100%;
   aspect-ratio: 1/1;
   background-color: rgb(255, 179, 87);
   position: absolute;
@@ -89,51 +90,56 @@ section {
 
 /********** Eukaryotes *****************/
 #eukaryote {
-  background-color: #6e6e6e;
+  background-color: #1f1f1f;
 }
 
-#eukaryote svg {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  top: 50vh;
+#eukaryote-container {
+  height: 100%;
 }
 
-.eukaryote {
-  background-color: rgb(50, 107, 114);
-  left: 20%;
+#cell1,
+#cell2 {
+  stroke: #9fbdbf;
+  stroke-width: 2px;
+  fill: rgb(255, 255, 255);
 }
 
-#chloroplast {
-  left: 20%;
-
-  stroke:white;
-  stroke-width: 5px;
-
-  fill: rgb(118, 195, 118);
+#mainCell {
+  fill: white;
 }
 
-#mitochondria {
-  left: 30%;
-
-  stroke: white;
-  stroke-width: 5px;
-
-  fill: rgb(205, 169, 83);
-}
+/********** Multicellular *****************/
 
 #multi-cell {
-  background-color: #94b8cf;
+  background-color: #1f1f1f;
 }
+
+#fungi {
+  transform-origin: top;
+}
+
+#fungi line {
+  stroke: #9fbdbf;
+  stroke-width: 6px;
+  stroke-dasharray: 6 6;
+  stroke-linecap: round;
+}
+
+.mask {
+  stroke: #9fbdbf;
+  stroke-width: 10px;
+}
+
+#plant circle {
+  fill: #bd74da;
+}
+
 
 /********** Modern *****************/
 .phanerozoic {
   background-color: #cae2c6;
 }
 
-#plant path {
-  fill: none;
-}
 
 #conclusion {
   height: 200vh;
