@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
    ***************************************************/
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger, ScrollToPlugin);
 
-  const colors = ["#9FBDBF", "#B1C0A3", "#466B73"];
+  const colorRamp = ["#181A1B", "#212426", "#282B2E", "#90979F", "#E3E9EF"];
 
   // Get the viewport dimensions
   const screenWidth = window.innerWidth;
@@ -85,6 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   //Set ScrollTrigger between sections: https://gsap.com/community/forums/topic/30744-how-use-scrolltrigger-to-move-between-sections/
   document.querySelectorAll("section").forEach((section, index, sections) => {
     if (index > 0) {
+      const startColor = colorRamp[index - 1];
+      const endColor = colorRamp[index];
       gsap.to(section, {
         scrollTrigger: {
           trigger: section,
@@ -96,6 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
             setNumberColor(section);
           },
           onEnterBack: () => {
+            setNumberColor(section);
+          },
+          onUpdate: (self) => {
+            // Calculate current color based on scroll position
+            const progress = self.progress;
+            const currentColor = gsap.utils.interpolate(
+              startColor,
+              endColor,
+              progress
+            );
+
+            // Update background color
+            section.style.backgroundColor = currentColor;
             setNumberColor(section);
           },
         },
@@ -211,9 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
       cell,
       {
         duration: 1,
-        width: "2em",
+        width: "1.5em",
         aspectRatio: "1/1",
-        //backgroundColor: color,
         onComplete: () => {
           gsap.to(
             cell,
@@ -307,6 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .to(cells, {
       opacity: 0.9,
+      backgroundColor: "#B1C0A3",
       duration: 1,
     })
     .to(sun, {
@@ -431,18 +446,26 @@ document.addEventListener("DOMContentLoaded", () => {
   cell2Path.style.strokeDashoffset = cell2Length;
 
   eukaryoteTl
-    .to("#cell1", {
-      duration: 1,
-      fill: "#466B73",
-      scaleY: 1.5,
-      strokeDashoffset: 0,
-    })
-    .to("#cell2", {
-      duration: 1,
-      fill: "#466B73",
-      scaleX: 1.5,
-      strokeDashoffset: 0,
-    });
+    .to(
+      "#cell1",
+      {
+        duration: 1,
+        fill: "#466B73",
+        scale: 2,
+        strokeDashoffset: 0,
+      },
+      0
+    )
+    .to(
+      "#cell2",
+      {
+        duration: 1,
+        fill: "#466B73",
+        scale: 2,
+        strokeDashoffset: 0,
+      },
+      0.5
+    );
 
   eukaryoteTl.to("#mainCell", {
     duration: 3,
@@ -479,8 +502,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .to(
       "#mainCell",
       {
-        duration: "4em",
-        r: 2,
+        duration: 0.1,
+        r: "4em",
       },
       "-=1.3"
     );
@@ -508,11 +531,10 @@ document.addEventListener("DOMContentLoaded", () => {
       //anticipatePin: false
     },
   });
-  
+
   const fungiSvg = document.querySelector("#fungi");
   const translationY = screenHeight / 2;
-  fungiSvg.style.transform =
-    "translateY("  + translationY + "px)";
+  fungiSvg.style.paddingTop = translationY;
 
   const masks = document.querySelectorAll("mask");
 
@@ -535,13 +557,108 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /****************************************************
-   * Section 6: Plants
-   * Multiplication of atoms
+   * Section 6: Sexual Reproduction
+   * Cell fusing + replication
    ***************************************************/
+
+  gsap.set("#primary-cell", {});
+
+  let select = (s) => document.querySelector(s),
+    selectAll = (s) => document.querySelectorAll(s),
+    mainSVG = select("#mainSVG");
+
+  gsap.set("svg", {
+    visibility: "visible",
+  });
+
+  let reproductionTl = gsap.timeline({
+
+    defaults: {
+      ease: "sine.inOut",
+    },
+  });
+  reproductionTl.add("step1")
+    .to(
+      ".right",
+      {
+        x: 100,
+      },
+      "step1"
+    )
+    .to(
+      ".left",
+      {
+        x: -100,
+      },
+      "step1"
+    )
+    // .add("step2")
+    // .to(
+    //   ".up",
+    //   {
+    //     rotation: gsap.utils.wrap([90, -90]),
+    //     svgOrigin: "400 300",
+    //   },
+    //   "step2"
+    // )
+    // .to(
+    //   ".down",
+    //   {
+    //     rotation: gsap.utils.wrap([-90, 90]),
+    //     svgOrigin: "400 300",
+    //   },
+    //   "step2"
+    // )
+    // .add("step3")
+    // .to(".dot", {
+    //   y: gsap.utils.wrap([-100, 100]),
+    // });
 
   /****************************************************
    * Section 7: Cambrian Explosion
-   * Multiplication of atoms
+   * Generate lots of different colorful shapes
+   ***************************************************/
+
+  const cambrianTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#cambrian",
+      start: "top top",
+      end: "bottom top",
+    },
+  });
+
+  const growTogetherAnim = gsap.timeline();
+
+  // Add animation to scale up the leafs
+  growTogetherAnim.fromTo(
+    ".plant .leaf",
+    { scale: 0.1 },
+    { scale: 1, duration: 2, ease: "power2.out" }
+  );
+
+  const staggerGrowAnim = gsap.timeline();
+
+  const plants = document.querySelectorAll(".plant");
+
+  plants.forEach((plant) => {
+    gsap.to(plant, {
+      scrollTrigger: {
+        trigger: plant,
+        start: "top 50%",
+        toggleActions: "play none none reverse",
+        ease: "power1.out",
+        markers: true,
+        scrub: true,
+        animation: growTogetherAnim,
+      },
+      rotation: 360, // Animate stroke-dashoffset to 0, revealing the entire line
+      duration: 0.4, // Duration of the animation
+    });
+  });
+
+  /****************************************************
+   * Section 8: Marine Organisms
+   * Create spirals and little skeleton fossils
    ***************************************************/
 });
 

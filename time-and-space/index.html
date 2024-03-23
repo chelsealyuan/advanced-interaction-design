@@ -14,12 +14,12 @@
 <body>
   <div id="container" class="container">
 
-    <section class="hadean" id="formation">
+    <section class="section hadean" id="formation">
       <svg id="formation-container" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       </svg>
     </section>
 
-    <section class="archean" id="single-cell">
+    <section class="section archean" id="single-cell">
       <div class="circle sun" id="sun"></div>
       <div class="circle cell explode"></div>
       <div class="circle cell explode"></div>
@@ -36,15 +36,15 @@
     </section>
 
     <section id="eukaryote">
-      <svg id="eukaryote-container" width="100%" height="100%">
-        <circle id="cell1" r="1em"></circle>
-        <circle id="cell2" r="1em"></circle>
-        <circle id="mainCell" r="1em"></circle>
+      <svg class="section" id="eukaryote-container" width="100%" height="100%">
+        <circle id="cell1" r=".75em"></circle>
+        <circle id="cell2" r=".75em"></circle>
+        <circle id="mainCell" r=".75em"></circle>
       </svg>
     </section>
 
     <section id="multi-cell">
-      <svg id="fungi" viewBox="0 0 1440 3500" width="100%">
+      <svg class="section" id="fungi" viewBox="0 0 1440 3000" width="100%">
         <defs>
           <mask id="mask0">
             <line x1="720" y1="0" x2="1068.7965388596838" y2="1978.1234695805053" class="mask"></line>
@@ -1008,33 +1008,104 @@
 
       </svg>
 
-      <svg id="plant" width="100%">
-        <circle cx="0" cy="0" r="2em"></circle>
-        <circle cx="0" cy="100" r="2em"></circle>
-        <circle cx="0" cy="200" r="2em"></circle>
-        <circle cx="0" cy="300" r="2em"></circle>
+      <svg class="section" id="sexual-reproduction" width="100%">
+        <!-- https://codepen.io/chrisgannon/pen/eYgbwzR -->
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -15" result="cm" />
+          <feBlend />
+        </filter>
+        <g filter="url(#goo)" fill="#35AAF9">
+          <circle class="dot right up" cx="400" cy="300" r="80" />
+          <circle class="dot right down" cx="400" cy="300" r="80" />
+          <circle class="dot left up" cx="400" cy="300" r="80" />
+          <circle class="dot left down" cx="400" cy="300" r="80" />
+        </g>
+
       </svg>
+
+      <div class="section" id="cambrian">
+
+      </div>
     </section>
+
+
 
 
     <section class="phanerozoic">
 
+      <div class="section" id="plant" width="100%">
+
+        <div class="plant plant1">
+          <div class="row">
+            <div class="leaf leaf1"></div>
+            <!-- <div class="leaf leaf2"></div> -->
+          </div>
+          <div class="row">
+            <div class="leaf leaf3"></div>
+            <div class="leaf leaf4"></div>
+          </div>
+        </div>
+
+        <div class="plant plant2">
+          <div class="row">
+            <!-- <div class="leaf leaf1"></div> -->
+            <div class="leaf leaf2"></div>
+          </div>
+          <div class="row">
+            <div class="leaf leaf3"></div>
+            <div class="leaf leaf4"></div>
+          </div>
+        </div>
+
+
+        <div class="plant plant3">
+          <div class="row">
+            <!-- <div class="leaf leaf1"></div> -->
+            <div class="leaf leaf2"></div>
+          </div>
+          <div class="row">
+            <!-- <div class="leaf leaf3"></div> -->
+            <div class="leaf leaf4"></div>
+          </div>
+        </div>
+
+        <div class="plant plant4">
+          <div class="row">
+            <div class="leaf leaf1"></div>
+            <!-- <div class="leaf leaf2"></div> -->
+          </div>
+          <div class="row">
+            <div class="leaf leaf3"></div>
+            <!-- <div class="leaf leaf4"></div> -->
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="section" id="marine">
+
+      </div>
+
+      <div class="section" id="extinction">
+
+      </div>
+
+      <div class="section" id="species-extinction">
+
+
+      </div>
+
+      <div class="section" id="humans">
+
+      </div>
     </section>
 
-    <!-- 
-    <section id="reptiles">
 
-    </section>
-    <section id="mammals">
-
-    </section>
-
-    <section id="humans">
-
-    </section> -->
   </div>
 
-  <!-- <div id="conclusion"></div> -->
+  <div id="conclusion"></div>
 
   <div class="number-container">
     <div id="number">4500000000</div>

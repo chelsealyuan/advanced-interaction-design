@@ -1,10 +1,9 @@
 html {
   font-family: "Manrope", sans-serif;
-  background-color: #1f1f1f;
+  background-color: #181A1B;
 }
 
 section {
-  box-sizing: border-box;
   position: relative;
   width: 100%;
 }
@@ -32,7 +31,7 @@ section {
 
 /************** Formation *************/
 #formation {
-  background-color: #1f1f1f; /* Start with black */
+  background-color: #181A1B;
 }
 
 #formation-container {
@@ -50,13 +49,7 @@ section {
 }
 
 #single-cell {
-  background-color: #1f1f1f;
-}
-
-#single-cell path {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 3;
+  /* background-color: #1f1f1f; */
 }
 
 #single-cell .cell {
@@ -90,7 +83,7 @@ section {
 
 /********** Eukaryotes *****************/
 #eukaryote {
-  background-color: #1f1f1f;
+  /* background-color: #1f1f1f; */
 }
 
 #eukaryote-container {
@@ -101,17 +94,17 @@ section {
 #cell2 {
   stroke: #9fbdbf;
   stroke-width: 2px;
-  fill: rgb(255, 255, 255);
+  fill: #b1c0a3;
 }
 
 #mainCell {
-  fill: white;
+  fill: #b1c0a3;
 }
 
 /********** Multicellular *****************/
 
 #multi-cell {
-  background-color: #1f1f1f;
+  /* background-color: #1f1f1f; */
 }
 
 #fungi {
@@ -130,16 +123,64 @@ section {
   stroke-width: 10px;
 }
 
-#plant circle {
-  fill: #bd74da;
+/********** Sexual Reproduction *****************/
+
+#sexual-reproduction {
+  height: 100%;
 }
 
+#sexual-reproduction #primary-cell {
+  fill: cornflowerblue;
+}
+
+#sexual-reproduction #secondary-cell {
+  fill: rgb(223, 62, 62);
+}
+
+
+#cambrian {
+  height: 100%;
+}
+
+/********** Plants *****************/
+
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaf {
+  width: 2em;
+  height: 2em;
+  z-index: 10;
+}
+.leaf1 {
+  transform-origin: bottom right;
+  border-radius: 0px 100px 0px 100px;
+  background: linear-gradient(160deg, #3ec58a 0%, #08512f 100%);
+}
+.leaf2 {
+  transform-origin: bottom left;
+  border-radius: 100px 0px 100px 0px;
+  background: linear-gradient(220deg, #3ec58a 0%, #08512f 100%);
+}
+.leaf3 {
+  transform-origin: top right;
+  border-radius: 100px 0px 100px 0px;
+  background: linear-gradient(30deg, #3ec58a 0%, #08512f 100%);
+}
+.leaf4 {
+  transform-origin: top left;
+  border-radius: 0px 100px 0px 100px;
+  background: linear-gradient(320deg, #3ec58a 0%, #08512f 100%);
+}
 
 /********** Modern *****************/
 .phanerozoic {
-  background-color: #cae2c6;
+  /* background-color: #cae2c6; */
 }
-
 
 #conclusion {
   height: 200vh;
@@ -151,7 +192,7 @@ section {
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+  leaf-sizing: border-leaf;
 }
 
 /* Prevent font size inflation */
