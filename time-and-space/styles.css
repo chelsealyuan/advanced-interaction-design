@@ -1,6 +1,6 @@
 html {
   font-family: "Manrope", sans-serif;
-  background-color: #181A1B;
+  background-color: #181a1b;
 }
 
 section {
@@ -31,7 +31,7 @@ section {
 
 /************** Formation *************/
 #formation {
-  background-color: #181A1B;
+  background-color: #181a1b;
 }
 
 #formation-container {
@@ -74,7 +74,7 @@ section {
 }
 
 /********** Oxygenation *****************/
-.particle {
+#single-cell .particle {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -104,7 +104,6 @@ section {
 /********** Multicellular *****************/
 
 #multi-cell {
-  /* background-color: #1f1f1f; */
 }
 
 #fungi {
@@ -126,23 +125,49 @@ section {
 /********** Sexual Reproduction *****************/
 
 #sexual-reproduction {
-  height: 100%;
+  height: 68%;
 }
 
-#sexual-reproduction #primary-cell {
-  fill: cornflowerblue;
+#cell-group2 {
+  display: grid;
+  grid-template-columns: repeat(4, 20px); /* Adjust as needed */
+  grid-gap: 10px; /* Adjust as needed */
 }
 
-#sexual-reproduction #secondary-cell {
-  fill: rgb(223, 62, 62);
+#cell-group2 circle {
+  fill: red;
 }
 
+#primary-cell,
+#secondary-cell {
+  fill: #9fbdbf;
+}
+
+.primary {
+  fill: #fedc97;
+}
+
+.secondary {
+  fill: #075b8d;
+}
 
 #cambrian {
-  height: 100%;
+  height: 11%;
+}
+
+#cambrian g {
+  opacity: 0;
 }
 
 /********** Plants *****************/
+
+#permian .particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(81, 169, 113);
+  border-radius: 50%;
+}
 
 
 .row {
@@ -151,9 +176,9 @@ section {
   justify-content: center;
 }
 
-.leaf {
-  width: 2em;
-  height: 2em;
+ .leaf {
+  width: 6em;
+  height: 6em;
   z-index: 10;
 }
 .leaf1 {
@@ -177,9 +202,15 @@ section {
   background: linear-gradient(320deg, #3ec58a 0%, #08512f 100%);
 }
 
+#extinction1 .leaf{
+  width: 10em;
+  height: 10em;
+  z-index: 10;
+}
+
 /********** Modern *****************/
 .phanerozoic {
-  /* background-color: #cae2c6; */
+  background-color: #e3e9ef;
 }
 
 #conclusion {

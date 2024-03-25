@@ -4,7 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
    ***************************************************/
   gsap.registerPlugin(MotionPathPlugin, ScrollTrigger, ScrollToPlugin);
 
-  const colorRamp = ["#181A1B", "#212426", "#282B2E", "#90979F", "#E3E9EF"];
+  const colorRamp = ["#181A1B", "#212426", "#282B2E", "#E3E9EF"];
+  const marineColors = ["#033F63", "#388F9B", "#7C9885", "#B5B682"];
+
+  //"#90979F",
 
   // Get the viewport dimensions
   const screenWidth = window.innerWidth;
@@ -27,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     hadean: 11,
     archean: 37,
     eukaryote: 18,
-    multicell: 22,
-    phanerozoic: 12,
+    multicell: 23,
+    phanerozoic: 11,
   };
 
   document.querySelector(".hadean").style.height =
@@ -84,16 +87,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Set ScrollTrigger between sections: https://gsap.com/community/forums/topic/30744-how-use-scrolltrigger-to-move-between-sections/
   document.querySelectorAll("section").forEach((section, index, sections) => {
+    let startSetting = "top top";
+    let endSetting = "bottom top";
+
+    if (index == 4 || index == 5) {
+      startSetting = "top bottom";
+    }
+
+    if (index == 3) {
+      endSetting = "bottom bottom";
+    }
+
     if (index > 0) {
       const startColor = colorRamp[index - 1];
       const endColor = colorRamp[index];
+
+      // console.log(startColor + ", " + endColor);
       gsap.to(section, {
         scrollTrigger: {
           trigger: section,
-          start: "top top",
-          end: "bottom top",
+          start: startSetting,
+          end: endSetting,
           toggleActions: "play play play reverse",
-          markers: true,
+          //markers: true,
           onEnter: () => {
             setNumberColor(section);
           },
@@ -342,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ease: "power2.out",
         onComplete: () => {
           if (cell.classList.contains("explode")) {
-            explodeCircle(cell);
+            explodeCircle(cell, "single-cell");
             cell.style.opacity = 0;
           } else {
             gsap.to(
@@ -363,7 +379,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  function explodeCircle(cell) {
+  function explodeCircle(cell, container) {
+    console.log("exploding");
     const numParticles = 15;
 
     for (let i = 0; i < numParticles; i++) {
@@ -380,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
       particle.style.position = "absolute";
       particle.style.top = cellTop + "px";
       particle.style.left = cellLeft + "px";
-      document.getElementById("single-cell").appendChild(particle);
+      document.getElementById(container).appendChild(particle);
 
       // Calculate the coordinates ensuring they are outside the viewport
       const buffer = 100;
@@ -446,26 +463,23 @@ document.addEventListener("DOMContentLoaded", () => {
   cell2Path.style.strokeDashoffset = cell2Length;
 
   eukaryoteTl
-    .to(
-      "#cell1",
-      {
-        duration: 1,
-        fill: "#466B73",
-        scale: 2,
-        strokeDashoffset: 0,
-      },
-      0
-    )
-    .to(
-      "#cell2",
-      {
-        duration: 1,
-        fill: "#466B73",
-        scale: 2,
-        strokeDashoffset: 0,
-      },
-      0.5
-    );
+    .to("#mainCell", {
+      duration: 0.5,
+      r: "3em",
+    })
+    .to("#cell1", {
+      duration: 0.5,
+      fill: "#466B73",
+      scale: 2,
+      strokeDashoffset: 0,
+    })
+
+    .to("#cell2", {
+      duration: 0.5,
+      fill: "#466B73",
+      scale: 2,
+      strokeDashoffset: 0,
+    });
 
   eukaryoteTl.to("#mainCell", {
     duration: 3,
@@ -479,15 +493,16 @@ document.addEventListener("DOMContentLoaded", () => {
         duration: 0.1,
         opacity: 0,
       },
-      "-=2.3"
+      "-=2.0"
     )
     .to(
       "#mainCell",
       {
         duration: 0.1,
-        r: "2em",
+        r: "4em",
+        fill: "#63A095",
       },
-      "-=2.3"
+      "-=2.0"
     );
 
   eukaryoteTl
@@ -497,15 +512,16 @@ document.addEventListener("DOMContentLoaded", () => {
         duration: 0.1,
         opacity: 0,
       },
-      "-=1.3"
+      "-=1.0"
     )
     .to(
       "#mainCell",
       {
         duration: 0.1,
-        r: "4em",
+        r: "6em",
+        fill: "#466B73",
       },
-      "-=1.3"
+      "-=1.0"
     );
 
   eukaryoteTl.to("#mainCell", {
@@ -520,17 +536,14 @@ document.addEventListener("DOMContentLoaded", () => {
    * Expansion of cell into fungi
    ***************************************************/
 
-  const multiCell = gsap.timeline({
-    scrollTrigger: {
-      trigger: "#multi-cell",
-      start: "top top",
-      end: "bottom top",
-      //scrub: true,
-      //pin: true,
-      //markers: true,
-      //anticipatePin: false
-    },
-  });
+  // const multiTl = gsap.timeline({
+  //   scrollTrigger: {
+  //     trigger: "#multi-cell",
+  //     start: "top top",
+  //     end: "bottom top",
+  //     markers: true,
+  //   },
+  // });
 
   const fungiSvg = document.querySelector("#fungi");
   const translationY = screenHeight / 2;
@@ -550,6 +563,7 @@ document.addEventListener("DOMContentLoaded", () => {
         start: "top 50%",
         toggleActions: "play none none reverse",
         ease: "power1.out",
+        scrub: true,
       },
       strokeDashoffset: 0, // Animate stroke-dashoffset to 0, revealing the entire line
       duration: 0.5, // Duration of the animation
@@ -561,58 +575,193 @@ document.addEventListener("DOMContentLoaded", () => {
    * Cell fusing + replication
    ***************************************************/
 
-  gsap.set("#primary-cell", {});
+  gsap.set("#primary-cell", { cx: screenWidth / 2 - 35, cy: 0 });
+  gsap.set("#secondary-cell", { cx: screenWidth / 2 + 170, cy: 0 });
 
-  let select = (s) => document.querySelector(s),
-    selectAll = (s) => document.querySelectorAll(s),
-    mainSVG = select("#mainSVG");
+  gsap.set(".primary", { cx: screenWidth / 3, cy: screenHeight / 2 });
+  gsap.set(".secondary", { cx: (screenWidth * 2) / 3, cy: screenHeight / 2 });
 
-  gsap.set("svg", {
-    visibility: "visible",
-  });
+  gsap.set("#cell-group", { opacity: 0 });
 
-  let reproductionTl = gsap.timeline({
-
-    defaults: {
-      ease: "sine.inOut",
+  const reproductionTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#sexual-reproduction",
+      start: "top 10",
+      end: "bottom bottom",
+      scrub: true,
+      pin: true,
+      pinSpacing: false,
+      //markers: true,
     },
   });
-  reproductionTl.add("step1")
+
+  reproductionTl
     .to(
-      ".right",
+      "#primary-cell",
       {
-        x: 100,
+        duration: 1,
+        cx: screenWidth / 3,
+        cy: screenHeight / 2,
+        r: "4em",
+        fill: "#FEDC97",
       },
-      "step1"
+      0
     )
+    .to(
+      "#secondary-cell",
+      {
+        duration: 1,
+        cx: (screenWidth * 2) / 3,
+        cy: screenHeight / 2,
+        r: "4em",
+        fill: "#075B8D",
+      },
+      0
+    )
+    .to("#primary-cell, #secondary-cell", {
+      duration: 0.01,
+      opacity: 0,
+    });
+
+  reproductionTl
+    .to("#cell-group", {
+      duration: 0.01,
+      opacity: 1,
+    })
+    .to(
+      ".top",
+      {
+        duration: 1,
+        cx: screenWidth / 2,
+      },
+      1
+    )
+    .to(
+      ".down",
+      {
+        duration: 1,
+        cx: screenWidth / 2,
+      },
+      1
+    )
+    .to(
+      ".top, .down",
+      {
+        duration: 1,
+        fill: "#1D828F",
+      },
+      "-=0.7"
+    )
+    .add("td")
+    .to(
+      ".top",
+      {
+        duration: 1,
+        y: "-6em",
+      },
+      "td"
+    )
+    .to(
+      ".down",
+      {
+        duration: 1,
+        y: "6em",
+      },
+      "td"
+    )
+    .add("lr")
     .to(
       ".left",
       {
-        x: -100,
+        duration: 1,
+        x: "-12em",
       },
-      "step1"
+      "lr"
     )
-    // .add("step2")
-    // .to(
-    //   ".up",
-    //   {
-    //     rotation: gsap.utils.wrap([90, -90]),
-    //     svgOrigin: "400 300",
-    //   },
-    //   "step2"
-    // )
-    // .to(
-    //   ".down",
-    //   {
-    //     rotation: gsap.utils.wrap([-90, 90]),
-    //     svgOrigin: "400 300",
-    //   },
-    //   "step2"
-    // )
-    // .add("step3")
-    // .to(".dot", {
-    //   y: gsap.utils.wrap([-100, 100]),
-    // });
+    .to(
+      ".right",
+      {
+        duration: 1,
+        x: "12em",
+      },
+      "lr"
+    )
+    .add("lr2")
+    .to(
+      ".right2",
+      {
+        duration: 1,
+        x: "12em",
+      },
+      "lr2"
+    )
+    .to(
+      ".left2",
+      {
+        duration: 1,
+        x: "-12em",
+      },
+      "lr2"
+    )
+    .add("td2")
+    .to(
+      ".top2",
+      {
+        duration: 1,
+        y: "-18em",
+      },
+      "td2"
+    )
+    .to(
+      ".down2",
+      {
+        duration: 1,
+        y: "18em",
+      },
+      "td2"
+    )
+    .add("tdlr3")
+    .to(
+      ".top3",
+      {
+        duration: 1,
+        y: "-18em",
+      },
+      "tdlr3"
+    )
+    .to(
+      ".down3",
+      {
+        duration: 1,
+        y: "18em",
+      },
+      "tdlr3"
+    )
+    .to(
+      ".left3",
+      {
+        duration: 1,
+        x: "0em",
+      },
+      "tdlr3"
+    )
+    .to(
+      ".right3",
+      {
+        duration: 1,
+        x: "0em",
+      },
+      "tdlr3"
+    )
+    .to("#cell-group", {
+      duration: 1,
+      scale: 0.1,
+      rotation: 180,
+      transformOrigin: "center",
+    })
+    .to("#cell-group", {
+      y: 250,
+    });
 
   /****************************************************
    * Section 7: Cambrian Explosion
@@ -624,53 +773,198 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: "#cambrian",
       start: "top top",
       end: "bottom top",
+      markers: true,
     },
   });
 
-  const growTogetherAnim = gsap.timeline();
+  const container = document.getElementById("cambrian");
 
-  // Add animation to scale up the leafs
-  growTogetherAnim.fromTo(
-    ".plant .leaf",
-    { scale: 0.1 },
-    { scale: 1, duration: 2, ease: "power2.out" }
-  );
+  const groups = document.querySelectorAll("#cambrian g");
 
-  const staggerGrowAnim = gsap.timeline();
+  groups.forEach((group, index) => {
+    const color = marineColors[index % marineColors.length];
+    group.style.fill = color;
+    // Apply fill color to circles using CSS
+    group.querySelectorAll("circle").forEach((circle) => {
+      circle.style.fill = "inherit";
+    });
 
-  const plants = document.querySelectorAll(".plant");
-
-  plants.forEach((plant) => {
-    gsap.to(plant, {
+    gsap.to(group, {
       scrollTrigger: {
-        trigger: plant,
+        trigger: group,
         start: "top 50%",
         toggleActions: "play none none reverse",
-        ease: "power1.out",
-        markers: true,
-        scrub: true,
-        animation: growTogetherAnim,
+        ease: "power4.in",
       },
-      rotation: 360, // Animate stroke-dashoffset to 0, revealing the entire line
-      duration: 0.4, // Duration of the animation
+      opacity: 1,
+      scale: 1.2,
+      transformOrigin: "center",
+      rotation: randomInRange(-360, 360),
+      duration: randomInRange(1, 2),
     });
   });
 
   /****************************************************
-   * Section 8: Marine Organisms
+   * Section 8: Plants
+   * Create spirals and little skeleton fossils
+   ***************************************************/
+
+  const ordovicanTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#ordovican",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+
+      onUpdate: (self) => {
+        const leaves = document.querySelectorAll("#permian .leaf");
+        // Check if the scroll position is at the end of the section
+        if (self.progress === 1) {
+          leaves.forEach((leaf) => {
+            explodeCircle(leaf, "permian");
+            leaf.style.opacity = 0;
+          });
+        } else {
+          leaves.forEach((leaf) => {
+            leaf.style.opacity = 1;
+          });
+        }
+      },
+    },
+  });
+
+
+  const devonianTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#devonian",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+
+      onUpdate: (self) => {
+        const leaves = document.querySelectorAll("#devonian .leaf");
+        // Check if the scroll position is at the end of the section
+        if (self.progress === 1) {
+          leaves.forEach((leaf) => {
+            explodeCircle(leaf, "permian");
+            leaf.style.opacity = 0;
+          });
+        } else {
+          leaves.forEach((leaf) => {
+            leaf.style.opacity = 1;
+          });
+        }
+      },
+    },
+  });
+
+
+  const plants = document.querySelectorAll(".plant");
+
+  const permianTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#permian",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+
+      onUpdate: (self) => {
+        const leaves = document.querySelectorAll("#permian .leaf");
+        // Check if the scroll position is at the end of the section
+        if (self.progress === 1) {
+          leaves.forEach((leaf) => {
+            explodeCircle(leaf, "permian");
+            leaf.style.opacity = 0;
+          });
+        } else {
+          leaves.forEach((leaf) => {
+            leaf.style.opacity = 1;
+          });
+        }
+      },
+    },
+  });
+
+  plants.forEach((plant) => {
+    // Generate a random padding value between 30% to 40% of the screen width
+    const randomPadding = Math.random() * 80;
+
+    // Randomly choose between applying padding to left or right side
+    const side = Math.random() < 0.5 ? "left" : "right";
+
+    // Apply the random padding as inline style to the chosen side of the row
+    plant.style[
+      `padding${side.charAt(0).toUpperCase() + side.slice(1)}`
+    ] = `${randomPadding}%`;
+  });
+
+  plants.forEach((plant) => {
+    const leaves = plant.querySelectorAll(".leaf"); // Select all leaves within the current plant
+
+    leaves.forEach((leaf) => {
+      const growTogetherAnim = gsap.timeline({
+        scrollTrigger: {
+          trigger: plant,
+          start: "top 50%",
+          end: "bottom 50%",
+          toggleActions: "play none none reverse",
+          ease: "power1.out",
+          markers: true,
+          scrub: true,
+        },
+      });
+
+      growTogetherAnim.fromTo(
+        leaf, // Target only the current leaf
+        { scale: 0.01 },
+        { scale: 1, duration: 2, ease: "power2.out" }
+      );
+    });
+  });
+
+
+  const triassicTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#triassic",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+
+      pin: true,
+      pinSpacing: false,
+      markers: true,
+
+      onUpdate: (self) => {
+        const leaves = document.querySelectorAll("#devonian .leaf");
+        // Check if the scroll position is at the end of the section
+        if (self.progress === 1) {
+          leaves.forEach((leaf) => {
+            explodeCircle(leaf, "permian");
+            leaf.style.opacity = 0;
+          });
+        } else {
+          leaves.forEach((leaf) => {
+            leaf.style.opacity = 1;
+          });
+        }
+      },
+    },
+  });
+
+  /****************************************************
+   * Section 9: More Stuff
    * Create spirals and little skeleton fossils
    ***************************************************/
 });
-
-// gsap
-//   .timeline({
-//     scrollTrigger: {
-//       trigger: "#single-cell",
-//       start: "top top",
-//       end: "bottom bottom",
-//       scrub: 1,
-//     },
-//   })
-//   .to("path", {
-//     strokeDashoffset: 0,
-//   });
