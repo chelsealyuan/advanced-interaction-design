@@ -106,6 +106,10 @@ section {
 #multi-cell {
 }
 
+#fungi-container{
+  height: 19%;
+}
+
 #fungi {
   transform-origin: top;
 }
@@ -125,7 +129,7 @@ section {
 /********** Sexual Reproduction *****************/
 
 #sexual-reproduction {
-  height: 68%;
+  height: 70%;
 }
 
 #cell-group2 {
@@ -169,14 +173,13 @@ section {
   border-radius: 50%;
 }
 
-
 .row {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
- .leaf {
+.leaf {
   width: 6em;
   height: 6em;
   z-index: 10;
@@ -202,7 +205,7 @@ section {
   background: linear-gradient(320deg, #3ec58a 0%, #08512f 100%);
 }
 
-#extinction1 .leaf{
+#extinction1 .leaf {
   width: 10em;
   height: 10em;
   z-index: 10;
@@ -211,6 +214,46 @@ section {
 /********** Modern *****************/
 .phanerozoic {
   background-color: #e3e9ef;
+}
+
+#ordovican {
+  height: 20%;
+}
+
+#ordovican .trilobite {
+  background-color: #075b8d;
+  height: 4em;
+  width: 3em;
+  clip-path: polygon(
+    20% 0%,
+    80% 0%,
+    100% 20%,
+    100% 80%,
+    100% 100%,
+    0 100%,
+    0% 80%,
+    0% 20%
+  );
+}
+
+#ordovican .graptolite {
+  background-color: #7c9885;
+  height: 4em;
+  width: 2em;
+}
+
+#devonian {
+  height: 20%;
+}
+
+
+#permian {
+  height: 20%;
+}
+
+
+#cretaceous {
+  height: 20%;
 }
 
 #conclusion {

@@ -379,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  function explodeCircle(cell, container) {
+  function explodeCircle(cell, container, color) {
     console.log("exploding");
     const numParticles = 15;
 
@@ -397,6 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
       particle.style.position = "absolute";
       particle.style.top = cellTop + "px";
       particle.style.left = cellLeft + "px";
+      particle.style.backgroundColor = color;
       document.getElementById(container).appendChild(particle);
 
       // Calculate the coordinates ensuring they are outside the viewport
@@ -805,9 +806,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /****************************************************
-   * Section 8: Plants
+   * Section 8: Ordovican
    * Create spirals and little skeleton fossils
    ***************************************************/
+
+  function generateRandomPosition(existingPositions, width, height) {
+    let x, y;
+
+    // Keep generating random positions until a non-overlapping one is found
+    do {
+      x = Math.random() * (window.innerWidth - width);
+      y = Math.random() * (window.innerHeight - height);
+    } while (
+      existingPositions.some(
+        ([x1, y1, w1, h1]) =>
+          x < x1 + w1 && x + width > x1 && y < y1 + h1 && y + height > y1
+      )
+    );
+
+    return [x, y];
+  }
+
+  const ordovicanOrganisms = document.querySelectorAll("#ordovican .organism");
+  let ordovicanPositions = [];
+
+  ordovicanOrganisms.forEach((organism) => {
+    console.log(organism);
+    const width = organism.offsetWidth;
+    const height = organism.offsetHeight;
+
+    // Generate a random non-overlapping position for the current trilobite
+    const [x, y] = generateRandomPosition(ordovicanPositions, width, height);
+
+    // Set the position of the trilobite
+    organism.style.position = "absolute";
+    organism.style.left = `${x}px`;
+    organism.style.top = `${y}px`;
+
+    // Store the position of the placed trilobite
+    ordovicanPositions.push([x, y, width, height]);
+  });
 
   const ordovicanTl = gsap.timeline({
     scrollTrigger: {
@@ -821,22 +859,44 @@ document.addEventListener("DOMContentLoaded", () => {
       markers: true,
 
       onUpdate: (self) => {
-        const leaves = document.querySelectorAll("#permian .leaf");
+        const organisms = document.querySelectorAll("#ordovican .organism");
         // Check if the scroll position is at the end of the section
         if (self.progress === 1) {
-          leaves.forEach((leaf) => {
-            explodeCircle(leaf, "permian");
-            leaf.style.opacity = 0;
+          organisms.forEach((organism) => {
+            if (!organism.classList.contains("save")) {
+              let color = organism.style.backgroundColor;
+              explodeCircle(organism, "ordovican", color);
+              organism.style.opacity = 0;
+            }
           });
         } else {
-          leaves.forEach((leaf) => {
-            leaf.style.opacity = 1;
+          organisms.forEach((organism) => {
+            organism.style.opacity = 1;
           });
         }
       },
     },
   });
 
+  const devonianOrganisms = document.querySelectorAll("#ordovican .organism");
+  let devonianPositions = [];
+
+  devonianOrganisms.forEach((organism) => {
+    console.log(organism);
+    const width = organism.offsetWidth;
+    const height = organism.offsetHeight;
+
+    // Generate a random non-overlapping position for the current trilobite
+    const [x, y] = generateRandomPosition(devonianPositions, width, height);
+
+    // Set the position of the trilobite
+    organism.style.position = "absolute";
+    organism.style.left = `${x}px`;
+    organism.style.top = `${y}px`;
+
+    // Store the position of the placed trilobite
+    devonianPositions.push([x, y, width, height]);
+  });
 
   const devonianTl = gsap.timeline({
     scrollTrigger: {
@@ -866,6 +926,25 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
+  const permianOrganisms = document.querySelectorAll("#ordovican .organism");
+  let permianPositions = [];
+
+  permianOrganisms.forEach((organism) => {
+    console.log(organism);
+    const width = organism.offsetWidth;
+    const height = organism.offsetHeight;
+
+    // Generate a random non-overlapping position for the current trilobite
+    const [x, y] = generateRandomPosition(permianPositions, width, height);
+
+    // Set the position of the trilobite
+    organism.style.position = "absolute";
+    organism.style.left = `${x}px`;
+    organism.style.top = `${y}px`;
+
+    // Store the position of the placed trilobite
+    permianPositions.push([x, y, width, height]);
+  });
 
   const plants = document.querySelectorAll(".plant");
 
@@ -934,10 +1013,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  const cretaceousOrganisms = document.querySelectorAll("#ordovican .organism");
+  let cretaceousPositions = [];
 
-  const triassicTl = gsap.timeline({
+  cretaceousOrganisms.forEach((organism) => {
+    console.log(organism);
+    const width = organism.offsetWidth;
+    const height = organism.offsetHeight;
+
+    // Generate a random non-overlapping position for the current trilobite
+    const [x, y] = generateRandomPosition(cretaceousPositions, width, height);
+
+    // Set the position of the trilobite
+    organism.style.position = "absolute";
+    organism.style.left = `${x}px`;
+    organism.style.top = `${y}px`;
+
+    // Store the position of the placed trilobite
+    cretaceousPositions.push([x, y, width, height]);
+  });
+
+  const cretaceousTl = gsap.timeline({
     scrollTrigger: {
-      trigger: "#triassic",
+      trigger: "#cretaceous",
       start: "top top",
       end: "bottom bottom",
       scrub: true,
