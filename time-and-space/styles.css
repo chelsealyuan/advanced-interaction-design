@@ -1,4 +1,4 @@
-html {
+body {
   font-family: "Manrope", sans-serif;
   background-color: #181a1b;
 }
@@ -6,6 +6,10 @@ html {
 section {
   position: relative;
   width: 100%;
+}
+
+svg {
+  position: relative;
 }
 
 .scroll-container {
@@ -106,7 +110,7 @@ section {
 #multi-cell {
 }
 
-#fungi-container{
+#fungi-container {
   height: 19%;
 }
 
@@ -128,7 +132,7 @@ section {
 
 /********** Sexual Reproduction *****************/
 
-#sexual-reproduction {
+#reproduction {
   height: 70%;
 }
 
@@ -165,12 +169,10 @@ section {
 
 /********** Plants *****************/
 
-#permian .particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: rgb(81, 169, 113);
-  border-radius: 50%;
+.plant {
+  width: 12em;
+  height: 12em;
+  transform-origin: center;
 }
 
 .row {
@@ -216,12 +218,18 @@ section {
   background-color: #e3e9ef;
 }
 
-#ordovican {
-  height: 20%;
+.organism {
+  position: absolute;
 }
 
-#ordovican .trilobite {
-  background-color: #075b8d;
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.trilobite {
   height: 4em;
   width: 3em;
   clip-path: polygon(
@@ -236,24 +244,128 @@ section {
   );
 }
 
-#ordovican .graptolite {
-  background-color: #7c9885;
+.graptolite {
+  height: 6em;
+  width: 3em;
+  clip-path: polygon(39% 0, 0% 100%, 77% 63%);
+}
+
+.brachiopod {
   height: 4em;
-  width: 2em;
+  width: 4em;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 39%, 75% 100%, 25% 100%, 0 41%);
+  background-color: #d7a83a;
+}
+
+
+#ordovican {
+  height: 25%;
 }
 
 #devonian {
   height: 20%;
 }
 
-
 #permian {
-  height: 20%;
+  height: 25%;
 }
-
 
 #cretaceous {
   height: 20%;
+}
+
+#human{
+  height: 10%;
+}
+
+#ordovican .trilobite,
+.particle {
+  background-color: #075b8d;
+}
+
+#ordovican .graptolite {
+  background-color: #7c9885;
+}
+
+
+
+#devonian .trilobite {
+  background-color: #78662d;
+}
+
+#devonian .graptolite {
+  background-color: #53683a;
+}
+
+
+
+#cretaceous .tetrapod1 {
+  height: 10em;
+  width: 10em;
+  clip-path: polygon(
+    59% 11%,
+    61% 44%,
+    98% 35%,
+    76% 60%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    23% 50%,
+    2% 35%,
+    25% 15%
+  );
+  background-color: #cb3c3c;
+}
+
+#cretaceous .tetrapod2 {
+  height: 6em;
+  width: 6em;
+  clip-path: polygon(
+    49% 21%,
+    80% 1%,
+    98% 35%,
+    76% 60%,
+    57% 55%,
+    40% 81%,
+    23% 67%,
+    4% 81%,
+    2% 35%,
+    30% 8%
+  );
+
+  background-color: #7386a6;
+}
+
+#cretaceous .tetrapod3 {
+  height: 8em;
+  width: 8em;
+  clip-path: polygon(
+    55% 18%,
+    100% 25%,
+    100% 78%,
+    81% 100%,
+    57% 82%,
+    35% 82%,
+    31% 41%,
+    2% 43%,
+    1% 21%,
+    30% 0
+  );
+
+  background-color: #8f3251;
+}
+
+#human-circle{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 6em;
+  height: 6em;
+
+  border-radius: 200px;
+
+  background-color: black;
 }
 
 #conclusion {

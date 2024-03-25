@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: ".container",
       start: "top top",
       end: "bottom bottom",
-
+      //markers: true,
       onUpdate: (self) => {
         const roundedProgress = self.progress.toFixed(6);
         const newValue = initialValue - roundedProgress * initialValue;
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
       startSetting = "top bottom";
     }
 
-    if (index == 3) {
+    if (index == 3 || index == 5) {
       endSetting = "bottom bottom";
     }
 
@@ -586,13 +586,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const reproductionTl = gsap.timeline({
     scrollTrigger: {
-      trigger: "#sexual-reproduction",
+      trigger: "#reproduction",
       start: "top 10",
       end: "bottom bottom",
       scrub: true,
       pin: true,
       pinSpacing: false,
-      //markers: true,
     },
   });
 
@@ -774,7 +773,7 @@ document.addEventListener("DOMContentLoaded", () => {
       trigger: "#cambrian",
       start: "top top",
       end: "bottom top",
-      markers: true,
+      //markers: true,
     },
   });
 
@@ -807,56 +806,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /****************************************************
    * Section 8: Ordovican
-   * Create spirals and little skeleton fossils
+   * Trilobites, graptolite
    ***************************************************/
 
-  function generateRandomPosition(existingPositions, width, height) {
-    let x, y;
-
-    // Keep generating random positions until a non-overlapping one is found
-    do {
-      x = Math.random() * (window.innerWidth - width);
-      y = Math.random() * (window.innerHeight - height);
-    } while (
-      existingPositions.some(
-        ([x1, y1, w1, h1]) =>
-          x < x1 + w1 && x + width > x1 && y < y1 + h1 && y + height > y1
-      )
-    );
-
-    return [x, y];
-  }
-
+  // const phanerozoicTl = gsap.timeline({
+  //   scrollTrigger: {
+  //     trigger: ".phanerozoic",
+  //     start: "top top",
+  //     end: "bottom bottom",
+  //     markers: true,
+  //     pin: true,
+  //     pinSpacing: false,
+  //   },
+  // });
   const ordovicanOrganisms = document.querySelectorAll("#ordovican .organism");
   let ordovicanPositions = [];
 
   ordovicanOrganisms.forEach((organism) => {
-    console.log(organism);
-    const width = organism.offsetWidth;
-    const height = organism.offsetHeight;
+    // //console.log(organism);
+    // const width = organism.offsetWidth;
+    // const height = organism.offsetHeight;
 
-    // Generate a random non-overlapping position for the current trilobite
-    const [x, y] = generateRandomPosition(ordovicanPositions, width, height);
+    // // Generate a random non-overlapping position for the current trilobite
+    // const [x, y] = generateRandomPosition(ordovicanPositions, width, height);
 
-    // Set the position of the trilobite
-    organism.style.position = "absolute";
-    organism.style.left = `${x}px`;
-    organism.style.top = `${y}px`;
+    // // Set the position of the trilobite
+    // organism.style.position = "absolute";
+    // organism.style.left = `${x}px`;
+    // organism.style.top = `${y}px`;
 
-    // Store the position of the placed trilobite
-    ordovicanPositions.push([x, y, width, height]);
+    // // Store the position of the placed trilobite
+    // ordovicanPositions.push([x, y, width, height]);
+
+    gsap.to(organism, {
+      duration: randomInRange(0.5, 1.5),
+      repeat: -1,
+      yoyo: true,
+      delay: randomInRange(0, 1),
+
+      transformOrigin: "center",
+      rotation: randomInRange(-360, 360),
+      ease: "power1.out",
+    });
   });
 
   const ordovicanTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#ordovican",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       scrub: true,
 
       pin: true,
       pinSpacing: false,
-      markers: true,
 
       onUpdate: (self) => {
         const organisms = document.querySelectorAll("#ordovican .organism");
@@ -864,7 +866,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (self.progress === 1) {
           organisms.forEach((organism) => {
             if (!organism.classList.contains("save")) {
-              let color = organism.style.backgroundColor;
+              let color = getComputedStyle(organism).backgroundColor;
               explodeCircle(organism, "ordovican", color);
               organism.style.opacity = 0;
             }
@@ -878,72 +880,93 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  const devonianOrganisms = document.querySelectorAll("#ordovican .organism");
+  /****************************************************
+   * Section 9: Devonian
+   * Trilobites, brachiopods, graptolite
+   ***************************************************/
+
+  const devonianOrganisms = document.querySelectorAll("#devonian .organism");
   let devonianPositions = [];
 
   devonianOrganisms.forEach((organism) => {
-    console.log(organism);
-    const width = organism.offsetWidth;
-    const height = organism.offsetHeight;
+    // //console.log(organism);
+    // const width = organism.offsetWidth;
+    // const height = organism.offsetHeight;
 
-    // Generate a random non-overlapping position for the current trilobite
-    const [x, y] = generateRandomPosition(devonianPositions, width, height);
+    // // Generate a random non-overlapping position for the current trilobite
+    // const [x, y] = generateRandomPosition(devonianPositions, width, height);
 
-    // Set the position of the trilobite
-    organism.style.position = "absolute";
-    organism.style.left = `${x}px`;
-    organism.style.top = `${y}px`;
+    // // Set the position of the trilobite
+    // organism.style.position = "absolute";
+    // organism.style.left = `${x}px`;
+    // organism.style.top = `${y}px`;
 
-    // Store the position of the placed trilobite
-    devonianPositions.push([x, y, width, height]);
+    // // Store the position of the placed trilobite
+    // devonianPositions.push([x, y, width, height]);
+
+    gsap.to(organism, {
+      duration: randomInRange(0.5, 1.5),
+      repeat: -1,
+      yoyo: true,
+      delay: randomInRange(0, 1),
+      scale: randomInRange(0.9, 1.5),
+
+      transformOrigin: "center",
+      rotation: randomInRange(-360, 360),
+      ease: "power1.out",
+    });
   });
 
   const devonianTl = gsap.timeline({
     scrollTrigger: {
       trigger: "#devonian",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       scrub: true,
 
       pin: true,
       pinSpacing: false,
-      markers: true,
 
       onUpdate: (self) => {
-        const leaves = document.querySelectorAll("#devonian .leaf");
+        const organisms = document.querySelectorAll("#devonian .organism");
         // Check if the scroll position is at the end of the section
         if (self.progress === 1) {
-          leaves.forEach((leaf) => {
-            explodeCircle(leaf, "permian");
-            leaf.style.opacity = 0;
+          organisms.forEach((organism) => {
+            if (!organism.classList.contains("save")) {
+              let color = getComputedStyle(organism).backgroundColor;
+              explodeCircle(organism, "devonian", color);
+              organism.style.opacity = 0;
+            }
           });
         } else {
-          leaves.forEach((leaf) => {
-            leaf.style.opacity = 1;
+          organisms.forEach((organism) => {
+            organism.style.opacity = 1;
           });
         }
       },
     },
   });
 
-  const permianOrganisms = document.querySelectorAll("#ordovican .organism");
+  /****************************************************
+   * Section 9: Permian
+   * trees, plants, coral,
+   ***************************************************/
+
+  const permianOrganisms = document.querySelectorAll("#permian .organism");
   let permianPositions = [];
 
   permianOrganisms.forEach((organism) => {
-    console.log(organism);
-    const width = organism.offsetWidth;
-    const height = organism.offsetHeight;
-
-    // Generate a random non-overlapping position for the current trilobite
-    const [x, y] = generateRandomPosition(permianPositions, width, height);
-
-    // Set the position of the trilobite
-    organism.style.position = "absolute";
-    organism.style.left = `${x}px`;
-    organism.style.top = `${y}px`;
-
-    // Store the position of the placed trilobite
-    permianPositions.push([x, y, width, height]);
+    // //console.log(organism);
+    // const width = organism.offsetWidth;
+    // const height = organism.offsetHeight;
+    // // Generate a random non-overlapping position for the current trilobite
+    // const [x, y] = generateRandomPosition(permianPositions, width, height);
+    // // Set the position of the trilobite
+    // organism.style.position = "absolute";
+    // organism.style.left = `${x}px`;
+    // organism.style.top = `${y}px`;
+    // // Store the position of the placed trilobite
+    // permianPositions.push([x, y, width, height]);
   });
 
   const plants = document.querySelectorAll(".plant");
@@ -952,41 +975,29 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollTrigger: {
       trigger: "#permian",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       scrub: true,
 
       pin: true,
       pinSpacing: false,
-      markers: true,
 
       onUpdate: (self) => {
-        const leaves = document.querySelectorAll("#permian .leaf");
+        const organisms = document.querySelectorAll("#permian .organism");
         // Check if the scroll position is at the end of the section
         if (self.progress === 1) {
-          leaves.forEach((leaf) => {
-            explodeCircle(leaf, "permian");
-            leaf.style.opacity = 0;
+          organisms.forEach((organism) => {
+            if (!organism.classList.contains("save")) {
+              explodeCircle(organism, "permian", "green");
+              organism.style.opacity = 0;
+            }
           });
         } else {
-          leaves.forEach((leaf) => {
-            leaf.style.opacity = 1;
+          organisms.forEach((organism) => {
+            organism.style.opacity = 1;
           });
         }
       },
     },
-  });
-
-  plants.forEach((plant) => {
-    // Generate a random padding value between 30% to 40% of the screen width
-    const randomPadding = Math.random() * 80;
-
-    // Randomly choose between applying padding to left or right side
-    const side = Math.random() < 0.5 ? "left" : "right";
-
-    // Apply the random padding as inline style to the chosen side of the row
-    plant.style[
-      `padding${side.charAt(0).toUpperCase() + side.slice(1)}`
-    ] = `${randomPadding}%`;
   });
 
   plants.forEach((plant) => {
@@ -996,11 +1007,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const growTogetherAnim = gsap.timeline({
         scrollTrigger: {
           trigger: plant,
-          start: "top 50%",
-          end: "bottom 50%",
+          start: "top top",
           toggleActions: "play none none reverse",
           ease: "power1.out",
-          markers: true,
+
           scrub: true,
         },
       });
@@ -1013,24 +1023,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const cretaceousOrganisms = document.querySelectorAll("#ordovican .organism");
+  /****************************************************
+   * Section 9: Cretaceous
+   ***************************************************/
+
+  const cretaceousOrganisms = document.querySelectorAll(
+    "#cretaceous .organism"
+  );
   let cretaceousPositions = [];
 
   cretaceousOrganisms.forEach((organism) => {
-    console.log(organism);
-    const width = organism.offsetWidth;
-    const height = organism.offsetHeight;
+    // console.log(organism);
+    // const width = organism.offsetWidth;
+    // const height = organism.offsetHeight;
 
-    // Generate a random non-overlapping position for the current trilobite
-    const [x, y] = generateRandomPosition(cretaceousPositions, width, height);
+    // // Generate a random non-overlapping position for the current trilobite
+    // const [x, y] = generateRandomPosition(cretaceousPositions, width, height);
 
-    // Set the position of the trilobite
-    organism.style.position = "absolute";
-    organism.style.left = `${x}px`;
-    organism.style.top = `${y}px`;
+    // // Set the position of the trilobite
+    // organism.style.position = "absolute";
+    // organism.style.left = `${x}px`;
+    // organism.style.top = `${y}px`;
 
-    // Store the position of the placed trilobite
-    cretaceousPositions.push([x, y, width, height]);
+    // // Store the position of the placed trilobite
+    // cretaceousPositions.push([x, y, width, height]);
+
+    gsap.to(organism, {
+      duration: randomInRange(0.5, 1.5),
+      repeat: -1,
+      yoyo: true,
+      delay: randomInRange(0, 1),
+      scaleX: randomInRange(0.8, 1.2),
+      rotation: randomInRange(-45, 45),
+
+      x: randomInRange(-100, 100),
+      y: randomInRange(-100, 100),
+
+      transformOrigin: "center",
+      ease: "power1.out",
+    });
   });
 
   const cretaceousTl = gsap.timeline({
@@ -1042,19 +1073,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       pin: true,
       pinSpacing: false,
-      markers: true,
+
+      onEnter: (self) => {
+        document.body.style.backgroundColor = "#e3e9ef";
+      },
 
       onUpdate: (self) => {
-        const leaves = document.querySelectorAll("#devonian .leaf");
+        const organisms = document.querySelectorAll("#cretaceous .organism");
         // Check if the scroll position is at the end of the section
         if (self.progress === 1) {
-          leaves.forEach((leaf) => {
-            explodeCircle(leaf, "permian");
-            leaf.style.opacity = 0;
+          organisms.forEach((organism) => {
+            if (!organism.classList.contains("save")) {
+              let color = getComputedStyle(organism).backgroundColor;
+              explodeCircle(organism, "cretaceous", color);
+              organism.style.opacity = 0;
+            }
           });
         } else {
-          leaves.forEach((leaf) => {
-            leaf.style.opacity = 1;
+          organisms.forEach((organism) => {
+            organism.style.opacity = 1;
           });
         }
       },
@@ -1062,7 +1099,31 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /****************************************************
-   * Section 9: More Stuff
+   * Section 9: Human
    * Create spirals and little skeleton fossils
    ***************************************************/
+
+  const humanTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#human",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+      //markers: true,
+      pin: true,
+      pinSpacing: false,
+    },
+  });
+
+  humanTl
+    .to("#human-circle", {
+      transformOrigin: "bottom",
+      duration: 1,
+      height: "20em",
+    })
+    .to("#human-circle", {
+      duration: 1,
+      scale: 800,
+      y: "120%",
+    });
 });
