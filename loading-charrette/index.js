@@ -270,7 +270,7 @@ function load9(button, image, i) {
 
 // Call the function when needed, for example, when the button is clicked
 const button10 = document.querySelector("#content-10 button");
-const image10 = document.querySelector("#content-10 img");
+const image10 = document.querySelector("#moonImage");
 button10.addEventListener("click", function () {
   load10(button10, image10, 9);
 });
@@ -304,7 +304,7 @@ function load10(button, image, i) {
     if (progress < 1) {
       requestAnimationFrame(updateCounter);
     } else {
-      console.log("opacity");
+      image.style.opacity = 1;
     }
   };
 
@@ -314,72 +314,216 @@ function load10(button, image, i) {
 /**********************
  * Load 11
  **********************/
-function load11(button, image, i) {
-  console.log("picture 11");
-}
+const button11 = document.querySelector("#content-11 button");
 
-let prev = document.getElementById("prev");
-let next = document.getElementById("next");
+button11.addEventListener("click", function () {
+  load11(button11, 11);
+});
 
-prev.addEventListener("click", prevImg);
-next.addEventListener("click", nextImg);
+function load11(button, i) {
+  let but = document.getElementById("but");
+  let video = document.getElementById("vid");
+  let mediaDevices = navigator.mediaDevices;
+  vid.muted = true;
 
-let second = document.getElementById("second");
-
-function prevImg() {
-  second.style.msTransform = "rotateY(0deg)";
-  second.style.webkitTransform = "rotateY(0deg)";
-  second.style.transform = "rotateY(0deg)";
-}
-function nextImg() {
-  second.style.msTransform = "rotateY(-180deg)";
-  second.style.webkitTransform = "rotateY(-180deg)";
-  second.style.transform = "rotateY(-180deg)";
+  mediaDevices
+    .getUserMedia({
+      video: true,
+    })
+    .then((stream) => {
+      video.srcObject = stream;
+      video.addEventListener("loadedmetadata", () => {
+        video.play();
+      });
+    })
+    .catch(alert);
 }
 
 /**********************
  * Load 12
  **********************/
-function load12() {
-  console.log("picture 12");
+const button12 = document.querySelector("#content-12 button");
+const image12 = document.querySelector("#content-12 img");
+image12.style.opacity = 0;
+
+button12.addEventListener("click", function () {
+  load12(button12, image12, 12);
+});
+
+function load12(button, image, i) {
+  const colors = ["361A09", "7A7C55", "8F2E07", "D0A904"];
+  const colorsDiv = document.getElementById("colors");
+
+  colorsDiv.style.opacity = 1;
+  image.style.opacity = 0;
+
+  // Function to fill colors and show image
+  const fillColorsAndShow = (index) => {
+    if (index < colors.length) {
+      colorsDiv.style.backgroundColor = "#" + colors[index];
+      setTimeout(() => {
+        fillColorsAndShow(index + 1);
+      }, 500); // Half a second delay
+    } else {
+      // All colors filled, make image opacity 1
+      image.style.opacity = 1;
+      colorsDiv.style.opacity = 0;
+    }
+  };
+
+  // Start filling colors and showing image
+  fillColorsAndShow(0);
 }
 
-// Load function for index 13
-function load13() {
-  console.log("picture 13");
+/**********************
+ * Load 13
+ **********************/
+let holdTimeout;
+let movingUp = false;
+
+function moveImageUp() {
+  const image = document.getElementById("imageToLoad");
+  image.style.top = "0"; // Move image to the top of the container
+  movingUp = true;
 }
 
-// Load function for index 14
-function load14() {
-  console.log("picture 14");
+function moveImageDown() {
+  const image = document.getElementById("imageToLoad");
+  image.style.top = "100%"; // Move image back down outside the container
+  movingUp = false;
 }
 
-// Load function for index 15
+function handleHold() {
+  moveImageUp();
+  holdTimeout = setTimeout(moveImageDown, 5000); // Move image back down after 5 seconds
+}
+
+function handleRelease() {
+  clearTimeout(holdTimeout); // Clear the hold timeout
+  if (movingUp) {
+    moveImageDown(); // Move image back down if it's still moving up
+  }
+}
+
+const loadButton = document.querySelector("#content-13 button");
+loadButton.addEventListener("mousedown", handleHold);
+loadButton.addEventListener("mouseup", handleRelease);
+loadButton.addEventListener("mouseleave", handleRelease);
+
+/**********************
+ * Load 14
+ **********************/
+const button14 = document.querySelector("#content-14 button");
+
+button14.addEventListener("click", function () {
+  load14(button14, 14);
+});
+
+function load14(button, i) {
+  // Get the reference to the image element
+  const image = new Image();
+
+  // Start measuring time when the button is clicked
+  const startTime = performance.now();
+
+  // Listen to the load event of the image
+  image.addEventListener("load", () => {
+    // Calculate the time it took for the image to load
+    const loadTime = performance.now() - startTime;
+
+    document.querySelector("#load-time").textContent =
+      "Image load time: " + loadTime.toFixed(4) + " milliseconds";
+
+    document.querySelector("#content-14 .image-container").innerHTML = "";
+    document.querySelector("#content-14 .image-container").appendChild(image);
+  });
+
+  // Set the image source after the event listener is attached
+  image.src =
+    "https://vastphotos.com/files/uploads/social/good-morning-new-york.jpg"; // Replace 'example.jpg' with the actual path to your image
+}
+
+/**********************
+ * Load 15
+ **********************/
+const button15 = document.querySelector("#content-15 button");
+
+button15.addEventListener("click", function () {
+  load15(button15, 15);
+});
+
 function load15() {
-  console.log("picture 15");
+  const screen = document.querySelector("#content-15 .screen");
+  screen.style.width = "100%";
+
+  setTimeout(() => {
+    screen.style.width = "50%";
+  }, 500);
+
+  setTimeout(() => {
+    screen.style.width = "0%";
+  }, 1000);
 }
 
-// Load function for index 16
+/**********************
+ * Load 16
+ **********************/
+const button16 = document.querySelector("#content-16 button");
+
+button16.addEventListener("click", function () {
+  load16(button16, 15);
+});
+
 function load16() {
   console.log("picture 16");
 }
 
-// Load function for index 17
+/**********************
+ * Load 17
+ **********************/
+const button17 = document.querySelector("#content-17 button");
+
+button15.addEventListener("click", function () {
+  load17(button17, 17);
+});
+
 function load17() {
   console.log("picture 17");
 }
 
-// Load function for index 18
+/**********************
+ * Load 18
+ **********************/
+const button18 = document.querySelector("#content-18 button");
+
+button18.addEventListener("click", function () {
+  load18(button18, 18);
+});
+
 function load18() {
   console.log("picture 18");
 }
 
-// Load function for index 19
+/**********************
+ * Load 19
+ **********************/
+const button19 = document.querySelector("#content-19 button");
+
+button19.addEventListener("click", function () {
+  load19(button19, 19);
+});
 function load19() {
   console.log("picture 19");
 }
 
-// Load function for index 20
+/**********************
+ * Load 20
+ **********************/
+const button20 = document.querySelector("#content-20 button");
+
+button20.addEventListener("click", function () {
+  load20(button20, 20);
+});
 function load20() {
   console.log("picture 20");
 }

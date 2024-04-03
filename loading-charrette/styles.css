@@ -194,115 +194,67 @@ button:active {
   filter: blur(10px);
 }
 
-#content-10 img {
+#content-10 #moonImage {
   opacity: 0;
 }
 
-#content-11 {
-  .container {
-    width: 400px;
-    height: 300px;
+#content-11 #vid {
+  width: 100%;
+}
+
+#content12-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#content12-container img {
+  position: absolute;
+  height: 100%;
+}
+
+#colors {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#content-13 {
+  .image-container {
     position: relative;
-
-    z-index: 100;
-    -webkit-perspective: 1300px;
-    perspective: 1300px;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  .page {
-    position: absolute;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-transition-property: -webkit-transform;
-    transition-property: transform;
-
-    width: 50%;
-    height: 100%;
-    left: 50%;
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-
-  #first,
-  #first .back {
-    -webkit-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-  }
-
-  #first {
-    z-index: 102;
-  }
-  #second {
-    z-index: 103;
-    transition: transform 0.8s ease-in-out;
-  }
-  #third .content {
-    width: 400px;
-  }
-  #fourth {
-    z-index: 101;
-  }
-
-  .page > div,
-  .outer,
-  .content,
-  .helper-class-to-make-bug-visbile {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-
-  .page > div {
-    width: 100%;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-  }
-
-  .back {
-    -webkit-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
-  }
-
-  .outer {
-    width: 100%;
     overflow: hidden;
-    z-index: 999;
+    width: 100%;
+    height: 250px; /* Set container height */
   }
 
-  /* problematic class: `.content` */
-  .content {
-    width: 200%;
-  }
-
-  .front .content {
-    left: -100%;
-  }
-
-  /* controls */
-  #prev,
-  #next {
+  #imageToLoad {
     position: absolute;
+    top: 100%; /* Initially position image outside the container */
+    left: 0;
+    width: 100%;
+    height: auto;
+    transition: top 5s linear; /* Transition the top position over 5 seconds */
+  }
+}
+
+#content-15 {
+  #image-container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .half-image {
     width: 50%;
-    height: 100%;
-    z-index: 999;
+    height: auto;
   }
-  #prev:hover,
-  #next:hover {
-    background: rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-  }
-  #prev {
+
+  .screen {
+    position: absolute;
     top: 0;
     left: 0;
-  }
-  #next {
-    top: 0;
-    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255);
   }
 }
