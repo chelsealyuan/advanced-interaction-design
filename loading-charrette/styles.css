@@ -1,0 +1,308 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 2em 4em;
+  background-color: rgb(221, 221, 221);
+}
+
+.content-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  column-gap: 1em;
+  row-gap: 1em;
+}
+
+.content img {
+  width: 100%;
+}
+
+.content {
+  padding: 1em;
+  border-radius: 0.5em;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5em;
+  background-color: white;
+  position: relative;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1em;
+  /* line-height: 3em; */
+}
+
+.hide {
+  background-color: #239985;
+}
+
+.hide:hover {
+  background-color: #186e5f;
+}
+
+.hide:active {
+  background-color: #27b49d;
+}
+
+button {
+  background-color: #235a99;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: #1b4a7f;
+}
+
+button:active {
+  background-color: #2862a4;
+}
+
+#content-1 #img1 {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.screen-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+#content-2 .screen {
+  background-color: rgb(255, 255, 255);
+  transition: transform 0.5s ease;
+}
+
+#content-2 #img2 {
+  display: block;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+}
+
+.screen.moved {
+  transform: translateX(100%);
+}
+
+#content-3 .screen {
+  background-color: rgb(255, 255, 255);
+}
+
+.virus-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 100;
+}
+
+#miku-container {
+  position: relative;
+  height: 400px;
+}
+
+#miku-ascii {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 4px;
+  z-index: 0;
+  height: 100%;
+  overflow: hidden;
+
+  transition: height 2s ease;
+}
+
+#miku-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0 100%);
+
+  transition: clip-path 2s ease;
+}
+
+#miku-image img {
+  height: 380px;
+}
+
+/* Add a class to trigger the animation */
+.visible {
+  #miku-ascii {
+    height: 0%;
+  }
+  #miku-image {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+#content-7 .image-container {
+  position: relative;
+  height: 100%;
+}
+
+#content-7 .image-container img {
+  position: absolute;
+  opacity: 0.3;
+}
+
+#content-8 {
+  position: relative;
+}
+
+#sprite-container {
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  width: 20%;
+  height: auto;
+}
+
+#poster {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+}
+
+#catImage {
+  filter: blur(10px);
+}
+
+#content-10 img {
+  opacity: 0;
+}
+
+#content-11 {
+  .container {
+    width: 400px;
+    height: 300px;
+    position: relative;
+
+    z-index: 100;
+    -webkit-perspective: 1300px;
+    perspective: 1300px;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .page {
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: transform;
+
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
+
+  #first,
+  #first .back {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+
+  #first {
+    z-index: 102;
+  }
+  #second {
+    z-index: 103;
+    transition: transform 0.8s ease-in-out;
+  }
+  #third .content {
+    width: 400px;
+  }
+  #fourth {
+    z-index: 101;
+  }
+
+  .page > div,
+  .outer,
+  .content,
+  .helper-class-to-make-bug-visbile {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .page > div {
+    width: 100%;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+
+  .back {
+    -webkit-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+  }
+
+  .outer {
+    width: 100%;
+    overflow: hidden;
+    z-index: 999;
+  }
+
+  /* problematic class: `.content` */
+  .content {
+    width: 200%;
+  }
+
+  .front .content {
+    left: -100%;
+  }
+
+  /* controls */
+  #prev,
+  #next {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    z-index: 999;
+  }
+  #prev:hover,
+  #next:hover {
+    background: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
+  #prev {
+    top: 0;
+    left: 0;
+  }
+  #next {
+    top: 0;
+    left: 50%;
+  }
+}
