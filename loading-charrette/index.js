@@ -589,10 +589,50 @@ images.forEach(function (image, index) {
  * Load 20
  **********************/
 const button20 = document.querySelector("#content-20 button");
+const mainUI = document.querySelector("#main-interface");
+const warnings = document.querySelectorAll(".warning");
+const warningFlash = document.querySelector("#warning-flash");
 
 button20.addEventListener("click", function () {
   load20(button20, 20);
 });
-function load20() {
-  console.log("picture 20");
+
+setInterval(function () {
+  warningFlash.style.display =
+    warningFlash.style.display === "none" ? "block" : "none";
+}, 300);
+
+function load20(button, i) {
+  const imageContainer = document.querySelector(".image-container");
+  if (!active[i - 1]) {
+    mainUI.style.opacity = 1;
+
+    let delay = 1000;
+    warnings.forEach(function (warning) {
+      setTimeout(function () {
+        warning.style.display = "block";
+      }, delay);
+      delay += 100; // Adjust the delay between warnings as needed
+    });
+
+    setTimeout(function () {
+      warningFlash.style.opacity = 1;
+    }, 500);
+
+    setTimeout(function () {
+      button.textContent = "SHUT IT DOWN";
+      button.classList.toggle("shutdown");
+    }, 1000);
+  } else {
+    mainUI.style.opacity = 0;
+    warnings.forEach(function (warning) {
+      warning.style.display = "none";
+    });
+    warningFlash.style.opacity = 0;
+
+    button.textContent = "Start the Car";
+    button.classList.toggle("shutdown");
+  }
+
+  active[i - 1] = !active[i - 1];
 }

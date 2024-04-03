@@ -284,11 +284,91 @@ button:active {
 #content-19 {
   #imageContainer {
     position: relative;
-    height:200px;
+    height: 200px;
     background-color: black;
   }
 
   #imageContainer img {
     display: none;
   }
+}
+
+#content-20 {
+  #main-interface {
+    opacity: 0;
+  }
+
+  .image-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .warning {
+    position: absolute;
+    display: none;
+    font-size: 1em;
+    font-weight: bold;
+    opacity: 85%;
+    border-radius: 4px;
+    padding: 16px;
+    color: white;
+    transform: translate(-50%, -50%);
+  }
+
+  #warning1 {
+    top: 50%;
+    left: 50%;
+    background-color: rgb(227, 0, 0);
+  }
+
+  #warning2 {
+    top: 35%;
+    left: 30%;
+    background-color: rgb(26, 56, 156);
+  }
+
+  #warning3 {
+    top: 70%;
+    left: 70%;
+    background-color: rgb(219, 150, 0);
+  }
+
+  #warning-flash {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.5); /* Red with 50% opacity */
+    display: none; /* Initially hidden */
+  }
+
+  #netflix{
+    display: none;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    width: 15%;
+  }
+
+  #spotify{
+    display: none;
+    position: absolute;
+    bottom: 0%;
+    left: 10%;
+    width: 15%;
+  }
+
+  #tesla-ad{
+    display: none;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+  }
+}
+
+.shutdown {
+  background-color: red;
 }
