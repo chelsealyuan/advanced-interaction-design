@@ -258,3 +258,37 @@ button:active {
     background-color: rgba(255, 255, 255);
   }
 }
+
+#shibaImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1000;
+  width: 48px;
+  height: auto;
+}
+
+#ingredients {
+  display: flex;
+  flex-wrap: wrap; /* Allow images to wrap to the next line */
+}
+
+#ingredients img {
+  display: none;
+  flex: 1 0 auto;
+  max-width: calc(100% / 4);
+  object-fit: cover;
+  margin: 5px;
+}
+
+#content-19 {
+  #imageContainer {
+    position: relative;
+    height:200px;
+    background-color: black;
+  }
+
+  #imageContainer img {
+    display: none;
+  }
+}

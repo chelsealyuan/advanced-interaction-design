@@ -471,11 +471,21 @@ function load15() {
 const button16 = document.querySelector("#content-16 button");
 
 button16.addEventListener("click", function () {
-  load16(button16, 15);
+  load16(button16, 16);
 });
 
 function load16() {
-  console.log("picture 16");
+  const shibaImage = document.getElementById("shibaImage");
+
+  shibaImage.style.position = "fixed";
+
+  // Generate random positions within the window
+  const randomLeft = Math.random() * (window.innerWidth - shibaImage.width);
+  const randomTop = Math.random() * (window.innerHeight - shibaImage.height);
+
+  // Set the image position to the random positions
+  shibaImage.style.left = `${randomLeft}px`;
+  shibaImage.style.top = `${randomTop}px`;
 }
 
 /**********************
@@ -483,12 +493,27 @@ function load16() {
  **********************/
 const button17 = document.querySelector("#content-17 button");
 
-button15.addEventListener("click", function () {
-  load17(button17, 17);
+button17.addEventListener("click", function () {
+  load17(button17);
 });
 
-function load17() {
-  console.log("picture 17");
+let currentImageIndex = 1; // Initialize the current image index
+
+function load17(button) {
+  const container = document.querySelector("#content-17 #rgb-container");
+
+  const baseUrl = "rgb/";
+
+  // Increment the current image index
+  currentImageIndex = (currentImageIndex % 6) + 1;
+
+  container.innerHTML = ""; // Clear the container
+
+  let img = document.createElement("img");
+  const src = `${baseUrl}${currentImageIndex}.png`;
+  img.src = src;
+
+  container.appendChild(img);
 }
 
 /**********************
@@ -500,21 +525,65 @@ button18.addEventListener("click", function () {
   load18(button18, 18);
 });
 
-function load18() {
-  console.log("picture 18");
+function load18(button, i) {
+  button.classList.toggle("hide");
+  const ingredients = document.querySelectorAll("#ingredients img");
+
+  if (!active[i - 1]) {
+    let index = 0;
+
+    const intervalId = setInterval(function () {
+      ingredients[index].style.display = "inline"; // Show the current ingredient image
+      index++;
+
+      if (index === ingredients.length) {
+        clearInterval(intervalId); // Stop the interval when all images are shown
+      }
+    }, 500); // Half second interval
+
+    button.textContent = "Hide Ingredients";
+  } else {
+    ingredients.forEach((ingredient) => {
+      ingredient.style.display = "none";
+    });
+    button.textContent = "Load Ingredients";
+  }
+
+  active[i - 1] = !active[i - 1];
 }
 
 /**********************
  * Load 19
  **********************/
-const button19 = document.querySelector("#content-19 button");
+const imageContainer = document.getElementById("imageContainer");
+const images = imageContainer.querySelectorAll("img");
+let currentIndex = 0;
+let isHovering = false;
 
-button19.addEventListener("click", function () {
-  load19(button19, 19);
+imageContainer.addEventListener("mouseenter", function () {
+  isHovering = true;
+  switchImage();
 });
-function load19() {
-  console.log("picture 19");
+
+imageContainer.addEventListener("mouseleave", function () {
+  isHovering = false;
+  images[currentIndex].style.display = "none";
+});
+
+function switchImage() {
+  if (isHovering) {
+    images[currentIndex].style.display = "none";
+    currentIndex = (currentIndex + 1) % images.length;
+    images[currentIndex].style.display = "inline";
+  }
 }
+
+// Hide all images initially except the first one
+images.forEach(function (image, index) {
+  if (index !== 0) {
+    image.style.display = "none";
+  }
+});
 
 /**********************
  * Load 20
