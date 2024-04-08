@@ -16,6 +16,22 @@ body.forEach((part) => {
   });
 });
 
+let button = document.querySelector(".idea1-container button");
+
+// Add event listener for button click
+button.addEventListener("click", function() {
+  // Generate random numbers for head and torso
+  let randomHead = Math.floor(Math.random() * 2) + 1; // Assuming you have 5 head images
+  let randomTorso = Math.floor(Math.random() * 2) + 1; // Assuming you have 5 torso images
+
+  // Update the src attribute of head and torso images
+  let headImage = document.querySelector(".idea1-container .head img");
+  headImage.src = `idea1/head${randomHead}.jpg`;
+
+  let torsoImage = document.querySelector(".idea1-container .torso img");
+  torsoImage.src = `idea1/torso${randomTorso}.jpg`;
+});
+
 /******************************
  * Idea 2
  ******************************/

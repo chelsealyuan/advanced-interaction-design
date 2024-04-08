@@ -28,6 +28,15 @@ img {
 
 .body img {
   border: none;
+  width: 100%;
+}
+
+.head {
+  height: 20vh;
+}
+
+.torso {
+  height: 50vh;
 }
 
 .information-overlay {
@@ -73,12 +82,4 @@ img {
   flex-direction: column;
   height: 100%;
   align-items: center;
-}
-
-.head {
-  width: 300px;
-}
-
-.torso {
-  width: 300px;
 }
