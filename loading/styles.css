@@ -4,10 +4,39 @@ body {
   margin-right: auto;
 }
 
+div {
+  display: block;
+}
+
 img {
+  display: block;
   max-width: 100%;
   max-height: 100%;
   border: 1px solid grey;
+  margin: 0;
+}
+
+.idea1-container {
+  height: 100vh;
+  background-color: rgb(42, 42, 42);
+  color: whitesmoke;
+}
+
+.body {
+  position: relative;
+}
+
+.body img {
+  border: none;
+}
+
+.information-overlay {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: whitesmoke;
 }
 
 .idea2-container {
@@ -21,8 +50,8 @@ img {
   position: relative;
 }
 
-.painting{
-    opacity: 0;
+.painting {
+  opacity: 0;
 }
 
 .color-overlay {
@@ -37,4 +66,19 @@ img {
 .color {
   height: 100%;
   width: 100%;
+}
+
+.head-torso {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+
+.head {
+  width: 300px;
+}
+
+.torso {
+  width: 300px;
 }

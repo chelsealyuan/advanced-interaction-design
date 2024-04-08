@@ -1,3 +1,25 @@
+/******************************
+ * Idea 1
+ ******************************/
+let body = document.querySelectorAll(".body");
+
+body.forEach((part) => {
+  let overlay = part.querySelector(".information-overlay");
+
+  part.addEventListener("mouseenter", function () {
+    overlay.style.opacity = 1;
+  });
+
+  // Add event listener for mouse leave
+  part.addEventListener("mouseleave", function () {
+    overlay.style.opacity = 0;
+  });
+});
+
+/******************************
+ * Idea 2
+ ******************************/
+
 let paintingData = [
   {
     category: "green",
