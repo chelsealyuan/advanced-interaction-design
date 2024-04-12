@@ -19,7 +19,7 @@ body.forEach((part) => {
 let button = document.querySelector(".idea1-container button");
 
 // Add event listener for button click
-button.addEventListener("click", function() {
+button.addEventListener("click", function () {
   // Generate random numbers for head and torso
   let randomHead = Math.floor(Math.random() * 2) + 1; // Assuming you have 5 head images
   let randomTorso = Math.floor(Math.random() * 2) + 1; // Assuming you have 5 torso images
@@ -138,4 +138,16 @@ function fillColors(painting) {
       colorContainer.style.backgroundColor = "transparent";
     }, 200 * (8 + i)); // Increment the delay for each color
   }
+}
+
+const colorThief = new ColorThief();
+const img = document.querySelector(".body img");
+
+// Make sure image is finished loading
+if (img.complete) {
+  console.log(colorThief.getPalette(img));
+} else {
+  image.addEventListener("load", function () {
+    colorThief.getColor(img);
+  });
 }
