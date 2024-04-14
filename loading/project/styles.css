@@ -7,22 +7,85 @@ html {
   white-space: nowrap;
 }
 
-.container {
-  width: 100%; /* Full width */
-  height: 100vh; /* Full height */
-
+/* .container {
+  width: 100%;
+  height: 100vh;
 }
 
 .content {
-  width: 10000px; /* Set the width of your content */
-  height: 100%; /* Full height */
-  background-color: #f0f0f0; /* Background color */
+  width: 10000px;
+  height: 100%;
+  background-color: #f0f0f0;
 }
+*/
 
 img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  /* border: 1px solid grey; */
   margin: 0;
+} 
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Ensure 4 columns */
+  gap: 20px; /* Adjust the gap between paintings */
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-container img {
+  width: 100%; /* Ensure images fill their container */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.color-overlay {
+  position: absolute; /* Position the overlay relative to its container */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the entire container */
+  height: 100%;
+  transition: opacity 0.3s ease; /* Smooth transition effect */
+}
+
+.image-container:hover .color-overlay {
+  opacity: 0; /* Show overlay on hover */
+}
+
+.painting-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.painting-container {
+  position: relative;
+  /* border: solid 1px black; */
+}
+
+.painting-container {
+  .painting {
+    max-width: 100vw; /* Set the maximum width of the image container to 100% of the viewport width */
+    max-height: 80vh; /* Set the maximum height of the image container to 100% of the viewport height */
+    width: auto; /* Allow the image width to adjust to maintain its aspect ratio */
+    height: auto; /* Allow the image height to adjust to maintain its aspect ratio */
+    opacity: 0;
+  }
+
+  .color-overlay {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+  }
+
+  .color {
+    flex-grow: 1;
+    transition: background-color 0.3s ease;
+  }
 }
