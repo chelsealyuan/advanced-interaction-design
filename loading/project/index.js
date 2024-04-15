@@ -505,73 +505,18 @@ const data = [
 ];
 
 let selectedPaintings = [];
+const closestPaintingsContainer = document.querySelector(".closest-paintings");
+const imageContainer = document.querySelector(".painting-container");
+const thumbnails = document.querySelectorAll(".thumbnail");
 
 document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
-    getPainting();
+    getPainting(selectRandomPainting());
 
-    const imageContainer = document.querySelector(".painting-container");
     imageContainer.addEventListener("click", getPainting);
 
-    function getPainting() {
-      const paintingImage = document.querySelector(".painting");
-      const colorOverlay = document.querySelector(".color-overlay");
-
-      const painting = selectRandomPainting();
-
-      //console.log(painting);
-
-      paintingImage.src = path_prefix + painting.path;
-
-      fillColors(painting.palette, colorOverlay, paintingImage);
-    }
-
-    function fillColors(palette, colorOverlay, paintingImage) {
-      console.log(palette);
-      paintingImage.style.opacity = 0;
-
-      let colorDivs = document.querySelectorAll(".color");
-
-      palette.forEach((color, index) => {
-        setTimeout(() => {
-          colorDivs[index].style.backgroundColor = `rgb(${color.join(", ")})`;
-        }, timeInterval * index);
-      });
-
-      setTimeout(() => {
-        paintingImage.style.opacity = 1;
-      }, timeInterval * palette.length + timeInterval);
-
-      colorDivs.forEach((colorDiv, index) => {
-        // Set a delay for each color div based on its index
-        setTimeout(() => {
-          colorDiv.style.backgroundColor = "transparent";
-        }, timeInterval * palette.length + timeInterval * index);
-      });
-    }
-
-    function selectRandomPainting() {
-      // Filter out paintings that have already been selected
-      const availablePaintings = data.filter(
-        (painting) => !selectedPaintings.includes(painting.id)
-      );
-
-      // If there are no available paintings, reset the selectedPaintings array
-      if (availablePaintings.length === 0) {
-        selectedPaintings = [];
-        return selectRandomPainting(); // Recursively call selectRandomPainting to select from all paintings
-      }
-
-      // Select a random painting from the available paintings
-      const randomIndex = Math.floor(Math.random() * availablePaintings.length);
-      const randomPainting = availablePaintings[randomIndex];
-
-      // Add the selected painting to the selectedPaintings array
-      selectedPaintings.push(randomPainting.id);
-
-      return randomPainting;
-    }
+    //console.log(nextClosestPaintings);
   }
   // Check if the current page is the image gallery page
   else if (document.body.classList.contains("gallery")) {
@@ -607,6 +552,127 @@ document.addEventListener("DOMContentLoaded", function () {
     renderImages(data);
   }
 });
+
+function getPainting(paintingData) {
+  const paintingImage = document.querySelector(".painting");
+  const colorOverlay = document.querySelector(".color-overlay");
+
+  //const paintingData = selectRandomPainting();
+
+  //console.log(painting);
+
+  paintingImage.id = paintingData.id;
+
+  paintingImage.src = path_prefix + paintingData.path;
+
+  fillColors(paintingData.palette, colorOverlay, paintingImage);
+
+  const nextClosestPaintings = getNextClosestPaintings(paintingData, data);
+  renderClosestPaintings(nextClosestPaintings, closestPaintingsContainer);
+}
+
+function fillColors(palette, colorOverlay, paintingImage) {
+  //console.log(palette);
+  paintingImage.style.opacity = 0;
+
+  let colorDivs = document.querySelectorAll(".color");
+
+  palette.forEach((color, index) => {
+    setTimeout(() => {
+      colorDivs[index].style.backgroundColor = `rgb(${color.join(", ")})`;
+    }, timeInterval * index);
+  });
+
+  setTimeout(() => {
+    paintingImage.style.opacity = 1;
+  }, timeInterval * palette.length + timeInterval);
+
+  colorDivs.forEach((colorDiv, index) => {
+    // Set a delay for each color div based on its index
+    setTimeout(() => {
+      colorDiv.style.backgroundColor = "transparent";
+    }, timeInterval * palette.length + timeInterval * index);
+  });
+}
+
+function selectRandomPainting() {
+  // Filter out paintings that have already been selected
+  const availablePaintings = data.filter(
+    (painting) => !selectedPaintings.includes(painting.id)
+  );
+
+  // If there are no available paintings, reset the selectedPaintings array
+  if (availablePaintings.length === 0) {
+    selectedPaintings = [];
+    return selectRandomPainting(); // Recursively call selectRandomPainting to select from all paintings
+  }
+
+  // Select a random painting from the available paintings
+  const randomIndex = Math.floor(Math.random() * availablePaintings.length);
+  const randomPainting = availablePaintings[randomIndex];
+
+  // Add the selected painting to the selectedPaintings array
+  selectedPaintings.push(randomPainting.id);
+
+  return randomPainting;
+}
+
+function calculateColorDistance(color1, color2) {
+  // Extract individual RGB components
+  const r1 = color1[0];
+  const g1 = color1[1];
+  const b1 = color1[2];
+
+  const r2 = color2[0];
+  const g2 = color2[1];
+  const b2 = color2[2];
+
+  // Calculate the Euclidean distance between the two colors
+  const distance = Math.sqrt(
+    Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2)
+  );
+
+  return distance;
+}
+
+function getNextClosestPaintings(currentPainting, data) {
+  // Get the color of the current painting
+  const currentColor = currentPainting.color;
+
+  // Calculate the distance between the current painting's color and all other paintings' colors
+  const distances = data.map((painting) => ({
+    painting,
+    distance: calculateColorDistance(currentColor, painting.color),
+  }));
+
+  // Sort the paintings based on their color distances in ascending order
+  distances.sort((a, b) => a.distance - b.distance);
+
+  // Get the next two closest paintings
+  const nextClosestPaintings = distances
+    .slice(1, 3)
+    .map((item) => item.painting);
+
+  return nextClosestPaintings;
+}
+
+function renderClosestPaintings(paintings, container) {
+  paintings.forEach((painting, index) => {
+    const divElement = container.querySelector(`.option${index + 1}`);
+    divElement.style.backgroundColor = `rgb(${painting.color.join(", ")})`;
+
+    divElement.addEventListener("click", function () {
+      const mainPaintingImage = document.querySelector(".painting");
+      const mainColorOverlay = document.querySelector(".color-overlay");
+
+      // Update main painting image source
+      mainPaintingImage.src = path_prefix + painting.path;
+
+      // Fill colors for the main painting
+      fillColors(painting.palette, mainColorOverlay, mainPaintingImage);
+    });
+  });
+}
 
 // const colorThief = new ColorThief();
 // const images = document.querySelectorAll(".image-gallery img");
