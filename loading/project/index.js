@@ -504,9 +504,13 @@ const data = [
   },
 ];
 
+let selectedPaintings = [];
+
 document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
+    getPainting();
+
     const imageContainer = document.querySelector(".painting-container");
     imageContainer.addEventListener("click", getPainting);
 
@@ -543,11 +547,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set a delay for each color div based on its index
         setTimeout(() => {
           colorDiv.style.backgroundColor = "transparent";
-        }, timeInterval * palette.length + timeInterval * (index - 1));
+        }, timeInterval * palette.length + timeInterval * index);
       });
     }
-
-    let selectedPaintings = [];
 
     function selectRandomPainting() {
       // Filter out paintings that have already been selected
