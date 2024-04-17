@@ -505,18 +505,16 @@ const data = [
 ];
 
 let selectedPaintings = [];
-const closestPaintingsContainer = document.querySelector(".closest-paintings");
+const fullContainer = document.querySelector(".full-container");
 const imageContainer = document.querySelector(".painting-container");
 const thumbnails = document.querySelectorAll(".thumbnail");
+const cardElement = document.querySelector(".info-overlay");
+let colorDivs = document.querySelectorAll(".color");
 
 document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
     getPainting(selectRandomPainting());
-
-    imageContainer.addEventListener("click", getPainting);
-
-    //console.log(nextClosestPaintings);
   }
   // Check if the current page is the image gallery page
   else if (document.body.classList.contains("gallery")) {
@@ -554,12 +552,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getPainting(paintingData) {
+  colorDivs.forEach((colorDiv) => {
+    colorDiv.classList.remove("revealed");
+  });
+
   const paintingImage = document.querySelector(".painting");
   const colorOverlay = document.querySelector(".color-overlay");
-
-  //const paintingData = selectRandomPainting();
-
-  //console.log(painting);
 
   paintingImage.id = paintingData.id;
 
@@ -567,15 +565,26 @@ function getPainting(paintingData) {
 
   fillColors(paintingData.palette, colorOverlay, paintingImage);
 
-  const nextClosestPaintings = getNextClosestPaintings(paintingData, data);
-  renderClosestPaintings(nextClosestPaintings, closestPaintingsContainer);
+  const nextClosestPaintings = getNextClosestPaintings(
+    paintingData,
+    data,
+    selectedPaintings
+  );
+  console.log(nextClosestPaintings);
+  renderClosestPaintings(nextClosestPaintings, fullContainer);
+
+  setTimeout(() => {
+    displayPaintingInfo(paintingData);
+  }, timeInterval + timeInterval * 20);
 }
 
 function fillColors(palette, colorOverlay, paintingImage) {
   //console.log(palette);
   paintingImage.style.opacity = 0;
 
-  let colorDivs = document.querySelectorAll(".color");
+  colorDivs.forEach((colorDiv, index) => {
+    colorDiv.style.backgroundColor = "transparent";
+  });
 
   palette.forEach((color, index) => {
     setTimeout(() => {
@@ -587,32 +596,26 @@ function fillColors(palette, colorOverlay, paintingImage) {
     paintingImage.style.opacity = 1;
   }, timeInterval * palette.length + timeInterval);
 
-  colorDivs.forEach((colorDiv, index) => {
-    // Set a delay for each color div based on its index
-    setTimeout(() => {
-      colorDiv.style.backgroundColor = "transparent";
-    }, timeInterval * palette.length + timeInterval * index);
-  });
+  setTimeout(() => {
+    colorDivs.forEach((colorDiv) => {
+      colorDiv.addEventListener("mouseenter", function () {
+        colorDiv.classList.add("revealed");
+      });
+    });
+  }, timeInterval * palette.length * 2);
+
+  // colorDivs.forEach((colorDiv, index) => {
+  //   // Set a delay for each color div based on its index
+  //   setTimeout(() => {
+  //     colorDiv.style.backgroundColor = "transparent";
+  //   }, timeInterval * palette.length + timeInterval * index);
+  // });
 }
 
 function selectRandomPainting() {
-  // Filter out paintings that have already been selected
-  const availablePaintings = data.filter(
-    (painting) => !selectedPaintings.includes(painting.id)
-  );
-
-  // If there are no available paintings, reset the selectedPaintings array
-  if (availablePaintings.length === 0) {
-    selectedPaintings = [];
-    return selectRandomPainting(); // Recursively call selectRandomPainting to select from all paintings
-  }
-
   // Select a random painting from the available paintings
-  const randomIndex = Math.floor(Math.random() * availablePaintings.length);
-  const randomPainting = availablePaintings[randomIndex];
-
-  // Add the selected painting to the selectedPaintings array
-  selectedPaintings.push(randomPainting.id);
+  const randomIndex = Math.floor(Math.random() * data.length);
+  const randomPainting = data[randomIndex];
 
   return randomPainting;
 }
@@ -635,43 +638,70 @@ function calculateColorDistance(color1, color2) {
   return distance;
 }
 
-function getNextClosestPaintings(currentPainting, data) {
+let visited = [];
+function getNextClosestPaintings(currentPainting, data, visited) {
   // Get the color of the current painting
   const currentColor = currentPainting.color;
 
   // Calculate the distance between the current painting's color and all other paintings' colors
-  const distances = data.map((painting) => ({
-    painting,
-    distance: calculateColorDistance(currentColor, painting.color),
-  }));
+  const distances = data
+    .filter(
+      (painting) =>
+        !visited.includes(painting.id) && painting.id !== currentPainting.id
+    ) // Filter out visited and current painting
+    .map((painting) => ({
+      painting,
+      distance: calculateColorDistance(currentColor, painting.color),
+    }));
 
   // Sort the paintings based on their color distances in ascending order
   distances.sort((a, b) => a.distance - b.distance);
 
-  // Get the next two closest paintings
-  const nextClosestPaintings = distances
-    .slice(1, 3)
-    .map((item) => item.painting);
+  // Get the next two closest paintings that haven't been visited yet
+  const nextClosestPaintings = [];
+  for (const { painting } of distances) {
+    if (nextClosestPaintings.length >= 2) {
+      break; // Stop when we have found the next two closest paintings
+    }
+    if (!visited.includes(painting.id)) {
+      nextClosestPaintings.push(painting);
+    }
+  }
+
+  // Mark the next closest paintings as visited
+  nextClosestPaintings.forEach((painting) => visited.push(painting.id));
+
+  // Clear the visited array if all paintings are visited
+  if (visited.length === data.length) {
+    visited.length = 0;
+  }
 
   return nextClosestPaintings;
 }
+
+thumbnails.forEach((thumbnail, index) => {
+  thumbnail.addEventListener("click", function () {
+    let id = thumbnail.id;
+    const paintingData = data.find((painting) => painting.id === parseInt(id));
+    getPainting(paintingData);
+  });
+});
 
 function renderClosestPaintings(paintings, container) {
   paintings.forEach((painting, index) => {
     const divElement = container.querySelector(`.option${index + 1}`);
     divElement.style.backgroundColor = `rgb(${painting.color.join(", ")})`;
-
-    divElement.addEventListener("click", function () {
-      const mainPaintingImage = document.querySelector(".painting");
-      const mainColorOverlay = document.querySelector(".color-overlay");
-
-      // Update main painting image source
-      mainPaintingImage.src = path_prefix + painting.path;
-
-      // Fill colors for the main painting
-      fillColors(painting.palette, mainColorOverlay, mainPaintingImage);
-    });
+    divElement.id = painting.id;
   });
+}
+
+function displayPaintingInfo(paintingData) {
+  const titleElement = document.querySelector(".painting-title");
+  const artistElement = document.querySelector(".painting-artist");
+  const dateElement = document.querySelector(".painting-date");
+  titleElement.textContent = paintingData.name;
+  artistElement.textContent = paintingData.artist;
+  dateElement.textContent = paintingData.date.join(" - ");
 }
 
 // const colorThief = new ColorThief();
