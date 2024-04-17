@@ -552,9 +552,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getPainting(paintingData) {
-  colorDivs.forEach((colorDiv) => {
-    colorDiv.classList.remove("revealed");
-  });
+  // colorDivs.forEach((colorDiv) => {
+  //   colorDiv.classList.remove("revealed");
+  // });
 
   const paintingImage = document.querySelector(".painting");
   const colorOverlay = document.querySelector(".color-overlay");
@@ -563,7 +563,15 @@ function getPainting(paintingData) {
 
   paintingImage.src = path_prefix + paintingData.path;
 
-  fillColors(paintingData.palette, colorOverlay, paintingImage);
+  if (paintingImage.complete) {
+    createColorDivs(paintingImage, colorOverlay, paintingData.palette);
+    //fillColors(paintingData.palette, colorOverlay, paintingImage);
+  } else {
+    paintingImage.addEventListener("load", function () {
+      createColorDivs(paintingImage, colorOverlay, paintingData.palette);
+      //fillColors(paintingData.palette, colorOverlay, paintingImage);
+    });
+  }
 
   const nextClosestPaintings = getNextClosestPaintings(
     paintingData,
@@ -578,38 +586,42 @@ function getPainting(paintingData) {
   }, timeInterval + timeInterval * 20);
 }
 
-function fillColors(palette, colorOverlay, paintingImage) {
-  //console.log(palette);
+function createColorDivs(paintingImage, colorOverlay, palette) {
   paintingImage.style.opacity = 0;
 
-  colorDivs.forEach((colorDiv, index) => {
-    colorDiv.style.backgroundColor = "transparent";
-  });
+  colorOverlay.innerHTML = "";
+  // Get the height of the painting image
+  const paintingHeight = paintingImage.clientHeight;
 
-  palette.forEach((color, index) => {
+  // Determine the size of each color div (you can adjust this as needed)
+  const colorDivHeight = 50; // Example height for each color div
+
+  // Calculate the number of color divs based on the height of the painting
+  const numColorDivs =
+    Math.floor(paintingHeight / colorDivHeight) > 10
+      ? 10
+      : Math.floor(paintingHeight / colorDivHeight);
+
+  // Generate the color divs dynamically
+  for (let i = 0; i < numColorDivs; i++) {
+    const colorDiv = document.createElement("div");
+    colorDiv.classList.add("color");
+    colorOverlay.appendChild(colorDiv);
+
     setTimeout(() => {
-      colorDivs[index].style.backgroundColor = `rgb(${color.join(", ")})`;
-    }, timeInterval * index);
-  });
+      colorDiv.style.backgroundColor = `rgb(${palette[i].join(", ")})`;
+    }, timeInterval * i);
+
+    setTimeout(() => {
+      colorDiv.addEventListener("mouseenter", function () {
+        colorDiv.classList.add("revealed");
+      });
+    }, timeInterval * palette.length * 1.2);
+  }
 
   setTimeout(() => {
     paintingImage.style.opacity = 1;
   }, timeInterval * palette.length + timeInterval);
-
-  setTimeout(() => {
-    colorDivs.forEach((colorDiv) => {
-      colorDiv.addEventListener("mouseenter", function () {
-        colorDiv.classList.add("revealed");
-      });
-    });
-  }, timeInterval * palette.length * 2);
-
-  // colorDivs.forEach((colorDiv, index) => {
-  //   // Set a delay for each color div based on its index
-  //   setTimeout(() => {
-  //     colorDiv.style.backgroundColor = "transparent";
-  //   }, timeInterval * palette.length + timeInterval * index);
-  // });
 }
 
 function selectRandomPainting() {
