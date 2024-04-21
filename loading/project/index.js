@@ -511,6 +511,8 @@ const thumbnails = document.querySelectorAll(".thumbnail");
 const cardElement = document.querySelector(".info-overlay");
 let colorDivs = document.querySelectorAll(".color");
 
+let isFirstLoad = true;
+
 document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
@@ -551,25 +553,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+const paintingImage = document.querySelector(".painting");
+const colorOverlay = document.querySelector(".color-overlay");
+const colorOverlay2 = document.querySelector(".color-overlay-side");
+
 function getPainting(paintingData) {
-  // colorDivs.forEach((colorDiv) => {
-  //   colorDiv.classList.remove("revealed");
-  // });
-
-  const paintingImage = document.querySelector(".painting");
-  const colorOverlay = document.querySelector(".color-overlay");
-
   paintingImage.id = paintingData.id;
 
   paintingImage.src = path_prefix + paintingData.path;
 
   if (paintingImage.complete) {
-    createColorDivs(paintingImage, colorOverlay, paintingData.palette);
-    //fillColors(paintingData.palette, colorOverlay, paintingImage);
+    createColorDivs(paintingImage, colorOverlay, paintingData.palette, true);
+
+    if (isFirstLoad) {
+      createColorDivs(
+        paintingImage,
+        colorOverlay2,
+        paintingData.palette,
+        false
+      );
+    }
+
+    isFirstLoad = false;
   } else {
     paintingImage.addEventListener("load", function () {
-      createColorDivs(paintingImage, colorOverlay, paintingData.palette);
-      //fillColors(paintingData.palette, colorOverlay, paintingImage);
+      createColorDivs(paintingImage, colorOverlay, paintingData.palette, true);
+      if (isFirstLoad) {
+        createColorDivs(
+          paintingImage,
+          colorOverlay2,
+          paintingData.palette,
+          false
+        );
+      }
+      isFirstLoad = false;
     });
   }
 
@@ -581,20 +598,19 @@ function getPainting(paintingData) {
   console.log(nextClosestPaintings);
   renderClosestPaintings(nextClosestPaintings, fullContainer);
 
-  setTimeout(() => {
-    displayPaintingInfo(paintingData);
-  }, timeInterval + timeInterval * 20);
+  displayPaintingInfo(paintingData);
 }
 
-function createColorDivs(paintingImage, colorOverlay, palette) {
+function createColorDivs(paintingImage, colorOverlay, palette, addHover) {
   paintingImage.style.opacity = 0;
 
   colorOverlay.innerHTML = "";
+  colorOverlay.style.height = paintingImage.height;
   // Get the height of the painting image
   const paintingHeight = paintingImage.clientHeight;
 
   // Determine the size of each color div (you can adjust this as needed)
-  const colorDivHeight = 50; // Example height for each color div
+  const colorDivHeight = 1; // Example height for each color div
 
   // Calculate the number of color divs based on the height of the painting
   const numColorDivs =
@@ -606,17 +622,25 @@ function createColorDivs(paintingImage, colorOverlay, palette) {
   for (let i = 0; i < numColorDivs; i++) {
     const colorDiv = document.createElement("div");
     colorDiv.classList.add("color");
+    colorDiv.classList.add("color" + i);
     colorOverlay.appendChild(colorDiv);
 
     setTimeout(() => {
       colorDiv.style.backgroundColor = `rgb(${palette[i].join(", ")})`;
     }, timeInterval * i);
 
-    setTimeout(() => {
-      colorDiv.addEventListener("mouseenter", function () {
-        colorDiv.classList.add("revealed");
-      });
-    }, timeInterval * palette.length * 1.2);
+    if (addHover) {
+      setTimeout(() => {
+        colorDiv.addEventListener("mouseenter", function () {
+          colorDiv.classList.add("revealed");
+
+          const matchingColorDiv = colorOverlay2.querySelector(".color" + i);
+          matchingColorDiv.style.backgroundColor = `rgb(${palette[i].join(
+            ", "
+          )})`;
+        });
+      }, timeInterval * palette.length * 1.2);
+    }
   }
 
   setTimeout(() => {
@@ -715,6 +739,19 @@ function displayPaintingInfo(paintingData) {
   artistElement.textContent = paintingData.artist;
   dateElement.textContent = paintingData.date.join(" - ");
 }
+
+// const colorPicker = document.querySelector("#color-picker");
+
+// colorPicker.addEventListener("input", updateFirst, false);
+// colorPicker.addEventListener("change", watchColorPicker, false);
+
+// function watchColorPicker(event) {
+//   console.log(event.target.value);
+// }
+
+// function updateFirst(event) {
+//   console.log(event.target.value);
+// }
 
 // const colorThief = new ColorThief();
 // const images = document.querySelectorAll(".image-gallery img");
