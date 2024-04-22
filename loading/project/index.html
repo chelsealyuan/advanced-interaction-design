@@ -34,18 +34,19 @@
 
             <section class="full-container">
 
-                <div class="painting-container">
-                    <img class="painting" src="" alt="Painting">
-                    <div class="color-overlay">
+                <div class="painting-and-info">
+                    <div class="painting-container">
+                        <img class="painting" src="" alt="Painting">
+                        <div class="color-overlay">
+                        </div>
+                        <div class="color-overlay-side">
+                        </div>
                     </div>
-                    <div class="color-overlay-side">
-                    </div>
-                </div>
 
 
 
-                <div class="info-overlay">
-                    <div class="info-content">
+                    <div class="info-overlay">
+
                         <h2 class="painting-title"></h2>
                         <p class="painting-artist"></p>
                         <p class="painting-date"></p>
@@ -54,17 +55,31 @@
 
 
 
+
                 <div class="closest-paintings">
-                    <div class="thumbnail option1"></div>
-                    <div class="thumbnail option2"></div>
+                    Add More
+                    <button class="red">
+                        Red
+                    </button>
+
+                    <button class="green">
+                        Green
+                    </button>
+                    <button class="blue">
+                        Blue
+                    </button>
+                    <div class="notification"></div>
                 </div>
 
+                <!-- <div class="thumbnail option1"></div>
+                    <div class="thumbnail option2"></div> -->
             </section>
         </main>
     </div>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <script src="https://unpkg.com/chroma-js/chroma.min.js"></script>
     <script type="module" src="./index.js"></script>
 </body>
 

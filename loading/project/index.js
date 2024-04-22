@@ -1,6 +1,9 @@
 const timeInterval = 100;
 const path_prefix = "imgs/";
 
+// Importing chroma.js
+// const chroma = require("chroma-js");
+
 const data = [
   {
     id: 1,
@@ -46,7 +49,7 @@ const data = [
     id: 3,
     name: "Midnight Truth",
     date: [2017],
-    artist: "Aya Takano",
+    artist: "Yoshitomo Nara",
     path: "midnight_truth.jpg",
     color: [224, 212, 190],
     palette: [
@@ -513,10 +516,12 @@ let colorDivs = document.querySelectorAll(".color");
 
 let isFirstLoad = true;
 
+let currentPainting = selectRandomPainting();
+
 document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
-    getPainting(selectRandomPainting());
+    getPainting(currentPainting);
   }
   // Check if the current page is the image gallery page
   else if (document.body.classList.contains("gallery")) {
@@ -557,12 +562,40 @@ const paintingImage = document.querySelector(".painting");
 const colorOverlay = document.querySelector(".color-overlay");
 const colorOverlay2 = document.querySelector(".color-overlay-side");
 
+const redBtn = document.querySelector(".red");
+const greenBtn = document.querySelector(".green");
+const blueBtn = document.querySelector(".blue");
+
+const notification = document.querySelector(".notification");
+
+redBtn.addEventListener("click", function () {
+  const result = getNextPainting(data, currentPainting, "red");
+  updatePainting(result, "red");
+});
+
+greenBtn.addEventListener("click", function () {
+  const result = getNextPainting(data, currentPainting, "green");
+  updatePainting(result, "green");
+});
+
+blueBtn.addEventListener("click", function () {
+  const result = getNextPainting(data, currentPainting, "blue");
+  updatePainting(result, "blue");
+});
+
+function updatePainting(result, colorComponent) {
+  getPainting(result);
+  currentPainting = result;
+}
+
 function getPainting(paintingData) {
-  paintingImage.id = paintingData.id;
+  // Remove any existing 'load' event handlers to prevent duplication
+  const removeHandler = (handler) => {
+    paintingImage.removeEventListener("load", handler);
+  };
 
-  paintingImage.src = path_prefix + paintingData.path;
-
-  if (paintingImage.complete) {
+  // Define the load handler
+  const loadHandler = function () {
     createColorDivs(paintingImage, colorOverlay, paintingData.palette, true);
 
     if (isFirstLoad) {
@@ -572,31 +605,21 @@ function getPainting(paintingData) {
         paintingData.palette,
         false
       );
-    }
-
-    isFirstLoad = false;
-  } else {
-    paintingImage.addEventListener("load", function () {
-      createColorDivs(paintingImage, colorOverlay, paintingData.palette, true);
-      if (isFirstLoad) {
-        createColorDivs(
-          paintingImage,
-          colorOverlay2,
-          paintingData.palette,
-          false
-        );
-      }
       isFirstLoad = false;
-    });
+    }
+  };
+
+  // Ensure the 'load' event is not added multiple times
+  if (!paintingImage.complete) {
+    removeHandler(loadHandler); // Remove existing handler, if any
+    paintingImage.addEventListener("load", loadHandler); // Add the new handler
+  } else {
+    // If the image is already loaded, call the handler immediately
+    loadHandler();
   }
 
-  const nextClosestPaintings = getNextClosestPaintings(
-    paintingData,
-    data,
-    selectedPaintings
-  );
-  console.log(nextClosestPaintings);
-  renderClosestPaintings(nextClosestPaintings, fullContainer);
+  paintingImage.id = paintingData.id;
+  paintingImage.src = path_prefix + paintingData.path;
 
   displayPaintingInfo(paintingData);
 }
@@ -638,6 +661,7 @@ function createColorDivs(paintingImage, colorOverlay, palette, addHover) {
           matchingColorDiv.style.backgroundColor = `rgb(${palette[i].join(
             ", "
           )})`;
+          matchingColorDiv.classList.add("side-color-transition");
         });
       }, timeInterval * palette.length * 1.2);
     }
@@ -656,81 +680,6 @@ function selectRandomPainting() {
   return randomPainting;
 }
 
-function calculateColorDistance(color1, color2) {
-  // Extract individual RGB components
-  const r1 = color1[0];
-  const g1 = color1[1];
-  const b1 = color1[2];
-
-  const r2 = color2[0];
-  const g2 = color2[1];
-  const b2 = color2[2];
-
-  // Calculate the Euclidean distance between the two colors
-  const distance = Math.sqrt(
-    Math.pow(r2 - r1, 2) + Math.pow(g2 - g1, 2) + Math.pow(b2 - b1, 2)
-  );
-
-  return distance;
-}
-
-let visited = [];
-function getNextClosestPaintings(currentPainting, data, visited) {
-  // Get the color of the current painting
-  const currentColor = currentPainting.color;
-
-  // Calculate the distance between the current painting's color and all other paintings' colors
-  const distances = data
-    .filter(
-      (painting) =>
-        !visited.includes(painting.id) && painting.id !== currentPainting.id
-    ) // Filter out visited and current painting
-    .map((painting) => ({
-      painting,
-      distance: calculateColorDistance(currentColor, painting.color),
-    }));
-
-  // Sort the paintings based on their color distances in ascending order
-  distances.sort((a, b) => a.distance - b.distance);
-
-  // Get the next two closest paintings that haven't been visited yet
-  const nextClosestPaintings = [];
-  for (const { painting } of distances) {
-    if (nextClosestPaintings.length >= 2) {
-      break; // Stop when we have found the next two closest paintings
-    }
-    if (!visited.includes(painting.id)) {
-      nextClosestPaintings.push(painting);
-    }
-  }
-
-  // Mark the next closest paintings as visited
-  nextClosestPaintings.forEach((painting) => visited.push(painting.id));
-
-  // Clear the visited array if all paintings are visited
-  if (visited.length === data.length) {
-    visited.length = 0;
-  }
-
-  return nextClosestPaintings;
-}
-
-thumbnails.forEach((thumbnail, index) => {
-  thumbnail.addEventListener("click", function () {
-    let id = thumbnail.id;
-    const paintingData = data.find((painting) => painting.id === parseInt(id));
-    getPainting(paintingData);
-  });
-});
-
-function renderClosestPaintings(paintings, container) {
-  paintings.forEach((painting, index) => {
-    const divElement = container.querySelector(`.option${index + 1}`);
-    divElement.style.backgroundColor = `rgb(${painting.color.join(", ")})`;
-    divElement.id = painting.id;
-  });
-}
-
 function displayPaintingInfo(paintingData) {
   const titleElement = document.querySelector(".painting-title");
   const artistElement = document.querySelector(".painting-artist");
@@ -740,18 +689,81 @@ function displayPaintingInfo(paintingData) {
   dateElement.textContent = paintingData.date.join(" - ");
 }
 
-// const colorPicker = document.querySelector("#color-picker");
+// Convert RGB to LAB color space (using chroma.js or similar library)
+function rgbToLab(rgb) {
+  return chroma(rgb).lab();
+}
 
-// colorPicker.addEventListener("input", updateFirst, false);
-// colorPicker.addEventListener("change", watchColorPicker, false);
+// Calculate Delta E to determine color similarity in LAB color space
+function calculateDeltaE(lab1, lab2) {
+  return chroma.distance(lab1, lab2, "lab");
+}
 
-// function watchColorPicker(event) {
-//   console.log(event.target.value);
-// }
+// Normalize RGB values to determine relative component dominance
+function normalizeRGB(color) {
+  const [r, g, b] = color;
+  const sum = r + g + b;
 
-// function updateFirst(event) {
-//   console.log(event.target.value);
-// }
+  return {
+    red: r / sum,
+    green: g / sum,
+    blue: b / sum,
+  };
+}
+
+// Set of painting IDs to track visited paintings
+const visitedPaintings = new Set();
+
+// Function to find the next painting with higher dominance and randomness
+function getNextPainting(
+  paintingData,
+  currentPainting,
+  targetComponent,
+  randomnessFactor = 1.2
+) {
+  const currentNormalized = normalizeRGB(currentPainting.color);
+  const currentDominance = currentNormalized[targetComponent];
+
+  const candidates = [];
+
+  // Find paintings with similar or higher component dominance
+  for (const painting of paintingData) {
+    if (
+      painting.id === currentPainting.id ||
+      visitedPaintings.has(painting.id)
+    ) {
+      continue; // Skip current and visited paintings
+    }
+
+    const paintingNormalized = normalizeRGB(painting.color);
+    const paintingDominance = paintingNormalized[targetComponent];
+
+    const lab1 = rgbToLab(currentPainting.color);
+    const lab2 = rgbToLab(painting.color);
+    const deltaE = calculateDeltaE(lab1, lab2);
+
+    // Adjust the dominance condition to include a broader range of candidates
+    if (paintingDominance >= currentDominance - 0.05) {
+      // Use a broader threshold to prevent rigid selection
+      const weightedDistance = deltaE + randomnessFactor * Math.random();
+      candidates.push({ painting, weightedDistance });
+    }
+  }
+
+  if (candidates.length === 0) {
+    return null; // No valid candidates
+  }
+
+  // Sort with a higher randomness factor to avoid cycling
+  candidates.sort((a, b) => a.weightedDistance - b.weightedDistance);
+
+  // Select a random candidate to avoid deterministic patterns
+  const randomIndex = Math.floor(Math.random() * candidates.length);
+
+  const randomPainting = candidates[randomIndex].painting;
+  console.log(randomPainting);
+  return randomPainting;
+}
 
 // const colorThief = new ColorThief();
 // const images = document.querySelectorAll(".image-gallery img");
