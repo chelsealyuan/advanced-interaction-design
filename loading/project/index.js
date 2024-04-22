@@ -522,6 +522,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
     getPainting(currentPainting);
+
+    const redBtn = document.querySelector(".red");
+    const greenBtn = document.querySelector(".green");
+    const blueBtn = document.querySelector(".blue");
+    redBtn.addEventListener("click", function () {
+      const result = getNextPainting(data, currentPainting, "red");
+      updatePainting(result, "red");
+    });
+
+    greenBtn.addEventListener("click", function () {
+      const result = getNextPainting(data, currentPainting, "green");
+      updatePainting(result, "green");
+    });
+
+    blueBtn.addEventListener("click", function () {
+      const result = getNextPainting(data, currentPainting, "blue");
+      updatePainting(result, "blue");
+    });
   }
   // Check if the current page is the image gallery page
   else if (document.body.classList.contains("gallery")) {
@@ -541,7 +559,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Create a div element for the color overlay
         const colorOverlay = document.createElement("div");
-        colorOverlay.classList.add("color-overlay");
+        colorOverlay.classList.add("gallery-color-overlay");
         colorOverlay.style.backgroundColor = `rgb(${image.color.join(", ")})`; // Set background color based on the "color" field
 
         // Append the img and color overlay to the image container
@@ -561,27 +579,6 @@ document.addEventListener("DOMContentLoaded", function () {
 const paintingImage = document.querySelector(".painting");
 const colorOverlay = document.querySelector(".color-overlay");
 const colorOverlay2 = document.querySelector(".color-overlay-side");
-
-const redBtn = document.querySelector(".red");
-const greenBtn = document.querySelector(".green");
-const blueBtn = document.querySelector(".blue");
-
-const notification = document.querySelector(".notification");
-
-redBtn.addEventListener("click", function () {
-  const result = getNextPainting(data, currentPainting, "red");
-  updatePainting(result, "red");
-});
-
-greenBtn.addEventListener("click", function () {
-  const result = getNextPainting(data, currentPainting, "green");
-  updatePainting(result, "green");
-});
-
-blueBtn.addEventListener("click", function () {
-  const result = getNextPainting(data, currentPainting, "blue");
-  updatePainting(result, "blue");
-});
 
 function updatePainting(result, colorComponent) {
   getPainting(result);
@@ -751,7 +748,20 @@ function getNextPainting(
   }
 
   if (candidates.length === 0) {
-    return null; // No valid candidates
+    // Fallback: Select a random unvisited painting
+    const unvisitedPaintings = paintingData.filter(
+      (painting) => !visitedPaintings.has(painting.id)
+    );
+
+    if (unvisitedPaintings.length === 0) {
+      return null; // If no unvisited paintings remain, return null
+    }
+
+    const randomIndex = Math.floor(Math.random() * unvisitedPaintings.length);
+    const randomPainting = unvisitedPaintings[randomIndex];
+    visitedPaintings.add(randomPainting.id); // Add to visited set
+
+    return randomPainting; // Return the random fallback painting
   }
 
   // Sort with a higher randomness factor to avoid cycling
@@ -761,7 +771,7 @@ function getNextPainting(
   const randomIndex = Math.floor(Math.random() * candidates.length);
 
   const randomPainting = candidates[randomIndex].painting;
-  console.log(randomPainting);
+
   return randomPainting;
 }
 
