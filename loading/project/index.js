@@ -660,7 +660,7 @@ function createColorDivs(paintingImage, colorOverlay, palette, addHover) {
           )})`;
           matchingColorDiv.classList.add("side-color-transition");
         });
-      }, timeInterval * palette.length * 1.2);
+      }, timeInterval * palette.length * 1.1);
     }
   }
 
