@@ -1,4 +1,5 @@
 const timeInterval = 100;
+const loadInterval = 150;
 const path_prefix = "imgs/";
 
 // Importing chroma.js
@@ -519,8 +520,8 @@ let isFirstLoad = true;
 let currentPainting = selectRandomPainting();
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Check if the current page is the painting display page
   if (document.body.classList.contains("home")) {
+    createLoadingScreen();
     getPainting(currentPainting);
 
     const redBtn = document.querySelector(".red");
@@ -576,9 +577,51 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+function createLoadingScreen() {
+  const palette = currentPainting.palette;
+  const loadingScreen = document.querySelector(".loading-screen");
+
+  // Keep track of the color div elements
+  const colorDivs = [];
+
+  // Create divs with delay and background color setup
+  for (let i = 0; i < palette.length; i++) {
+    const colorDiv = document.createElement("div");
+    colorDiv.classList.add("load-color", `load-color${i}`);
+    loadingScreen.appendChild(colorDiv);
+
+    setTimeout(() => {
+      colorDiv.style.backgroundColor = `rgb(${palette[i].join(", ")})`;
+    }, loadInterval * i);
+
+    // Save the div for later use
+    colorDivs.push(colorDiv);
+  }
+
+  // Apply the "revealed" class in reverse order
+  colorDivs.reverse().forEach((div, index) => {
+    setTimeout(() => {
+      div.classList.add("revealed");
+    }, loadInterval * (palette.length + index));
+  });
+
+  setTimeout(() => {
+    loadingScreen.style.backgroundColor = "transparent";
+  }, loadInterval * palette.length);
+
+  setTimeout(() => {
+    loadingScreen.style.display = "none";
+  }, loadInterval * palette.length * 2);
+}
+
 const paintingImage = document.querySelector(".painting");
 const colorOverlay = document.querySelector(".color-overlay");
 const colorOverlay2 = document.querySelector(".color-overlay-side");
+
+const randomPaintingBtn = document.querySelector(".randomBtn");
+randomPaintingBtn.addEventListener("click", function () {
+  getPainting(selectRandomPainting());
+});
 
 function updatePainting(result, colorComponent) {
   getPainting(result);

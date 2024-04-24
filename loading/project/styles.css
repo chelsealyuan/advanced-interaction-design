@@ -29,6 +29,7 @@ h1 {
 
 .navbar {
   overflow: hidden;
+  text-transform: uppercase;
 }
 
 .navbar ul {
@@ -118,7 +119,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 3em;
+  row-gap: 1em;
   justify-content: space-between;
 }
 
@@ -181,7 +182,7 @@ img {
   align-content: stretch;
 }
 
-.color {
+.color, .load-color {
   flex-grow: 1;
   /* cursor: pointer; */
 }
@@ -202,6 +203,9 @@ img {
   justify-content: center;
   column-gap: 1em;
   margin: 1em;
+
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .thumbnail {
@@ -233,9 +237,9 @@ img {
   text-wrap: wrap;
 }
 
-.closest-paintings button {
+.closest-paintings button, .randomBtn {
   width: 80%;
-  font-weight: 600;
+  text-transform: uppercase;
   font-size: 1em;
   border: none;
   display: block;
@@ -246,6 +250,15 @@ img {
   border-radius: 500px;
 
   cursor: pointer;
+}
+
+.randomBtn{
+  max-width: fit-content;
+  background-color: lightgrey;
+}
+
+.randomBtn:hover{
+  background-color: darkgrey;
 }
 
 .closest-paintings .red {
@@ -269,7 +282,7 @@ img {
 }
 
 .closest-paintings .blue {
-  background-color: #2F80ED; /* Blue color */
+  background-color: #2f80ed; /* Blue color */
   color: white; /* White text for contrast */
 }
 
@@ -301,4 +314,20 @@ img {
   .image-gallery {
     grid-template-columns: repeat(1, 1fr); /* Switch to 2 columns */
   }
+}
+
+.loading-screen {
+  background-color: whitesmoke;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+}
+
+.loading-screen .color {
+  width: 100%;
 }
