@@ -53,13 +53,13 @@ footer{
   position: relative;
   border-radius: 50%;
   background-color: black;
-  transition: scale 0.5s ease-in-out 0.5s, clip-path 1s ease-out 0s;
+  transition: scale 0.5s ease-in-out 1s, clip-path 1.5s ease-out 0s;
 }
 
 .letter:hover {
   clip-path: circle(5000px at 52px 52px);
-  scale: 1.5;
-  transition: scale 0.25s ease-in-out 0s, clip-path 0.25s ease-out 0.1s;
+  scale: 1.25;
+  transition: scale 0.25s ease-in-out 0s, clip-path 0.25s ease-in 0.15s;
 }
 
 .clipped {
@@ -70,7 +70,7 @@ footer{
 .circle {
   border-radius: 50%;
   position: absolute;
-  transition: transform 1s ease;
+  transition: transform 1.5s ease;
 }
 
 .small {
