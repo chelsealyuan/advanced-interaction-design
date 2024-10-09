@@ -41,11 +41,11 @@ footer{
 }
 
 .title .letter {
-  scale: 1.5;
+  scale: 1.2;
 }
 
 .title .letter:hover {
-  scale: 2;
+  scale: 1.5;
 }
 
 .letter {
@@ -59,7 +59,7 @@ footer{
 .letter:hover {
   clip-path: circle(5000px at 52px 52px);
   scale: 1.25;
-  transition: scale 0.25s ease-in-out 0s, clip-path 0.25s ease-in 0.15s;
+  transition: scale 0.3s ease-in 0s, clip-path 1s ease-in 0.25s;
 }
 
 .clipped {

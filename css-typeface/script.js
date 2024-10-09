@@ -57,6 +57,8 @@ letters.forEach((letter) => {
 function moveCircles(letter) {
   const circles = letter.querySelectorAll(".circle");
 
+  const dist = 75;
+
   circles.forEach((circle) => {
     let rect = circle.getBoundingClientRect();
     let originalX = rect.left;
@@ -69,10 +71,10 @@ function moveCircles(letter) {
     let lastY = parseFloat(circle.dataset.lastY || 0);
 
     // Calculate the minimum and maximum values for x and y
-    let minX = Math.max(lastX - 50, -originalX);
-    let maxX = Math.min(lastX + 50, viewportWidth - originalX - rect.width);
-    let minY = Math.max(lastY - 50, -originalY);
-    let maxY = Math.min(lastY + 50, viewportHeight - originalY - rect.height);
+    let minX = Math.max(lastX - dist, -originalX);
+    let maxX = Math.min(lastX + dist, viewportWidth - originalX - rect.width);
+    let minY = Math.max(lastY - dist, -originalY);
+    let maxY = Math.min(lastY + dist, viewportHeight - originalY - rect.height);
 
     // Calculate random x and y within the restricted bounds
     let x = Math.random() * (maxX - minX) + minX;
